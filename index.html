@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Nightingale</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F8F9FA;
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 216px;
+      min-height: 100vh;
+      background: #fff;
+      border-right: 1px solid #E5E7EB;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 14px 14px 12px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .sidebar-logo-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 34px;
+      height: 34px;
+      background: #1E293B;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-name { font-size: 13px; font-weight: 700; color: #111827; line-height: 1.3; }
+    .logo-sub  { font-size: 9.5px; font-weight: 600; color: #9CA3AF; letter-spacing: 0.07em; text-transform: uppercase; }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 0 8px;
+    }
+
+    .nav-section-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #9CA3AF;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 14px 16px 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 10px;
+      margin: 1px 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #374151;
+      border-radius: 7px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.12s, color 0.12s;
+    }
+
+    .nav-item i { font-size: 17px; color: #9CA3AF; flex-shrink: 0; }
+    .nav-item:hover { background: #F9FAFB; }
+    .nav-item:hover i { color: #6B7280; }
+
+    .nav-item.active {
+      background: #EFF6FF;
+      color: #2563EB;
+    }
+    .nav-item.active i { color: #2563EB; }
+
+    .nav-item.selected {
+      background: #F3F4F6;
+      color: #111827;
+    }
+    .nav-item.selected i { color: #6B7280; }
+
+    .sidebar-user {
+      border-top: 1px solid #F3F4F6;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: #3B82F6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .user-info { flex: 1; min-width: 0; }
+    .user-name  { font-size: 12.5px; font-weight: 600; color: #111827; }
+    .user-email { font-size: 11px; color: #9CA3AF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: 216px;
+      flex: 1;
+      padding: 28px 28px 40px;
+      min-height: 100vh;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .page-title { font-size: 26px; font-weight: 700; color: #111827; line-height: 1.2; }
+    .page-sub   { font-size: 13px; color: #6B7280; margin-top: 3px; }
+
+    .btn-add {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 16px;
+      background: #2563EB;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .btn-add:hover { background: #1D4ED8; }
+
+    /* ── STAT CARDS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid #E5E7EB;
+      border-radius: 12px;
+      padding: 18px 18px 16px;
+    }
+
+    .stat-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+
+    .stat-icon i { font-size: 17px; color: #06B6D4; }
+
+    .stat-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #9CA3AF;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .stat-number {
+      font-size: 30px;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .stat-number .active-badge {
+      font-size: 13px;
+      font-weight: 500;
+      color: #16A34A;
+      margin-left: 4px;
+    }
+
+    .stat-sub {
+      font-size: 11.5px;
+      color: #6B7280;
+      margin-bottom: 12px;
+    }
+
+    .stat-trend {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11.5px;
+      margin-bottom: 12px;
+    }
+    .stat-trend.up   { color: #16A34A; }
+    .stat-trend.down { color: #DC2626; }
+    .stat-trend i    { font-size: 13px; }
+
+    .view-details {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12px;
+      color: #6B7280;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+    .view-details:hover { color: #2563EB; }
+    .view-details i { font-size: 12px; }
+
+    /* ── CONTENT GRID ── */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 18px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: white;
+      border: 1px solid #E5E7EB;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+    }
+    .card-title i { font-size: 17px; color: #06B6D4; }
+
+    .count-badge {
+      background: #F3F4F6;
+      color: #374151;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: 9999px;
+    }
+
+    .card-link {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12.5px;
+      color: #6B7280;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .card-link:hover { color: #2563EB; }
+    .card-link i { font-size: 13px; }
+
+    /* ── TABLE ── */
+    table { width: 100%; border-collapse: collapse; }
+
+    thead th {
+      padding: 9px 16px;
+      text-align: left;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #9CA3AF;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-bottom: 1px solid #F3F4F6;
+      background: #FAFAFA;
+    }
+
+    tbody td {
+      padding: 11px 16px;
+      font-size: 13px;
+      color: #374151;
+      border-bottom: 1px solid #F9FAFB;
+      white-space: nowrap;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #FAFAFA; }
+
+    .time-cell { font-size: 13px; font-weight: 500; color: #111827; }
+    .type-icon  { font-size: 15px; color: #9CA3AF; }
+    .patient-name { font-weight: 500; color: #111827; }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 9px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .badge-initial     { background: #DBEAFE; color: #1D4ED8; }
+    .badge-ongoing     { background: #F3F4F6; color: #6B7280; }
+    .badge-unconfirmed { background: #FEF3C7; color: #D97706; }
+    .badge-cancelled   { background: #F3F4F6; color: #6B7280; }
+    .badge-active      { background: #DCFCE7; color: #16A34A; }
+    .badge-unknown     { background: #F3F4F6; color: #6B7280; }
+
+    /* ── RIGHT COLUMN ── */
+    .right-col { display: flex; flex-direction: column; gap: 18px; }
+
+    /* Waitlist */
+    .waitlist-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 18px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .waitlist-item:last-child { border-bottom: none; }
+
+    .waitlist-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #F59E0B;
+      flex-shrink: 0;
+    }
+
+    .waitlist-info { flex: 1; }
+    .waitlist-name  { font-size: 13px; font-weight: 600; color: #111827; }
+    .waitlist-email { font-size: 11.5px; color: #9CA3AF; margin-top: 1px; }
+
+    /* Recent Patients */
+    .patient-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 18px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .patient-item:last-child { border-bottom: none; }
+
+    .patient-avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .patient-info   { flex: 1; min-width: 0; }
+    .patient-pname  { font-size: 13px; font-weight: 600; color: #111827; }
+    .patient-pemail { font-size: 11.5px; color: #9CA3AF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  </style>
+</head>
+<body>
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-left">
+        <div class="logo-icon">
+          <i class="ti ti-heartbeat" style="font-size:17px;color:white;"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">Integral Health</span>
+          <span class="logo-sub">Mission Control</span>
+        </div>
+      </div>
+      <i class="ti ti-moon" style="font-size:15px;color:#9CA3AF;cursor:pointer;"></i>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item active" href="#"><i class="ti ti-layout-dashboard"></i> Dashboard</a>
+
+      <div class="nav-section-label">General</div>
+      <a class="nav-item" href="#"><i class="ti ti-users"></i> Patients</a>
+      <a class="nav-item" href="#"><i class="ti ti-calendar"></i> Appointments</a>
+
+      <div class="nav-section-label">Clinical</div>
+      <a class="nav-item" href="#"><i class="ti ti-stethoscope"></i> Team</a>
+      <a class="nav-item" href="#"><i class="ti ti-clock"></i> Time</a>
+      <a class="nav-item" href="#"><i class="ti ti-clipboard-list"></i> Caseload</a>
+      <a class="nav-item" href="#"><i class="ti ti-chart-bar"></i> Performance</a>
+
+      <div class="nav-section-label">Operations</div>
+      <a class="nav-item" href="#"><i class="ti ti-list"></i> Waitlist</a>
+      <a class="nav-item selected" href="#"><i class="ti ti-bookmark"></i> Follow-up</a>
+      <a class="nav-item" href="#"><i class="ti ti-flag"></i> Flagging</a>
+      <a class="nav-item" href="#"><i class="ti ti-shield"></i> Enrollments</a>
+      <a class="nav-item" href="#"><i class="ti ti-handshake"></i> Partners</a>
+
+      <div class="nav-section-label">Settings</div>
+      <a class="nav-item" href="#"><i class="ti ti-building"></i> Partners</a>
+      <a class="nav-item" href="#"><i class="ti ti-user-cog"></i> Providers</a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">PY</div>
+      <div class="user-info">
+        <div class="user-name">Peter Yoo</div>
+        <div class="user-email">peter.yoo@integ...</div>
+      </div>
+      <i class="ti ti-chevron-down" style="font-size:13px;color:#9CA3AF;"></i>
+      <i class="ti ti-layout-sidebar" style="font-size:15px;color:#9CA3AF;margin-left:2px;"></i>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-sub">Overview of your practice at a glance</p>
+      </div>
+      <button class="btn-add">
+        <i class="ti ti-user-plus" style="font-size:15px;"></i>
+        Add Patient
+      </button>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="stats-row">
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon"><i class="ti ti-activity"></i></div>
+          <span class="stat-label">Patients</span>
+        </div>
+        <div class="stat-number">480 <span class="active-badge">active</span></div>
+        <div class="stat-sub">23% graduated &nbsp;·&nbsp; 1681 enrolled</div>
+        <button class="view-details">View details <i class="ti ti-arrow-up-right"></i></button>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon"><i class="ti ti-users"></i></div>
+          <span class="stat-label">Referrals</span>
+        </div>
+        <div class="stat-number">63</div>
+        <div class="stat-trend down">
+          <i class="ti ti-trending-down"></i> 14% vs same period last month
+        </div>
+        <button class="view-details">View details <i class="ti ti-arrow-up-right"></i></button>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon"><i class="ti ti-circle-check"></i></div>
+          <span class="stat-label">Enrolled</span>
+        </div>
+        <div class="stat-number">82</div>
+        <div class="stat-trend up">
+          <i class="ti ti-trending-up"></i> 64% vs same period last month
+        </div>
+        <button class="view-details">View details <i class="ti ti-arrow-up-right"></i></button>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon"><i class="ti ti-calendar-event"></i></div>
+          <span class="stat-label">Weekly Appts</span>
+        </div>
+        <div class="stat-number">235</div>
+        <div class="stat-trend up">
+          <i class="ti ti-trending-up"></i> 9% vs last week
+        </div>
+        <button class="view-details">View details <i class="ti ti-arrow-up-right"></i></button>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon"><i class="ti ti-calendar-exclamation"></i></div>
+          <span class="stat-label">Need Follow-up</span>
+        </div>
+        <div class="stat-number">66</div>
+        <div class="stat-sub">14% of active</div>
+        <button class="view-details">View details <i class="ti ti-arrow-up-right"></i></button>
+      </div>
+
+    </div>
+
+    <!-- Content grid -->
+    <div class="content-grid">
+
+      <!-- Today's Appointments -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <i class="ti ti-calendar-event"></i>
+            Today's Appointments
+            <span class="count-badge">30</span>
+          </div>
+          <a class="card-link" href="#">See all <i class="ti ti-arrow-up-right"></i></a>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Type</th>
+              <th>Visit</th>
+              <th>Patient</th>
+              <th>Practitioner</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="time-cell">8:00 AM</td>
+              <td><i class="ti ti-phone type-icon"></i></td>
+              <td><span class="badge badge-initial">Initial</span></td>
+              <td class="patient-name">Kenneth Blake</td>
+              <td>Imani Brockington</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">9:00 AM</td>
+              <td><i class="ti ti-phone type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Linda Tomkiel</td>
+              <td>Janise Kangombe</td>
+              <td><span class="badge badge-cancelled">Cancelled</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">9:00 AM</td>
+              <td><i class="ti ti-phone type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Ashley Schenk</td>
+              <td>Imani Brockington</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">9:30 AM</td>
+              <td><i class="ti ti-video type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Barbara Allen</td>
+              <td>Sofia Skinner</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">10:00 AM</td>
+              <td><i class="ti ti-video type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Kelli Bocock-Natale</td>
+              <td>Kyoko Yamamura</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">10:00 AM</td>
+              <td><i class="ti ti-video type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Amelia Marciniak</td>
+              <td>Imani Brockington</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">11:00 AM</td>
+              <td><i class="ti ti-video type-icon"></i></td>
+              <td><span class="badge badge-initial">Initial</span></td>
+              <td class="patient-name">Elysia Klyczek</td>
+              <td>Imani Brockington</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">11:00 AM</td>
+              <td><i class="ti ti-phone type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Ariel Donalson</td>
+              <td>Janise Kangombe</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">11:00 AM</td>
+              <td><i class="ti ti-video type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Andrea Dinieri</td>
+              <td>Zandra Campese</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">11:30 AM</td>
+              <td><i class="ti ti-phone type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Karen Baxter</td>
+              <td>Zandra Campese</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">12:00 PM</td>
+              <td><i class="ti ti-video type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Stephanie White</td>
+              <td>Zandra Campese</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">12:00 PM</td>
+              <td><i class="ti ti-phone type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Anne Kiernan</td>
+              <td>Sofia Skinner</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+            <tr>
+              <td class="time-cell">12:00 PM</td>
+              <td><i class="ti ti-phone type-icon"></i></td>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="patient-name">Linda Tomkiel</td>
+              <td>Janise Kangombe</td>
+              <td><span class="badge badge-unconfirmed">Unconfirmed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Right column -->
+      <div class="right-col">
+
+        <!-- Pending Waitlist -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="ti ti-clock"></i>
+              Pending Waitlist
+              <span class="count-badge">2</span>
+            </div>
+            <a class="card-link" href="#">View all <i class="ti ti-arrow-up-right"></i></a>
+          </div>
+          <div class="waitlist-item">
+            <div class="waitlist-dot"></div>
+            <div class="waitlist-info">
+              <div class="waitlist-name">Breanne Alvarado</div>
+              <div class="waitlist-email">hellokitty.haze09@gmail.com</div>
+            </div>
+            <i class="ti ti-clock" style="font-size:15px;color:#D1D5DB;"></i>
+          </div>
+          <div class="waitlist-item">
+            <div class="waitlist-dot"></div>
+            <div class="waitlist-info">
+              <div class="waitlist-name">Rosalynn D Prior</div>
+              <div class="waitlist-email">jones.rosalynn@yahoo.com</div>
+            </div>
+            <i class="ti ti-clock" style="font-size:15px;color:#D1D5DB;"></i>
+          </div>
+        </div>
+
+        <!-- Recent Patients -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="ti ti-users"></i>
+              Recent Patients
+            </div>
+            <a class="card-link" href="#">View all <i class="ti ti-arrow-up-right"></i></a>
+          </div>
+          <div class="patient-item">
+            <div class="patient-avatar" style="background:#3B82F6;">TW</div>
+            <div class="patient-info">
+              <div class="patient-pname">Tavonni Washington</div>
+              <div class="patient-pemail">tavonni@hotmail.com</div>
+            </div>
+            <span class="badge badge-unknown">unknown</span>
+          </div>
+          <div class="patient-item">
+            <div class="patient-avatar" style="background:#06B6D4;">AC</div>
+            <div class="patient-info">
+              <div class="patient-pname">Anna Choops</div>
+              <div class="patient-pemail">—</div>
+            </div>
+            <span class="badge badge-unknown">unknown</span>
+          </div>
+          <div class="patient-item">
+            <div class="patient-avatar" style="background:#8B5CF6;">RM</div>
+            <div class="patient-info">
+              <div class="patient-pname">Ruairi McNally</div>
+              <div class="patient-pemail">faloonarmy@gmail.com</div>
+            </div>
+            <span class="badge badge-unknown">unknown</span>
+          </div>
+          <div class="patient-item">
+            <div class="patient-avatar" style="background:#6B7280;">MG</div>
+            <div class="patient-info">
+              <div class="patient-pname">Marian Giglioti</div>
+              <div class="patient-pemail">—</div>
+            </div>
+            <span class="badge badge-unknown">unknown</span>
+          </div>
+          <div class="patient-item">
+            <div class="patient-avatar" style="background:#6B7280;">JB</div>
+            <div class="patient-info">
+              <div class="patient-pname">John Bernas</div>
+              <div class="patient-pemail">johnhamburg62@gmail.com</div>
+            </div>
+            <span class="badge badge-active">Active</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
