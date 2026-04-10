@@ -270,12 +270,12 @@
       <div class="metric-card urgent">
         <div class="metric-label">Needs Action</div>
         <div class="metric-value" id="metric-pending">8</div>
-        <div class="metric-sub">Identified but not yet in care</div>
+        <div class="metric-sub">Pending referral or no-show</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">Engaged in Treatment</div>
-        <div class="metric-value" id="metric-engaged">3</div>
-        <div class="metric-sub">Successfully connected this month</div>
+        <div class="metric-label">Referred — Awaiting</div>
+        <div class="metric-value" id="metric-referred">5</div>
+        <div class="metric-sub">Referral sent, no intake confirmed</div>
       </div>
     </div>
 
@@ -286,7 +286,6 @@
         <button class="filter-pill" data-filter="needs_action">Needs action</button>
         <button class="filter-pill" data-filter="referred">Referred — awaiting contact</button>
         <button class="filter-pill" data-filter="no_show">No show</button>
-        <button class="filter-pill" data-filter="engaged">In treatment</button>
         <button class="filter-pill" data-filter="dismissed">Dismissed</button>
       </div>
       <div class="search-wrap">
@@ -297,9 +296,8 @@
 
     <!-- Legend -->
     <div class="legend">
-      <div class="legend-item"><div class="legend-dot eligible"></div> Needs action — eligible for referral</div>
-      <div class="legend-item"><div class="legend-dot engaged"></div> In treatment — successfully connected</div>
-      <div class="legend-item"><div class="legend-dot dismissed"></div> Dismissed or no longer active</div>
+      <div class="legend-item"><div class="legend-dot eligible"></div> Needs action — pending referral or no-show</div>
+      <div class="legend-item"><div class="legend-dot dismissed"></div> Dismissed</div>
     </div>
 
     <!-- Table -->
@@ -412,8 +410,8 @@
         id: 9, name: "Nancy Walker", age: 55, isNew: false,
         diagnoses: ["Major Depressive Disorder", "Fibromyalgia"],
         tier: "medium", score: 51,
-        engagement: "in_progress", daysInPipeline: 32,
-        reasoning: "Connected with BH provider. 2 sessions completed. Ongoing monitoring.",
+        engagement: "referred", daysInPipeline: 32,
+        reasoning: "Referred 32 days ago. No confirmed BH appointment on file. Follow-up needed.",
         medications: [{ name: "Duloxetine 60mg", status: "Active", duration: "2 yr" }, { name: "Pregabalin 75mg", status: "Active", duration: "1 yr" }],
         signals: { phq9: 7, gad7: 5, erVisits: 1, missedVisits: 0 },
         history: { mhDiagnosis: "MDD (2021)", familyHistory: "Sibling anxiety", lastBHContact: "3 weeks ago" }
@@ -422,8 +420,8 @@
         id: 10, name: "William Garcia", age: 58, isNew: false,
         diagnoses: ["Major Depressive Disorder", "Hypertension"],
         tier: "high", score: 74,
-        engagement: "engaged", daysInPipeline: 45,
-        reasoning: "Engaged in weekly therapy. PHQ-9 down from 11 to 6. Stable.",
+        engagement: "referred", daysInPipeline: 45,
+        reasoning: "Referred 45 days ago. No confirmed BH intake. Longest outstanding referral in pipeline.",
         medications: [{ name: "Venlafaxine 150mg", status: "Active", duration: "2 yr" }, { name: "Amlodipine 10mg", status: "Active", duration: "5 yr" }],
         signals: { phq9: 6, gad7: null, erVisits: 0, missedVisits: 0 },
         history: { mhDiagnosis: "MDD (2018)", familyHistory: "None documented", lastBHContact: "1 week ago" }
@@ -432,8 +430,8 @@
         id: 11, name: "Margaret Wilson", age: 64, isNew: false,
         diagnoses: ["Bipolar I Disorder", "Type 2 Diabetes"],
         tier: "high", score: 88,
-        engagement: "engaged", daysInPipeline: 38,
-        reasoning: "Engaged with psychiatrist. Mood stabilizer dose stabilized. No ER visits since referral.",
+        engagement: "referred", daysInPipeline: 38,
+        reasoning: "Referred 38 days ago. Bipolar I with complex medication regimen. No BH intake confirmed.",
         medications: [{ name: "Valproic Acid 1000mg", status: "Active", duration: "5 yr" }, { name: "Lithium Carbonate 600mg", status: "Active", duration: "8 yr" }],
         signals: { phq9: 5, gad7: null, erVisits: 0, missedVisits: 0 },
         history: { mhDiagnosis: "Bipolar I (2012)", familyHistory: "Sibling bipolar I", lastBHContact: "2 weeks ago" }
@@ -461,7 +459,6 @@
     ];
 
     const ELIGIBLE_STATUSES = ['pending_referral', 'referred', 'no_show'];
-    const ENGAGED_STATUSES  = ['in_progress', 'engaged'];
 
     let patients = PATIENTS.map(p => ({ ...p }));
     let currentFilter = 'all';
@@ -470,7 +467,6 @@
 
     function rowClass(p) {
       if (ELIGIBLE_STATUSES.includes(p.engagement)) return 'eligible-row';
-      if (ENGAGED_STATUSES.includes(p.engagement))  return 'engaged-row';
       return 'dismissed-row';
     }
 
@@ -479,8 +475,6 @@
         pending_referral: ['eng-pending',    'Pending referral'],
         referred:         ['eng-referred',   'Referred — awaiting contact'],
         no_show:          ['eng-noshow',     'No show'],
-        in_progress:      ['eng-inprogress', 'In progress'],
-        engaged:          ['eng-engaged',    'Engaged in treatment'],
         dismissed:        ['eng-dismissed',  'Dismissed'],
       };
       const [cls, label] = map[eng] || ['eng-dismissed', eng];
@@ -549,7 +543,6 @@
       if (currentFilter === 'needs_action') list = list.filter(p => ELIGIBLE_STATUSES.includes(p.engagement));
       else if (currentFilter === 'referred')  list = list.filter(p => p.engagement === 'referred');
       else if (currentFilter === 'no_show')   list = list.filter(p => p.engagement === 'no_show');
-      else if (currentFilter === 'engaged')   list = list.filter(p => ENGAGED_STATUSES.includes(p.engagement));
       else if (currentFilter === 'dismissed') list = list.filter(p => p.engagement === 'dismissed');
       if (searchQuery) list = list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
       // Sort: eligible first, then engaged, then dismissed; within eligible sort by urgency (days asc)
@@ -600,17 +593,15 @@
       }
 
       const eligible  = list.filter(p => ELIGIBLE_STATUSES.includes(p.engagement));
-      const engaged   = list.filter(p => ENGAGED_STATUSES.includes(p.engagement));
       const dismissed = list.filter(p => p.engagement === 'dismissed');
 
-      // Only show section headers on "all" view when multiple groups are present
-      const showSections = currentFilter === 'all' && [eligible, engaged, dismissed].filter(g => g.length > 0).length > 1;
+      // Only show section headers on "all" view when both groups are present
+      const showSections = currentFilter === 'all' && eligible.length > 0 && dismissed.length > 0;
 
       let html = '';
       if (showSections) {
-        if (eligible.length)  html += sectionHeader('Needs Action', eligible.length, '#F59E0B')  + eligible.map(patientRow).join('');
-        if (engaged.length)   html += sectionHeader('In Treatment', engaged.length, '#22C55E')   + engaged.map(patientRow).join('');
-        if (dismissed.length) html += sectionHeader('Dismissed', dismissed.length, '#D1D5DB')    + dismissed.map(patientRow).join('');
+        if (eligible.length)  html += sectionHeader('In Pipeline', eligible.length, '#F59E0B') + eligible.map(patientRow).join('');
+        if (dismissed.length) html += sectionHeader('Dismissed', dismissed.length, '#D1D5DB')  + dismissed.map(patientRow).join('');
       } else {
         html = list.map(patientRow).join('');
       }
@@ -656,10 +647,10 @@
     }
 
     function updateMetrics() {
-      const pending  = patients.filter(p => ELIGIBLE_STATUSES.includes(p.engagement)).length;
-      const engaged  = patients.filter(p => ENGAGED_STATUSES.includes(p.engagement)).length;
+      const pending  = patients.filter(p => ['pending_referral', 'no_show'].includes(p.engagement)).length;
+      const referred = patients.filter(p => p.engagement === 'referred').length;
       document.getElementById('metric-pending').textContent = pending;
-      document.getElementById('metric-engaged').textContent = engaged;
+      document.getElementById('metric-referred').textContent = referred;
     }
 
     document.querySelectorAll('.filter-pill').forEach(pill => {
