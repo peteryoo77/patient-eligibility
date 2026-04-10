@@ -87,8 +87,8 @@
     .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-muted); }
     .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
     .legend-dot.eligible   { background: #FEF3C7; border: 1px solid #FDE68A; }
-    .legend-dot.engaged    { background: #F0FDF4; border: 1px solid #BBF7D0; }
-    .legend-dot.dismissed  { background: #F9FAFB; border: 1px solid #E5E7EB; }
+    .legend-dot.engaged    { background: #ffffff; border: 1px solid #D1D5DB; }
+    .legend-dot.dismissed  { background: #F3F4F6; border: 1px solid #E5E7EB; }
 
     /* ── TABLE CARD ── */
     .table-card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
@@ -105,15 +105,15 @@
     .patient-row.eligible-row:hover td { background: #FEF3C7; }
     .patient-row.eligible-row.expanded td { background: #FEF3C7; }
 
-    /* Engaged (in treatment) */
-    .patient-row.engaged-row td { background: #F0FDF4; }
-    .patient-row.engaged-row td:first-child { border-left: 3px solid #22C55E; }
-    .patient-row.engaged-row:hover td { background: #DCFCE7; }
+    /* Engaged / in progress — neutral, same as any row */
+    .patient-row.engaged-row td { background: #ffffff; }
+    .patient-row.engaged-row td:first-child { border-left: 3px solid transparent; }
+    .patient-row.engaged-row:hover td { background: #F9FAFB; }
 
-    /* Dismissed */
-    .patient-row.dismissed-row td { background: #F9FAFB; opacity: 0.7; }
-    .patient-row.dismissed-row td:first-child { border-left: 3px solid #D1D5DB; }
-    .patient-row.dismissed-row:hover td { opacity: 0.9; }
+    /* Dismissed — slightly muted but still readable */
+    .patient-row.dismissed-row td { background: #ffffff; opacity: 0.55; }
+    .patient-row.dismissed-row td:first-child { border-left: 3px solid transparent; }
+    .patient-row.dismissed-row:hover td { opacity: 0.8; }
 
     /* Section header rows */
     .section-header-row td { background: #F3F4F6; padding: 6px 14px; border-bottom: 0.5px solid var(--border); }
