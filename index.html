@@ -7,12 +7,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
+    @import url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css');
+  </style>
+  <style>
+    :root {
+      --primary:     hsl(199, 89%, 48%);
+      --primary-hover: hsl(199, 89%, 42%);
+      --primary-light: hsl(199, 89%, 95%);
+      --bg:          hsl(210, 20%, 98%);
+      --card:        #ffffff;
+      --border:      hsl(214, 14%, 89%);
+      --text:        hsl(220, 20%, 10%);
+      --text-mid:    hsl(220, 20%, 20%);
+      --text-muted:  hsl(220, 10%, 46%);
+      --muted-bg:    hsl(210, 16%, 93%);
+      --radius:      10px;
+      --success:     hsl(160, 84%, 39%);
+      --warning:     hsl(38, 92%, 50%);
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: #F8F9FA;
-      color: #111827;
+      font-family: 'Geist', 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
     }
@@ -21,8 +40,8 @@
     .sidebar {
       width: 216px;
       min-height: 100vh;
-      background: #fff;
-      border-right: 1px solid #E5E7EB;
+      background: var(--card);
+      border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
@@ -36,7 +55,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 14px 14px 14px 12px;
-      border-bottom: 1px solid #F3F4F6;
+      border-bottom: 1px solid var(--border);
     }
 
     .sidebar-logo-left {
@@ -49,7 +68,7 @@
       width: 34px;
       height: 34px;
       background: #1E293B;
-      border-radius: 8px;
+      border-radius: var(--radius);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -84,7 +103,7 @@
       font-size: 13.5px;
       font-weight: 500;
       color: #374151;
-      border-radius: 7px;
+      border-radius: calc(var(--radius) - 2px);
       cursor: pointer;
       text-decoration: none;
       transition: background 0.12s, color 0.12s;
@@ -95,10 +114,10 @@
     .nav-item:hover i { color: #6B7280; }
 
     .nav-item.active {
-      background: #EFF6FF;
-      color: #2563EB;
+      background: var(--primary-light);
+      color: var(--primary);
     }
-    .nav-item.active i { color: #2563EB; }
+    .nav-item.active i { color: var(--primary); }
 
     .nav-item.selected {
       background: #F3F4F6;
@@ -159,18 +178,18 @@
       align-items: center;
       gap: 7px;
       padding: 9px 16px;
-      background: #2563EB;
+      background: var(--primary);
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius);
       font-size: 13.5px;
       font-weight: 600;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Geist', 'Inter', sans-serif;
       cursor: pointer;
       white-space: nowrap;
       transition: background 0.15s;
     }
-    .btn-add:hover { background: #1D4ED8; }
+    .btn-add:hover { background: var(--primary-hover); }
 
     /* ── STAT CARDS ── */
     .stats-row {
@@ -182,8 +201,8 @@
 
     .stat-card {
       background: white;
-      border: 1px solid #E5E7EB;
-      border-radius: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       padding: 18px 18px 16px;
     }
 
@@ -246,9 +265,9 @@
       border: none;
       padding: 0;
       cursor: pointer;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Geist', 'Inter', sans-serif;
     }
-    .view-details:hover { color: #2563EB; }
+    .view-details:hover { color: var(--primary); }
     .view-details i { font-size: 12px; }
 
     /* ── CONTENT GRID ── */
@@ -261,8 +280,8 @@
     /* ── CARD ── */
     .card {
       background: white;
-      border: 1px solid #E5E7EB;
-      border-radius: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       overflow: hidden;
     }
 
@@ -271,7 +290,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 14px 18px;
-      border-bottom: 1px solid #F3F4F6;
+      border-bottom: 1px solid var(--border);
     }
 
     .card-title {
@@ -302,7 +321,7 @@
       text-decoration: none;
       cursor: pointer;
     }
-    .card-link:hover { color: #2563EB; }
+    .card-link:hover { color: var(--primary); }
     .card-link i { font-size: 13px; }
 
     /* ── TABLE ── */
@@ -316,7 +335,7 @@
       color: #9CA3AF;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      border-bottom: 1px solid #F3F4F6;
+      border-bottom: 1px solid var(--border);
       background: #FAFAFA;
     }
 
@@ -346,7 +365,7 @@
       white-space: nowrap;
     }
 
-    .badge-initial     { background: #DBEAFE; color: #1D4ED8; }
+    .badge-initial     { background: #DBEAFE; color: var(--primary-hover); }
     .badge-ongoing     { background: #F3F4F6; color: #6B7280; }
     .badge-unconfirmed { background: #FEF3C7; color: #D97706; }
     .badge-cancelled   { background: #F3F4F6; color: #6B7280; }
@@ -362,7 +381,7 @@
       align-items: center;
       gap: 10px;
       padding: 13px 18px;
-      border-bottom: 1px solid #F3F4F6;
+      border-bottom: 1px solid var(--border);
     }
     .waitlist-item:last-child { border-bottom: none; }
 
@@ -383,7 +402,7 @@
       align-items: center;
       gap: 10px;
       padding: 11px 18px;
-      border-bottom: 1px solid #F3F4F6;
+      border-bottom: 1px solid var(--border);
     }
     .patient-item:last-child { border-bottom: none; }
 
