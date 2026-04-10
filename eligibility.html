@@ -97,23 +97,28 @@
     thead th { padding: 10px 14px; text-align: left; font-size: 10.5px; font-weight: 600; color: #9CA3AF; letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 0.5px solid var(--border); background: #FAFAFA; white-space: nowrap; }
 
     /* ── ROW STATES ── */
-    .patient-row { cursor: pointer; transition: filter 0.1s; }
+    .patient-row { cursor: pointer; transition: background 0.1s; }
 
-    /* Eligible (needs action) — warm left accent */
-    .patient-row.eligible-row td { background: #ffffff; border-left: 3px solid transparent; }
+    /* Eligible (needs action) — amber background */
+    .patient-row.eligible-row td { background: #FFFBEB; }
     .patient-row.eligible-row td:first-child { border-left: 3px solid #F59E0B; }
-    .patient-row.eligible-row:hover td { background: #FFFBEB; }
-    .patient-row.eligible-row.expanded td { background: #FFFBEB; }
+    .patient-row.eligible-row:hover td { background: #FEF3C7; }
+    .patient-row.eligible-row.expanded td { background: #FEF3C7; }
 
-    /* Engaged (in treatment — success) */
-    .patient-row.engaged-row td { background: #F9FFF9; opacity: 0.8; }
+    /* Engaged (in treatment) */
+    .patient-row.engaged-row td { background: #F0FDF4; }
     .patient-row.engaged-row td:first-child { border-left: 3px solid #22C55E; }
-    .patient-row.engaged-row:hover td { background: #F0FDF4; opacity: 1; }
+    .patient-row.engaged-row:hover td { background: #DCFCE7; }
 
     /* Dismissed */
-    .patient-row.dismissed-row td { background: #FAFAFA; opacity: 0.65; }
-    .patient-row.dismissed-row td:first-child { border-left: 3px solid #E5E7EB; }
-    .patient-row.dismissed-row:hover td { opacity: 0.85; }
+    .patient-row.dismissed-row td { background: #F9FAFB; opacity: 0.7; }
+    .patient-row.dismissed-row td:first-child { border-left: 3px solid #D1D5DB; }
+    .patient-row.dismissed-row:hover td { opacity: 0.9; }
+
+    /* Section header rows */
+    .section-header-row td { background: #F3F4F6; padding: 6px 14px; border-bottom: 0.5px solid var(--border); }
+    .section-header-label { font-size: 10.5px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.07em; display: flex; align-items: center; gap: 8px; }
+    .section-count { font-size: 10.5px; font-weight: 600; color: #9CA3AF; }
 
     tbody td { padding: 12px 14px; vertical-align: middle; border-bottom: 0.5px solid var(--border); color: var(--text-mid); }
     tbody tr:last-child td { border-bottom: none; }
@@ -556,14 +561,12 @@
       });
     }
 
-    function renderTable() {
-      const tbody = document.getElementById('patient-tbody');
-      const list = getFiltered();
-      if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="ti ti-circle-off"></i>No patients match this filter.</div></td></tr>`;
-        return;
-      }
-      tbody.innerHTML = list.map(p => `
+    function sectionHeader(label, count, color) {
+      return `<tr class="section-header-row"><td colspan="7"><div class="section-header-label"><span style="width:8px;height:8px;border-radius:2px;background:${color};display:inline-block;flex-shrink:0;"></span>${label} <span class="section-count">${count}</span></div></td></tr>`;
+    }
+
+    function patientRow(p) {
+      return `
         <tr class="patient-row ${rowClass(p)}" data-id="${p.id}">
           <td>
             <div class="pname">${p.name}${p.isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
@@ -585,7 +588,33 @@
         <tr class="detail-row" id="detail-${p.id}" style="display:none;">
           <td colspan="7">${renderDetail(p)}</td>
         </tr>
-      `).join('');
+      `;
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('patient-tbody');
+      const list = getFiltered();
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="ti ti-circle-off"></i>No patients match this filter.</div></td></tr>`;
+        return;
+      }
+
+      const eligible  = list.filter(p => ELIGIBLE_STATUSES.includes(p.engagement));
+      const engaged   = list.filter(p => ENGAGED_STATUSES.includes(p.engagement));
+      const dismissed = list.filter(p => p.engagement === 'dismissed');
+
+      // Only show section headers on "all" view when multiple groups are present
+      const showSections = currentFilter === 'all' && [eligible, engaged, dismissed].filter(g => g.length > 0).length > 1;
+
+      let html = '';
+      if (showSections) {
+        if (eligible.length)  html += sectionHeader('Needs Action', eligible.length, '#F59E0B')  + eligible.map(patientRow).join('');
+        if (engaged.length)   html += sectionHeader('In Treatment', engaged.length, '#22C55E')   + engaged.map(patientRow).join('');
+        if (dismissed.length) html += sectionHeader('Dismissed', dismissed.length, '#D1D5DB')    + dismissed.map(patientRow).join('');
+      } else {
+        html = list.map(patientRow).join('');
+      }
+      tbody.innerHTML = html;
 
       tbody.querySelectorAll('.patient-row').forEach(row => {
         row.addEventListener('click', () => {
