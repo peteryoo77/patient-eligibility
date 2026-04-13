@@ -18,8 +18,7 @@
 
       --pill-eligible-bg:    #eaf3de;
       --pill-eligible-text:  #3b6d11;
-      --pill-enrolled-bg:    #dbeafe;
-      --pill-enrolled-text:  #1e40af;
+
       --pill-ambiguous-bg:   #faeeda;
       --pill-ambiguous-text: #854f0b;
       --pill-ineligible-bg:  #f1efe8;
@@ -60,8 +59,7 @@
 
         --pill-eligible-bg:    #152009;
         --pill-eligible-text:  #86efac;
-        --pill-enrolled-bg:    #1e3a5f;
-        --pill-enrolled-text:  #93c5fd;
+
         --pill-ambiguous-bg:   #2d2208;
         --pill-ambiguous-text: #fbbf24;
         --pill-ineligible-bg:  #2a2a27;
@@ -245,7 +243,7 @@
     .patient-row.ineligible { opacity: 0.65; }
 
     .row-eligible   { border-left-color: #639922; }
-    .row-enrolled   { border-left-color: #2563eb; }
+
     .row-ineligible { border-left-color: #888780; }
 
     /* ── AVATAR ── */
@@ -289,7 +287,7 @@
     }
 
     .pill-eligible   { background: var(--pill-eligible-bg);   color: var(--pill-eligible-text); }
-    .pill-enrolled   { background: var(--pill-enrolled-bg);   color: var(--pill-enrolled-text); }
+
     .pill-ambiguous  { background: var(--pill-ambiguous-bg);  color: var(--pill-ambiguous-text); }
     .pill-ineligible { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
 
@@ -516,7 +514,6 @@
     const FILTERS = [
       { key: 'all',        label: 'All patients' },
       { key: 'eligible',   label: 'Eligible' },
-      { key: 'enrolled',   label: 'Enrolled' },
       { key: 'ineligible', label: 'Ineligible' },
     ];
 
@@ -536,7 +533,6 @@
     function renderMetrics() {
       const total      = PATIENTS.length;
       const eligible   = PATIENTS.filter(p => getEffectiveStatus(p) === 'eligible').length;
-      const enrolled   = PATIENTS.filter(p => getEffectiveStatus(p) === 'enrolled').length;
       const ineligible = PATIENTS.filter(p => getEffectiveStatus(p) === 'ineligible').length;
 
       document.getElementById('metrics-row').innerHTML = `
@@ -548,12 +544,7 @@
         <div class="metric-card">
           <div class="metric-label">Eligible</div>
           <div class="metric-value">${eligible}</div>
-          <div class="metric-sub">Ready for enrollment</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Enrolled</div>
-          <div class="metric-value">${enrolled}</div>
-          <div class="metric-sub">Active in CoCM</div>
+          <div class="metric-sub">Ready for outreach</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Ineligible</div>
@@ -608,7 +599,7 @@
         return;
       }
 
-      const ORDER = ['eligible', 'enrolled', 'ineligible'];
+      const ORDER = ['eligible', 'ineligible'];
       list.innerHTML = ORDER.flatMap(s => PATIENTS.filter(p => getEffectiveStatus(p) === s)).map(renderRow).join('');
     }
 
