@@ -16,10 +16,8 @@
       --primary:      #2563eb;
       --primary-light:#eff6ff;
 
-      --pill-eligible-bg:    #eaf3de;
-      --pill-eligible-text:  #3b6d11;
-      --pill-ineligible-bg:  #f1efe8;
-      --pill-ineligible-text:#5f5e5a;
+      --pill-eligible-bg:    #eaf3de; --pill-eligible-text:  #3b6d11;
+      --pill-ineligible-bg:  #f1efe8; --pill-ineligible-text:#5f5e5a;
 
       --sig-chronic-bg:   #fcebeb; --sig-chronic-text: #a32d2d;
       --sig-er-bg:        #faeeda; --sig-er-text:      #854f0b;
@@ -40,9 +38,12 @@
         --text-muted:   #8b92a8;
         --primary:      #3b82f6;
         --primary-light:#1e3a5f;
-
         --pill-eligible-bg:    #152009; --pill-eligible-text:  #86efac;
         --pill-ineligible-bg:  #2a2a27; --pill-ineligible-text:#a8a8a3;
+        --sig-chronic-bg: #2d1515; --sig-chronic-text: #f87171;
+        --sig-er-bg:      #2d2208; --sig-er-text:      #fbbf24;
+        --sig-family-bg:  #1e1a3a; --sig-family-text:  #a78bfa;
+        --sig-obs-bg:     #162035; --sig-obs-text:     #60a5fa;
       }
     }
 
@@ -56,155 +57,115 @@
 
     /* ── SIDEBAR ── */
     .sidebar {
-      width: 216px; min-height: 100vh;
-      background: var(--surface); border-right: 1px solid var(--border);
-      display: flex; flex-direction: column;
+      width: 216px; min-height: 100vh; background: var(--surface);
+      border-right: 1px solid var(--border); display: flex; flex-direction: column;
       position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
     }
-    .sidebar-logo {
-      display: flex; align-items: center; gap: 10px;
-      padding: 14px 12px; border-bottom: 1px solid var(--border);
-    }
-    .logo-icon {
-      width: 34px; height: 34px; background: #1e293b;
-      border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
+    .sidebar-logo { display: flex; align-items: center; gap: 10px; padding: 14px 12px; border-bottom: 1px solid var(--border); }
+    .logo-icon { width: 34px; height: 34px; background: #1e293b; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .logo-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
     .logo-sub  { font-size: 9.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; }
     .sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0 8px; }
-    .nav-label {
-      font-size: 10.5px; font-weight: 600; color: var(--text-muted);
-      letter-spacing: 0.07em; text-transform: uppercase; padding: 14px 16px 4px;
-    }
-    .nav-item {
-      display: flex; align-items: center; gap: 9px;
-      padding: 7px 10px; margin: 1px 8px;
-      font-size: 13.5px; font-weight: 500; color: var(--text-mid);
-      border-radius: 7px; cursor: pointer; text-decoration: none;
-      transition: background 0.12s, color 0.12s;
-    }
+    .nav-label { font-size: 10.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; padding: 14px 16px 4px; }
+    .nav-item { display: flex; align-items: center; gap: 9px; padding: 7px 10px; margin: 1px 8px; font-size: 13.5px; font-weight: 500; color: var(--text-mid); border-radius: 7px; cursor: pointer; text-decoration: none; transition: background 0.12s, color 0.12s; }
     .nav-item i { font-size: 17px; color: var(--text-muted); flex-shrink: 0; }
     .nav-item:hover { background: var(--bg); }
     .nav-item:hover i { color: var(--text-mid); }
     .nav-item.active { background: var(--primary-light); color: var(--primary); }
     .nav-item.active i { color: var(--primary); }
-    .sidebar-user {
-      border-top: 1px solid var(--border); padding: 10px 12px;
-      display: flex; align-items: center; gap: 9px;
-    }
-    .user-avatar {
-      width: 30px; height: 30px; border-radius: 50%;
-      background: var(--primary); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; flex-shrink: 0;
-    }
+    .sidebar-user { border-top: 1px solid var(--border); padding: 10px 12px; display: flex; align-items: center; gap: 9px; }
+    .user-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
     .user-name  { font-size: 12.5px; font-weight: 600; color: var(--text); }
     .user-email { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
 
     /* ── TOPBAR ── */
-    .topbar {
-      margin-left: 216px; background: var(--surface);
-      border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px;
-      display: flex; align-items: center; gap: 14px;
-      position: sticky; top: 0; z-index: 10;
-    }
-    .back-btn {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 13px; font-weight: 500; color: var(--text-muted);
-      text-decoration: none; padding: 5px 10px; border-radius: var(--radius-sm);
-      transition: background 0.12s, color 0.12s;
-    }
+    .topbar { margin-left: 216px; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 10; }
+    .back-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 5px 10px; border-radius: var(--radius-sm); transition: background 0.12s, color 0.12s; }
     .back-btn:hover { background: var(--bg); color: var(--text); }
     .back-btn i { font-size: 15px; }
     .topbar-divider { width: 1px; height: 18px; background: var(--border); }
     .topbar-title { font-size: 15px; font-weight: 600; color: var(--text); }
 
-    /* ── MAIN ── */
-    .main { margin-left: 216px; padding: 28px 32px 80px; max-width: 760px; }
+    /* ── LAYOUT ── */
+    .main { margin-left: 216px; padding: 28px 40px 80px; max-width: 860px; }
 
     /* ── PATIENT HEADER ── */
     .patient-header {
-      display: flex; align-items: center; gap: 14px;
+      display: flex; align-items: center; gap: 16px;
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 16px 20px;
-      margin-bottom: 10px;
+      border-radius: var(--radius-md); padding: 20px 24px;
+      margin-bottom: 12px;
     }
-    .header-avatar {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: var(--primary-light); color: var(--primary);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; flex-shrink: 0;
-    }
+    .header-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; flex-shrink: 0; }
     .header-info { flex: 1; min-width: 0; }
-    .header-name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .header-name { font-size: 16px; font-weight: 700; color: var(--text); }
-    .status-pill {
-      font-size: 11px; font-weight: 700;
-      padding: 2px 9px; border-radius: var(--radius-sm); white-space: nowrap;
-    }
+    .header-name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 3px; }
+    .header-name { font-size: 18px; font-weight: 700; color: var(--text); }
+    .status-pill { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap; }
     .pill-eligible   { background: var(--pill-eligible-bg);   color: var(--pill-eligible-text); }
     .pill-ineligible { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
-    .header-meta { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    .header-meta { font-size: 13px; color: var(--text-muted); }
 
-    /* ── CARD ── */
-    .card {
+    /* ── SECTION CARD ── */
+    .section-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 18px 20px;
-      margin-bottom: 10px;
+      border-radius: var(--radius-md); padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 10px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 14px;
     }
 
     /* ── ACTION ── */
     .action-area { display: flex; flex-direction: column; gap: 10px; }
-    .btn-ineligible {
-      align-self: flex-start; padding: 7px 16px;
-      border: 1px solid #d1d5db; border-radius: var(--radius-sm);
-      background: transparent; color: #5f5e5a;
-      font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
-      transition: border-color 0.12s, color 0.12s;
-    }
+    .btn-ineligible { align-self: flex-start; padding: 7px 16px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; }
     .btn-ineligible:hover { border-color: #9ca3af; color: var(--text-mid); }
     .note-field { display: flex; flex-direction: column; gap: 4px; }
     .note-label { font-size: 12px; color: var(--text-muted); }
-    .note-input {
-      width: 100%; padding: 7px 10px;
-      border: 1px solid var(--border); border-radius: var(--radius-sm);
-      background: var(--bg); color: var(--text);
-      font-family: inherit; font-size: 14px;
-    }
+    .note-input { width: 100%; padding: 7px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px; }
     .note-input:focus { outline: none; border-color: #9ca3af; }
-
     .ineligible-state { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
     .ineligible-note { font-size: 13px; color: var(--text-muted); flex: 1; min-width: 0; line-height: 1.5; }
     .undo-link { font-size: 13px; color: var(--text-muted); text-decoration: none; white-space: nowrap; align-self: center; }
     .undo-link:hover { color: var(--text); text-decoration: underline; }
 
-    /* ── CLINICAL DATA ── */
-    .scores-row { display: flex; gap: 28px; margin-bottom: 0; }
-    .score-block { display: flex; flex-direction: column; gap: 1px; }
-    .score-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-    .score-num   { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1.1; }
-    .score-date  { font-size: 11px; color: var(--text-muted); }
+    /* ── SIGNAL BADGES ── */
+    .signals-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .sig { font-size: 12px; font-weight: 500; padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap; }
+    .sig-chronic { background: var(--sig-chronic-bg); color: var(--sig-chronic-text); }
+    .sig-er      { background: var(--sig-er-bg);      color: var(--sig-er-text); }
+    .sig-family  { background: var(--sig-family-bg);  color: var(--sig-family-text); }
+    .sig-obs     { background: var(--sig-obs-bg);     color: var(--sig-obs-text); }
 
-    .emr-grid {
-      display: grid; grid-template-columns: 150px 1fr; gap: 8px 16px;
-    }
-    .emr-grid.with-scores { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
-    .emr-label { font-size: 13px; color: var(--text-muted); }
-    .emr-value { font-size: 13px; color: var(--text); font-weight: 500; }
-    .emr-divider { grid-column: 1 / -1; height: 1px; background: var(--border); margin: 1px 0; }
+    /* ── REASONING ── */
+    .reasoning-text { font-size: 14px; color: var(--text-mid); line-height: 1.65; }
+
+    /* ── SCREENING SCORES ── */
+    .scores-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .score-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
+    .score-box-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
+    .score-box-num  { font-size: 36px; font-weight: 700; color: var(--text); line-height: 1; }
+    .score-box-date { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .score-na { font-size: 13px; color: var(--text-muted); font-style: italic; padding: 6px 0; }
+
+    /* ── CLINICAL GRID ── */
+    .detail-grid { display: grid; grid-template-columns: 160px 1fr; gap: 10px 20px; align-items: start; }
+    .detail-label { font-size: 13px; color: var(--text-muted); padding-top: 1px; }
+    .detail-value { font-size: 14px; color: var(--text); font-weight: 500; line-height: 1.5; }
+    .detail-na    { font-size: 13px; color: var(--text-muted); font-style: italic; }
+    .detail-divider { grid-column: 1 / -1; height: 1px; background: var(--border); margin: 2px 0; }
 
     /* ── NOT FOUND ── */
     .not-found { text-align: center; padding: 80px 24px; color: var(--text-muted); font-size: 15px; }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 680px) {
       .sidebar { display: none; }
       .topbar, .main { margin-left: 0; }
       .main { padding: 16px 16px 60px; }
-      .emr-grid { grid-template-columns: 1fr; gap: 2px; }
-      .emr-label { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
-      .scores-row { gap: 20px; }
+      .scores-pair { grid-template-columns: 1fr; }
+      .detail-grid { grid-template-columns: 1fr; gap: 4px; }
+      .detail-label { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
     }
   </style>
 </head>
@@ -212,9 +173,7 @@
 
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-icon">
-        <i class="ti ti-heartbeat" style="font-size:17px;color:white;"></i>
-      </div>
+      <div class="logo-icon"><i class="ti ti-heartbeat" style="font-size:17px;color:white;"></i></div>
       <div>
         <div class="logo-name">Integral Health</div>
         <div class="logo-sub">Mission Control</div>
@@ -264,7 +223,7 @@
   <script>
     const PATIENTS = [
       {
-        id: 1, name: "James Lee", age: 52, lastVisit: "Apr 8, 2026",
+        id: 1, name: "James Lee", age: 52, lastVisit: "Apr 8, 2026", pcp: "Dr. Peter Yoo",
         status: "eligible",
         reasoning: "3 chronic conditions with recent ER utilization and patient-reported low mood — multiple converging signals suggest unaddressed behavioral health need.",
         signals: [
@@ -287,7 +246,7 @@
         }
       },
       {
-        id: 2, name: "Sofia Reyes", age: 38, lastVisit: "Apr 10, 2026",
+        id: 2, name: "Sofia Reyes", age: 38, lastVisit: "Apr 10, 2026", pcp: "Dr. Peter Yoo",
         status: "eligible",
         reasoning: "Chronic pain with frequent ER visits and clinically observed anxiety — pattern consistent with undertreated behavioral health need.",
         signals: [
@@ -309,7 +268,7 @@
         }
       },
       {
-        id: 3, name: "Thomas Nguyen", age: 45, lastVisit: "Mar 28, 2026",
+        id: 3, name: "Thomas Nguyen", age: 45, lastVisit: "Mar 28, 2026", pcp: "Dr. Peter Yoo",
         status: "eligible",
         reasoning: "Single chronic condition with family history and self-reported stress — worth monitoring closely.",
         signals: [
@@ -330,7 +289,7 @@
         }
       },
       {
-        id: 4, name: "Maria Okonkwo", age: 61, lastVisit: "Apr 2, 2026",
+        id: 4, name: "Maria Okonkwo", age: 61, lastVisit: "Apr 2, 2026", pcp: "Dr. Peter Yoo",
         status: "eligible",
         reasoning: "Chronic condition with family history and fatigue — may be masking underlying depression.",
         signals: [
@@ -351,10 +310,10 @@
         }
       },
       {
-        id: 5, name: "David Walsh", age: 29, lastVisit: "Apr 5, 2026",
+        id: 5, name: "David Walsh", age: 29, lastVisit: "Apr 5, 2026", pcp: "Dr. Peter Yoo",
         status: "ineligible",
         note: "Insufficient signals. Family history only, no chronic conditions or ER visits.",
-        reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; monitor at routine visits.",
+        reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; does not meet CoCM threshold at this time.",
         signals: [
           { type: "obs",    label: "PHQ-9: 4" },
           { type: "family", label: "Family Hx: depression" },
@@ -372,11 +331,12 @@
         }
       },
       {
-        id: 6, name: "Linda Park", age: 55, lastVisit: "Apr 1, 2026",
+        id: 6, name: "Linda Park", age: 55, lastVisit: "Apr 1, 2026", pcp: "Dr. Peter Yoo",
         status: "eligible",
-        reasoning: "Two chronic conditions with a recent ER visit and clinician-observed low mood — signals strongly align with CoCM eligibility criteria.",
+        reasoning: "Two chronic conditions with a recent ER visit and a documented depression diagnosis — signals strongly align with CoCM eligibility criteria.",
         signals: [
           { type: "obs",     label: "PHQ-9: 12" },
+          { type: "obs",     label: "MDD — mild (F32.0)" },
           { type: "chronic", label: "COPD" },
           { type: "chronic", label: "Hypertension" },
           { type: "er",      label: "1 ER visit / 30 days" },
@@ -425,6 +385,29 @@
       render();
     }
 
+    function scoreBox(label, scoreObj) {
+      if (scoreObj) {
+        return `
+          <div class="score-box">
+            <div class="score-box-label">${label}</div>
+            <div class="score-box-num">${scoreObj.score}</div>
+            <div class="score-box-date">${scoreObj.date}</div>
+          </div>`;
+      }
+      return `
+        <div class="score-box">
+          <div class="score-box-label">${label}</div>
+          <div class="score-na">Not yet administered</div>
+        </div>`;
+    }
+
+    function row(label, value) {
+      return `<span class="detail-label">${label}</span>` +
+             (value
+               ? `<span class="detail-value">${value}</span>`
+               : `<span class="detail-na">Not documented</span>`);
+    }
+
     function render() {
       const params = new URLSearchParams(location.search);
       const id = parseInt(params.get('id'), 10);
@@ -445,11 +428,11 @@
       const pillLabel = status.charAt(0).toUpperCase() + status.slice(1);
       const d = p.details;
 
-      // Action card
+      // ── Action card ──────────────────────────────────────────
       let actionHtml;
       if (status === 'eligible') {
         actionHtml = `
-          <div class="card">
+          <div class="section-card">
             <div class="action-area">
               <button class="btn-ineligible" onclick="markIneligible()">Mark ineligible</button>
               <div class="note-field">
@@ -460,7 +443,7 @@
           </div>`;
       } else {
         actionHtml = `
-          <div class="card">
+          <div class="section-card">
             <div class="ineligible-state">
               <span class="status-pill pill-ineligible">Ineligible</span>
               ${note ? `<span class="ineligible-note">${note}</span>` : ''}
@@ -469,46 +452,64 @@
           </div>`;
       }
 
-      // Clinical data card — scores + EMR in one block
-      const hasScores = d.phq9 || d.gad7;
+      // ── Eligibility summary ──────────────────────────────────
+      const signalBadges = p.signals.map(s =>
+        `<span class="sig sig-${s.type}">${s.label}</span>`
+      ).join('');
 
-      let scoresBlock = '';
-      if (hasScores) {
-        const blocks = [];
-        if (d.phq9) blocks.push(`
-          <div class="score-block">
-            <span class="score-label">PHQ-9</span>
-            <span class="score-num">${d.phq9.score}</span>
-            <span class="score-date">${d.phq9.date}</span>
-          </div>`);
-        if (d.gad7) blocks.push(`
-          <div class="score-block">
-            <span class="score-label">GAD-7</span>
-            <span class="score-num">${d.gad7.score}</span>
-            <span class="score-date">${d.gad7.date}</span>
-          </div>`);
-        scoresBlock = `<div class="scores-row">${blocks.join('')}</div>`;
-      }
+      const summaryHtml = `
+        <div class="section-card">
+          <div class="section-title">Eligibility Summary</div>
+          <div class="signals-wrap">${signalBadges}</div>
+          <p class="reasoning-text">${p.reasoning}</p>
+        </div>`;
 
-      const emrRows = [];
-      if (d.mentalHealthDx)                    emrRows.push(['Mental health Dx', d.mentalHealthDx]);
-      if (d.psychiatricMeds?.length)           emrRows.push(['Psychiatric meds', d.psychiatricMeds.join(', ')]);
-      if (d.chronicDx?.length)                 emrRows.push(['Chronic Dx',       d.chronicDx.join(', ')]);
-      if (d.erVisits)                          emrRows.push(['ER visits',         d.erVisits]);
-      if (d.substanceUse)                      emrRows.push(['Substance use',     d.substanceUse]);
-      if (d.familyHistory)                     emrRows.push(['Family history',    d.familyHistory]);
+      // ── Screening scores ─────────────────────────────────────
+      const scoresHtml = `
+        <div class="section-card">
+          <div class="section-title">Screening Scores</div>
+          <div class="scores-pair">
+            ${scoreBox('PHQ-9', d.phq9)}
+            ${scoreBox('GAD-7', d.gad7)}
+          </div>
+        </div>`;
 
-      let emrBlock = '';
-      if (emrRows.length) {
-        const cells = emrRows.map(([label, value], i) => {
-          const divider = i > 0 ? '<div class="emr-divider"></div>' : '';
-          return `${divider}<span class="emr-label">${label}</span><span class="emr-value">${value}</span>`;
-        }).join('');
-        emrBlock = `<div class="emr-grid${hasScores ? ' with-scores' : ''}">${cells}</div>`;
-      }
+      // ── Mental health ────────────────────────────────────────
+      const mhRows = [
+        row('Diagnosis',         d.mentalHealthDx),
+        '<div class="detail-divider"></div>',
+        row('Psychiatric meds',  d.psychiatricMeds?.length ? d.psychiatricMeds.join('<br>') : null),
+        '<div class="detail-divider"></div>',
+        row('Substance use',     d.substanceUse),
+      ].join('');
 
-      const clinicalHtml = (scoresBlock || emrBlock) ? `
-        <div class="card">${scoresBlock}${emrBlock}</div>` : '';
+      const mentalHtml = `
+        <div class="section-card">
+          <div class="section-title">Mental Health</div>
+          <div class="detail-grid">${mhRows}</div>
+        </div>`;
+
+      // ── Physical health ──────────────────────────────────────
+      const phRows = [
+        row('Chronic conditions', d.chronicDx?.length ? d.chronicDx.join('<br>') : null),
+        '<div class="detail-divider"></div>',
+        row('ER visits',          d.erVisits),
+      ].join('');
+
+      const physicalHtml = `
+        <div class="section-card">
+          <div class="section-title">Physical Health</div>
+          <div class="detail-grid">${phRows}</div>
+        </div>`;
+
+      // ── Background ───────────────────────────────────────────
+      const bgHtml = `
+        <div class="section-card">
+          <div class="section-title">Background</div>
+          <div class="detail-grid">
+            ${row('Family history', d.familyHistory)}
+          </div>
+        </div>`;
 
       main.innerHTML = `
         <div class="patient-header">
@@ -518,11 +519,15 @@
               <span class="header-name">${p.name}</span>
               <span class="status-pill pill-${status}">${pillLabel}</span>
             </div>
-            <div class="header-meta">${p.age} yo · Last visit ${p.lastVisit}</div>
+            <div class="header-meta">${p.age} yo · Last visit ${p.lastVisit} · ${p.pcp}</div>
           </div>
         </div>
         ${actionHtml}
-        ${clinicalHtml}
+        ${summaryHtml}
+        ${scoresHtml}
+        ${mentalHtml}
+        ${physicalHtml}
+        ${bgHtml}
       `;
     }
 
