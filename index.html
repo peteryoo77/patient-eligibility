@@ -387,7 +387,7 @@
   <script>
     const PATIENTS = [
       {
-        id: 1, name: "James Lee", age: 52, lastVisit: "Apr 8, 2026",
+        id: 1, name: "James Lee", age: 52, gender: "Male", lastVisit: "Apr 8, 2026",
         status: "eligible",
         reasoning: "3 chronic conditions with recent ER utilization and patient-reported low mood — multiple converging signals suggest unaddressed behavioral health need.",
         signals: [
@@ -410,7 +410,7 @@
         }
       },
       {
-        id: 2, name: "Sofia Reyes", age: 38, lastVisit: "Apr 10, 2026",
+        id: 2, name: "Sofia Reyes", age: 38, gender: "Female", lastVisit: "Apr 10, 2026",
         status: "eligible",
         reasoning: "Chronic pain with frequent ER visits and clinically observed anxiety — pattern consistent with undertreated behavioral health need.",
         signals: [
@@ -432,7 +432,7 @@
         }
       },
       {
-        id: 3, name: "Thomas Nguyen", age: 45, lastVisit: "Mar 28, 2026",
+        id: 3, name: "Thomas Nguyen", age: 45, gender: "Male", lastVisit: "Mar 28, 2026",
         status: "eligible",
         reasoning: "Single chronic condition with family history and self-reported stress — worth monitoring closely.",
         signals: [
@@ -453,7 +453,7 @@
         }
       },
       {
-        id: 4, name: "Maria Okonkwo", age: 61, lastVisit: "Apr 2, 2026",
+        id: 4, name: "Maria Okonkwo", age: 61, gender: "Female", lastVisit: "Apr 2, 2026",
         status: "eligible",
         reasoning: "Chronic condition with family history and fatigue — may be masking underlying depression.",
         signals: [
@@ -474,7 +474,7 @@
         }
       },
       {
-        id: 5, name: "David Walsh", age: 29, lastVisit: "Apr 5, 2026",
+        id: 5, name: "David Walsh", age: 29, gender: "Male", lastVisit: "Apr 5, 2026",
         status: "ineligible",
         note: "Insufficient signals. Family history only, no chronic conditions or ER visits.",
         reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; monitor at routine visits.",
@@ -495,7 +495,7 @@
         }
       },
       {
-        id: 6, name: "Linda Park", age: 55, lastVisit: "Apr 1, 2026",
+        id: 6, name: "Linda Park", age: 55, gender: "Female", lastVisit: "Apr 1, 2026",
         status: "eligible",
         reasoning: "Two chronic conditions with a recent ER visit and clinician-observed low mood — signals strongly align with CoCM eligibility criteria.",
         signals: [
@@ -611,11 +611,10 @@
       return `
         <a class="patient-row ${status === 'ineligible' ? 'ineligible' : ''} row-${status}"
            href="patient.html?id=${p.id}">
-          <div class="avatar">${initials(p.name)}</div>
           <div class="row-body">
             <div class="row-top">
               <span class="patient-name">${p.name}</span>
-              <span class="patient-meta">${p.age} yo · Last visit ${p.lastVisit}</span>
+              <span class="patient-meta">${p.age} yo · ${p.gender} · Last visit ${p.lastVisit}</span>
             </div>
             <div class="signals">${badges}</div>
             <div class="reasoning">${p.reasoning}</div>
