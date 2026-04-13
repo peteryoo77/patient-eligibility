@@ -297,10 +297,22 @@
     .pill-ineligible { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
 
     .signal-count { font-size: 12px; color: var(--text-muted); }
-    .btn-archive-row { padding: 5px 12px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; white-space: nowrap; }
+    .btn-archive-row { padding: 8px 18px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; white-space: nowrap; }
     .btn-archive-row:hover { border-color: #9ca3af; color: var(--text-mid); }
-    .btn-enroll-row { padding: 5px 12px; border: none; border-radius: var(--radius-sm); background: var(--primary); color: #fff; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: opacity 0.12s; white-space: nowrap; }
+    .btn-enroll-row { padding: 8px 18px; border: none; border-radius: var(--radius-sm); background: var(--primary); color: #fff; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.12s; white-space: nowrap; }
     .btn-enroll-row:hover { opacity: 0.88; }
+
+    /* ── MODAL ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: flex; align-items: center; justify-content: center; }
+    .modal-overlay.hidden { display: none; }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 28px 28px 24px; width: 360px; max-width: calc(100vw - 48px); }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .modal-body { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .modal-btn-confirm { padding: 9px 22px; background: var(--primary); color: #fff; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.12s; }
+    .modal-btn-confirm:hover { opacity: 0.88; }
+    .modal-btn-cancel { padding: 9px 18px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-muted); font-family: inherit; font-size: 14px; cursor: pointer; transition: border-color 0.12s; }
+    .modal-btn-cancel:hover { border-color: #9ca3af; color: var(--text); }
 
     /* ── EMPTY ── */
     .empty-state {
@@ -383,6 +395,17 @@
     <div class="filter-bar" id="filter-bar"></div>
     <div id="patient-list"></div>
   </main>
+
+  <div class="modal-overlay hidden" id="enroll-modal">
+    <div class="modal">
+      <div class="modal-title">Enroll patient</div>
+      <div class="modal-body" id="modal-body">Would you like to enroll this patient in CoCM?</div>
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" onclick="closeEnrollModal()">Cancel</button>
+        <button class="modal-btn-confirm" onclick="confirmEnroll()">Enroll</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     localStorage.clear();
@@ -549,11 +572,29 @@
       render();
     }
 
+    let pendingEnrollId = null;
+
     function enrollPatient(id, e) {
       e.preventDefault();
       e.stopPropagation();
-      localStorage.setItem('status_' + id, 'enrolled');
+      const p = PATIENTS.find(x => x.id === id);
+      pendingEnrollId = id;
+      document.getElementById('modal-body').textContent = `Would you like to enroll ${p.name} in CoCM?`;
+      document.getElementById('enroll-modal').classList.remove('hidden');
+    }
+
+    function confirmEnroll() {
+      if (pendingEnrollId) {
+        localStorage.setItem('status_' + pendingEnrollId, 'enrolled');
+        pendingEnrollId = null;
+      }
+      document.getElementById('enroll-modal').classList.add('hidden');
       render();
+    }
+
+    function closeEnrollModal() {
+      pendingEnrollId = null;
+      document.getElementById('enroll-modal').classList.add('hidden');
     }
 
     function renderMetrics() {
