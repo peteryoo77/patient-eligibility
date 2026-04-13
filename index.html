@@ -169,7 +169,7 @@
     /* ── METRICS ── */
     .metrics-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 14px;
       margin-bottom: 24px;
     }
@@ -457,6 +457,7 @@
       const total      = PATIENTS.length;
       const eligible   = PATIENTS.filter(p => p.status === 'eligible').length;
       const ambiguous  = PATIENTS.filter(p => p.status === 'ambiguous').length;
+      const ineligible = PATIENTS.filter(p => p.status === 'ineligible').length;
       const pct        = Math.round(eligible / total * 100);
 
       document.getElementById('metrics-row').innerHTML = `
@@ -474,6 +475,11 @@
           <div class="metric-label">Ambiguous</div>
           <div class="metric-value">${ambiguous}</div>
           <div class="metric-sub">Screening needed</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Ineligible</div>
+          <div class="metric-value">${ineligible}</div>
+          <div class="metric-sub">Does not meet criteria</div>
         </div>
       `;
     }
