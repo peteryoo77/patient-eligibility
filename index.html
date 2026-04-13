@@ -402,8 +402,6 @@
     <div class="filter-section">
       <div class="filter-label">Status</div>
       <div class="filter-bar" id="filter-bar"></div>
-      <div class="filter-label">Risk</div>
-      <div class="filter-bar" id="risk-bar"></div>
     </div>
     <div id="patient-list"></div>
   </main>
@@ -558,20 +556,12 @@
     ];
 
     let activeFilter = 'all';
-    let activeRisk   = 'all';
 
     const FILTERS = [
       { key: 'all',        label: 'All' },
       { key: 'eligible',   label: 'Eligible' },
       { key: 'ineligible', label: 'Ineligible' },
       { key: 'archived',   label: 'Archived' },
-    ];
-
-    const RISK_FILTERS = [
-      { key: 'all',    label: 'All' },
-      { key: 'high',   label: 'High Risk' },
-      { key: 'medium', label: 'Medium Risk' },
-      { key: 'low',    label: 'Low Risk' },
     ];
 
     const RISK_ORDER = { high: 0, medium: 1, low: 2 };
@@ -587,11 +577,6 @@
     function countFor(key) {
       if (key === 'all') return PATIENTS.filter(p => getEffectiveStatus(p) !== 'archived').length;
       return PATIENTS.filter(p => getEffectiveStatus(p) === key).length;
-    }
-
-    function countRisk(key) {
-      if (key === 'all') return PATIENTS.filter(p => getEffectiveStatus(p) !== 'archived').length;
-      return PATIENTS.filter(p => p.riskTier === key && getEffectiveStatus(p) !== 'archived').length;
     }
 
     function archivePatient(id, e) {
@@ -663,12 +648,6 @@
           ${f.label} (${countFor(f.key)})
         </button>
       `).join('');
-      document.getElementById('risk-bar').innerHTML = RISK_FILTERS.map(f => `
-        <button class="filter-btn ${activeRisk === f.key ? 'active' : ''}"
-                onclick="setRisk('${f.key}')">
-          ${f.label} (${countRisk(f.key)})
-        </button>
-      `).join('');
     }
 
     function renderRow(p) {
@@ -716,7 +695,6 @@
           if (activeFilter === 'all') return s !== 'archived';
           return s === activeFilter;
         })
-        .filter(p => activeRisk === 'all' || p.riskTier === activeRisk)
         .sort((a, b) => (RISK_ORDER[a.riskTier] ?? 9) - (RISK_ORDER[b.riskTier] ?? 9));
     }
 
@@ -735,11 +713,6 @@
       renderPatients();
     }
 
-    function setRisk(key) {
-      activeRisk = key;
-      renderFilters();
-      renderPatients();
-    }
 
     function render() {
       renderMetrics();
