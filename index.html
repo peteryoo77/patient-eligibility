@@ -283,8 +283,9 @@
     .sig-er      { background: var(--sig-er-bg);      color: var(--sig-er-text); }
     .sig-family  { background: var(--sig-family-bg);  color: var(--sig-family-text); }
     .sig-obs     { background: var(--sig-obs-bg);     color: var(--sig-obs-text); }
+    .sig-more    { background: var(--border); color: var(--text-muted); }
 
-    .reasoning { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+    .signals { margin-bottom: 0; }
 
     /* ── ROW RIGHT ── */
     .row-right {
@@ -651,11 +652,7 @@
     }
 
     function renderRow(p) {
-      const status    = getEffectiveStatus(p);
-      const pillLabel = status.charAt(0).toUpperCase() + status.slice(1);
-      const badges    = p.signals.map(s =>
-        `<span class="sig sig-${s.type}">${s.label}</span>`
-      ).join('');
+      const status = getEffectiveStatus(p);
 
       const RISK_LABELS = { high: 'High Risk', medium: 'Medium Risk', low: 'Low Risk' };
       const archiveBtn = status === 'ineligible'
@@ -668,6 +665,13 @@
         ? `<span class="risk-badge risk-${p.riskTier}">${RISK_LABELS[p.riskTier]}</span>`
         : '';
 
+      const MAX_SIGNALS = 4;
+      const visibleSigs = p.signals.slice(0, MAX_SIGNALS);
+      const extraCount  = p.signals.length - MAX_SIGNALS;
+      const badges = visibleSigs.map(s =>
+        `<span class="sig sig-${s.type}">${s.label}</span>`
+      ).join('') + (extraCount > 0 ? `<span class="sig sig-more">+${extraCount} more</span>` : '');
+
       return `
         <a class="patient-row ${status === 'ineligible' ? 'ineligible' : ''} row-${status}"
            href="patient.html?id=${p.id}">
@@ -675,11 +679,9 @@
             <div class="row-top">
               <span class="patient-name">${p.name}</span>
               ${riskBadge}
-              <span class="risk-pill pill-${status}">${pillLabel}</span>
               <span class="patient-meta">${p.age} yo · ${p.gender} · Last visit ${p.lastVisit}</span>
             </div>
             <div class="signals">${badges}</div>
-            <div class="reasoning">${p.reasoning}</div>
           </div>
           <div class="row-right">
             ${enrollBtn}
