@@ -7,42 +7,70 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
     :root {
-      --bg:             #f8f9fa;
-      --surface:        #ffffff;
-      --border:         #e5e7eb;
-      --text:           #111827;
-      --text-mid:       #374151;
-      --text-muted:     #6b7280;
-      --primary:        #2563eb;
-      --primary-hover:  #1d4ed8;
-      --primary-light:  #eff6ff;
-      --high:           #dc2626;
-      --high-bg:        #fef2f2;
-      --medium:         #d97706;
-      --medium-bg:      #fffbeb;
-      --low:            #16a34a;
-      --low-bg:         #f0fdf4;
-      --radius-sm:      8px;
-      --radius-md:      12px;
+      --bg:           #f8f9fa;
+      --surface:      #ffffff;
+      --border:       #e5e7eb;
+      --text:         #111827;
+      --text-mid:     #374151;
+      --text-muted:   #6b7280;
+      --primary:      #2563eb;
+      --primary-light:#eff6ff;
+
+      --high:         #dc2626;
+      --medium:       #d97706;
+      --low:          #3b6d11;
+      --enrolled:     #0f6e56;
+
+      --pill-high-bg:     #fcebeb;
+      --pill-high-text:   #a32d2d;
+      --pill-med-bg:      #faeeda;
+      --pill-med-text:    #854f0b;
+      --pill-low-bg:      #eaf3de;
+      --pill-low-text:    #3b6d11;
+      --pill-enr-bg:      #e1f5ee;
+      --pill-enr-text:    #0f6e56;
+
+      --sig-chronic-bg:   #fcebeb;
+      --sig-chronic-text: #a32d2d;
+      --sig-er-bg:        #faeeda;
+      --sig-er-text:      #854f0b;
+      --sig-family-bg:    #eeedfe;
+      --sig-family-text:  #3c3489;
+      --sig-obs-bg:       #e6f1fb;
+      --sig-obs-text:     #185fa5;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg:            #0f1117;
-        --surface:       #1a1d27;
-        --border:        #2d3040;
-        --text:          #f1f5f9;
-        --text-mid:      #cbd5e1;
-        --text-muted:    #8b92a8;
-        --primary:       #3b82f6;
-        --primary-hover: #2563eb;
-        --primary-light: #1e3a5f;
-        --high:          #ef4444;
-        --high-bg:       #2d1515;
-        --medium:        #f59e0b;
-        --medium-bg:     #2d2208;
-        --low:           #22c55e;
-        --low-bg:        #0d2b18;
+        --bg:           #0f1117;
+        --surface:      #1a1d27;
+        --border:       #2d3040;
+        --text:         #f1f5f9;
+        --text-mid:     #cbd5e1;
+        --text-muted:   #8b92a8;
+        --primary:      #3b82f6;
+        --primary-light:#1e3a5f;
+
+        --sig-chronic-bg:   #2d1515;
+        --sig-chronic-text: #f87171;
+        --sig-er-bg:        #2d2208;
+        --sig-er-text:      #fbbf24;
+        --sig-family-bg:    #1e1a3a;
+        --sig-family-text:  #a78bfa;
+        --sig-obs-bg:       #162035;
+        --sig-obs-text:     #60a5fa;
+
+        --pill-high-bg:     #2d1515;
+        --pill-high-text:   #f87171;
+        --pill-med-bg:      #2d2208;
+        --pill-med-text:    #fbbf24;
+        --pill-low-bg:      #152009;
+        --pill-low-text:    #86efac;
+        --pill-enr-bg:      #0a2b22;
+        --pill-enr-text:    #34d399;
       }
     }
 
@@ -65,7 +93,6 @@
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      flex-shrink: 0;
       position: fixed;
       top: 0; left: 0; bottom: 0;
       z-index: 100;
@@ -74,28 +101,25 @@
     .sidebar-logo {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 14px 14px 14px 12px;
+      gap: 10px;
+      padding: 14px 12px;
       border-bottom: 1px solid var(--border);
     }
-
-    .sidebar-logo-left { display: flex; align-items: center; gap: 10px; }
 
     .logo-icon {
       width: 34px; height: 34px;
       background: #1e293b;
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
 
-    .logo-text { display: flex; flex-direction: column; }
     .logo-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
     .logo-sub  { font-size: 9.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; }
 
     .sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0 8px; }
 
-    .nav-section-label {
+    .nav-label {
       font-size: 10.5px; font-weight: 600; color: var(--text-muted);
       letter-spacing: 0.07em; text-transform: uppercase;
       padding: 14px 16px 4px;
@@ -118,7 +142,7 @@
     .sidebar-user {
       border-top: 1px solid var(--border);
       padding: 10px 12px;
-      display: flex; align-items: center; gap: 9px; cursor: pointer;
+      display: flex; align-items: center; gap: 9px;
     }
 
     .user-avatar {
@@ -128,61 +152,28 @@
       font-size: 11px; font-weight: 700; flex-shrink: 0;
     }
 
-    .user-info { flex: 1; min-width: 0; }
     .user-name  { font-size: 12.5px; font-weight: 600; color: var(--text); }
-    .user-email { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-email { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
 
-    /* ── TOP BAR ── */
+    /* ── TOPBAR ── */
     .topbar {
+      margin-left: 216px;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       padding: 0 32px;
-      height: 58px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      margin-left: 216px;
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
     }
 
-    .topbar-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.01em;
-    }
+    .topbar-title { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
 
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
+    .topbar-right { display: flex; align-items: center; gap: 18px; font-size: 14px; color: var(--text-muted); }
     .provider-name { font-weight: 600; color: var(--text-mid); }
-
-    .sync-indicator {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .sync-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #22c55e;
-    }
+    .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 5px; }
 
     /* ── MAIN ── */
-    .main {
-      margin-left: 216px;
-      max-width: 1100px;
-      padding: 32px 24px 80px;
-    }
+    .main { margin-left: 216px; padding: 32px 32px 80px; }
 
     /* ── METRICS ── */
     .metrics-row {
@@ -200,66 +191,30 @@
     }
 
     .metric-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 8px;
+      font-size: 11px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px;
     }
 
-    .metric-value {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1;
-    }
-
+    .metric-value { font-size: 32px; font-weight: 700; color: var(--text); line-height: 1; }
     .metric-value.danger { color: var(--high); }
-
-    .metric-sub {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
+    .metric-sub { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
 
     /* ── LEGEND ── */
     .legend {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+      display: flex; align-items: center; gap: 22px;
+      margin-bottom: 20px; flex-wrap: wrap;
     }
 
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
+    .legend-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-muted); }
 
-    .legend-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .dot-chronic     { background: #dc2626; }
-    .dot-er          { background: #d97706; }
-    .dot-family      { background: #7c3aed; }
-    .dot-observation { background: #2563eb; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .dot-chronic { background: #dc2626; }
+    .dot-er      { background: #d97706; }
+    .dot-family  { background: #7c3aed; }
+    .dot-obs     { background: #2563eb; }
 
     /* ── FILTERS ── */
-    .filter-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
-    }
+    .filter-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
 
     .filter-btn {
       padding: 7px 16px;
@@ -267,207 +222,107 @@
       border-radius: 9999px;
       background: var(--surface);
       color: var(--text-muted);
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: inherit;
+      font-size: 14px; font-weight: 500;
+      cursor: pointer; font-family: inherit;
       transition: border-color 0.12s, color 0.12s, background 0.12s;
       white-space: nowrap;
     }
 
     .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
-
-    .filter-btn.active {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #fff;
-    }
+    .filter-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
 
     /* ── SECTION HEADERS ── */
     .section-header {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 6px 0 10px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; padding: 6px 0 10px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 10px;
-      margin-top: 28px;
+      margin-bottom: 10px; margin-top: 28px;
     }
 
     .section-header:first-child { margin-top: 0; }
-
-    .section-high   { color: var(--high); }
-    .section-medium { color: var(--medium); }
-    .section-low    { color: var(--low); }
-    .section-referred { color: var(--text-muted); }
+    .sh-high     { color: var(--high); }
+    .sh-medium   { color: var(--medium); }
+    .sh-low      { color: var(--low); }
+    .sh-enrolled { color: var(--enrolled); }
 
     /* ── PATIENT ROW ── */
     .patient-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
+      display: flex; align-items: flex-start; gap: 14px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-left: 3px solid transparent;
-      border-radius: var(--radius-md);
+      border-radius: 0;
       padding: 16px 18px;
       margin-bottom: 8px;
-      transition: opacity 0.2s;
     }
 
-    .patient-row.referred { opacity: 0.6; }
+    .patient-row.enrolled { opacity: 0.75; }
 
-    .row-high            { border-left-color: var(--high); }
-    .row-medium          { border-left-color: var(--medium); }
-    .row-low             { border-left-color: var(--low); }
-    .row-referred-border { border-left-color: #9ca3af; }
+    .row-high     { border-left-color: #dc2626; }
+    .row-medium   { border-left-color: #d97706; }
+    .row-low      { border-left-color: #16a34a; }
+    .row-enrolled { border-left-color: #0f9b7a; }
 
     /* ── AVATAR ── */
     .avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--primary-light);
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 1px;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--primary-light); color: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
     }
 
     /* ── ROW BODY ── */
     .row-body { flex: 1; min-width: 0; }
 
-    .row-top {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
+    .row-top { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .patient-name { font-size: 15px; font-weight: 600; color: var(--text); }
+    .patient-meta { font-size: 13px; color: var(--text-muted); }
+
+    .signals { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+
+    .sig {
+      font-size: 12px; font-weight: 500;
+      padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap;
     }
 
-    .patient-name  { font-size: 15px; font-weight: 600; color: var(--text); }
-    .patient-meta  { font-size: 13px; color: var(--text-muted); }
+    .sig-chronic { background: var(--sig-chronic-bg); color: var(--sig-chronic-text); }
+    .sig-er      { background: var(--sig-er-bg);      color: var(--sig-er-text); }
+    .sig-family  { background: var(--sig-family-bg);  color: var(--sig-family-text); }
+    .sig-obs     { background: var(--sig-obs-bg);     color: var(--sig-obs-text); }
 
-    .signals {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-
-    .signal-badge {
-      font-size: 12px;
-      font-weight: 500;
-      padding: 3px 9px;
-      border-radius: var(--radius-sm);
-      white-space: nowrap;
-    }
-
-    .sig-chronic     { background: #fcebeb; color: #a32d2d; }
-    .sig-er          { background: #faeeda; color: #854f0b; }
-    .sig-family      { background: #eeedfe; color: #3c3489; }
-    .sig-observation { background: #e6f1fb; color: #185fa5; }
-
-    .reasoning {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.55;
-    }
+    .reasoning { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
 
     /* ── ROW RIGHT ── */
     .row-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 8px;
-      flex-shrink: 0;
-      padding-left: 8px;
+      display: flex; flex-direction: column; align-items: flex-end;
+      gap: 8px; flex-shrink: 0; padding-left: 8px;
     }
 
-    .risk-label {
-      font-size: 12px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: var(--radius-sm);
+    .risk-pill {
+      font-size: 12px; font-weight: 700;
+      padding: 3px 10px; border-radius: var(--radius-sm); white-space: nowrap;
     }
 
-    .risk-high   { background: var(--high-bg);   color: var(--high); }
-    .risk-medium { background: var(--medium-bg); color: var(--medium); }
-    .risk-low    { background: var(--low-bg);    color: var(--low); }
+    .pill-high     { background: var(--pill-high-bg);  color: var(--pill-high-text); }
+    .pill-medium   { background: var(--pill-med-bg);   color: var(--pill-med-text); }
+    .pill-low      { background: var(--pill-low-bg);   color: var(--pill-low-text); }
+    .pill-enrolled { background: var(--pill-enr-bg);   color: var(--pill-enr-text); }
 
-    .signal-count {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+    .signal-count { font-size: 12px; color: var(--text-muted); }
 
-    .btn-actions { display: flex; gap: 6px; }
-
-    .btn-refer {
-      padding: 7px 16px;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      white-space: nowrap;
-      transition: background 0.12s;
-    }
-
-    .btn-refer:hover { background: var(--primary-hover); }
-
-    .btn-notnow {
-      padding: 7px 14px;
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: inherit;
-      white-space: nowrap;
-      transition: border-color 0.12s, color 0.12s;
-    }
-
-    .btn-notnow:hover { border-color: #ef4444; color: #ef4444; }
-
-    .referred-label {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    /* ── EMPTY STATE ── */
+    /* ── EMPTY ── */
     .empty-state {
-      text-align: center;
-      padding: 64px 24px;
-      color: var(--text-muted);
-      font-size: 15px;
+      text-align: center; padding: 64px 24px;
+      color: var(--text-muted); font-size: 15px;
     }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 680px) {
+      .sidebar { display: none; }
+      .topbar, .main { margin-left: 0; }
       .metrics-row { grid-template-columns: repeat(2, 1fr); }
-      .topbar-right .specialty,
-      .topbar-right .sync-indicator { display: none; }
       .patient-row { flex-wrap: wrap; }
-      .row-right {
-        flex-direction: row;
-        align-items: center;
-        width: 100%;
-        justify-content: space-between;
-        padding-left: 0;
-        padding-top: 8px;
-        border-top: 1px solid var(--border);
-      }
+      .row-right { flex-direction: row; align-items: center; width: 100%; justify-content: space-between; padding-left: 0; padding-top: 8px; border-top: 1px solid var(--border); }
     }
   </style>
 </head>
@@ -475,40 +330,38 @@
 
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <div class="sidebar-logo-left">
-        <div class="logo-icon">
-          <i class="ti ti-heartbeat" style="font-size:17px;color:white;"></i>
-        </div>
-        <div class="logo-text">
-          <span class="logo-name">Integral Health</span>
-          <span class="logo-sub">Mission Control</span>
-        </div>
+      <div class="logo-icon">
+        <i class="ti ti-heartbeat" style="font-size:17px;color:white;"></i>
+      </div>
+      <div>
+        <div class="logo-name">Integral Health</div>
+        <div class="logo-sub">Mission Control</div>
       </div>
     </div>
     <nav class="sidebar-nav">
       <a class="nav-item" href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Dashboard</a>
-      <div class="nav-section-label">General</div>
+      <div class="nav-label">General</div>
       <a class="nav-item" href="#"><i class="ti ti-users"></i> Patients</a>
       <a class="nav-item" href="#"><i class="ti ti-calendar"></i> Appointments</a>
-      <div class="nav-section-label">Clinical</div>
+      <div class="nav-label">Clinical</div>
       <a class="nav-item" href="#"><i class="ti ti-stethoscope"></i> Team</a>
       <a class="nav-item" href="#"><i class="ti ti-clock"></i> Time</a>
       <a class="nav-item" href="#"><i class="ti ti-clipboard-list"></i> Caseload</a>
       <a class="nav-item" href="#"><i class="ti ti-chart-bar"></i> Performance</a>
       <a class="nav-item active" href="#"><i class="ti ti-shield-check"></i> Eligibility</a>
-      <div class="nav-section-label">Operations</div>
+      <div class="nav-label">Operations</div>
       <a class="nav-item" href="#"><i class="ti ti-list"></i> Waitlist</a>
       <a class="nav-item" href="#"><i class="ti ti-bookmark"></i> Follow-up</a>
       <a class="nav-item" href="#"><i class="ti ti-flag"></i> Flagging</a>
       <a class="nav-item" href="#"><i class="ti ti-shield"></i> Enrollments</a>
       <a class="nav-item" href="#"><i class="ti ti-handshake"></i> Partners</a>
-      <div class="nav-section-label">Settings</div>
+      <div class="nav-label">Settings</div>
       <a class="nav-item" href="#"><i class="ti ti-building"></i> Practice</a>
       <a class="nav-item" href="#"><i class="ti ti-user-cog"></i> Providers</a>
     </nav>
     <div class="sidebar-user">
       <div class="user-avatar">PY</div>
-      <div class="user-info">
+      <div style="flex:1;min-width:0;">
         <div class="user-name">Peter Yoo</div>
         <div class="user-email">peter.yoo@integralhealth.me</div>
       </div>
@@ -520,11 +373,8 @@
     <div class="topbar-title">Patient eligibility overview</div>
     <div class="topbar-right">
       <span class="provider-name">Dr. Peter Yoo</span>
-      <span class="specialty">Internal Medicine</span>
-      <span class="sync-indicator">
-        <span class="sync-dot"></span>
-        Last synced Apr 13, 2026
-      </span>
+      <span>Internal Medicine</span>
+      <span><span class="sync-dot"></span>Last synced Apr 13, 2026</span>
     </div>
   </header>
 
@@ -535,92 +385,81 @@
       <div class="legend-item"><div class="legend-dot dot-chronic"></div> Chronic condition</div>
       <div class="legend-item"><div class="legend-dot dot-er"></div> ER visit history</div>
       <div class="legend-item"><div class="legend-dot dot-family"></div> Family history</div>
-      <div class="legend-item"><div class="legend-dot dot-observation"></div> Clinical observation</div>
+      <div class="legend-item"><div class="legend-dot dot-obs"></div> Clinical observation</div>
     </div>
 
     <div class="filter-bar" id="filter-bar"></div>
-
     <div id="patient-list"></div>
   </main>
 
   <script>
     const PATIENTS = [
       {
-        id: 1,
-        name: "James Lee",
-        age: 52,
-        lastVisit: "Apr 8, 2026",
-        risk: "high",
-        referred: false,
+        id: 1, name: "James Lee", age: 52, lastVisit: "Apr 8, 2026",
+        risk: "high", enrolled: false,
         reasoning: "3 chronic conditions with recent ER utilization and patient-reported low mood — multiple converging signals suggest unaddressed behavioral health need.",
         signals: [
-          { type: "chronic",     label: "Type 2 diabetes" },
-          { type: "chronic",     label: "Hypertension" },
-          { type: "er",          label: "2 ER visits in 90 days" },
-          { type: "family",      label: "Family Hx: depression" },
-          { type: "observation", label: "Low mood reported" },
-          { type: "observation", label: "Sleep complaints" }
+          { type: "chronic", label: "Type 2 diabetes" },
+          { type: "chronic", label: "Hypertension" },
+          { type: "er",      label: "2 ER visits / 90 days" },
+          { type: "family",  label: "Family Hx: depression" },
+          { type: "obs",     label: "Low mood reported" },
+          { type: "obs",     label: "Sleep complaints" }
         ]
       },
       {
-        id: 2,
-        name: "Sofia Reyes",
-        age: 38,
-        lastVisit: "Apr 10, 2026",
-        risk: "high",
-        referred: false,
+        id: 2, name: "Sofia Reyes", age: 38, lastVisit: "Apr 10, 2026",
+        risk: "high", enrolled: false,
         reasoning: "Chronic pain with frequent ER visits and clinically observed anxiety — pattern consistent with undertreated behavioral health need.",
         signals: [
-          { type: "chronic",     label: "Chronic pain" },
-          { type: "er",          label: "3 ER visits in 6 months" },
-          { type: "observation", label: "Mild anxiety observed" },
-          { type: "observation", label: "Sleep complaints" }
+          { type: "chronic", label: "Chronic pain" },
+          { type: "er",      label: "3 ER visits / 6 months" },
+          { type: "obs",     label: "Mild anxiety observed" },
+          { type: "obs",     label: "Sleep complaints" }
         ]
       },
       {
-        id: 3,
-        name: "Thomas Nguyen",
-        age: 45,
-        lastVisit: "Mar 28, 2026",
-        risk: "medium",
-        referred: false,
+        id: 3, name: "Thomas Nguyen", age: 45, lastVisit: "Mar 28, 2026",
+        risk: "medium", enrolled: false,
         reasoning: "Single chronic condition with family history and self-reported stress — worth monitoring closely.",
         signals: [
-          { type: "chronic",     label: "Hypertension" },
-          { type: "family",      label: "Family Hx: anxiety" },
-          { type: "observation", label: "Stress reported" }
+          { type: "chronic", label: "Hypertension" },
+          { type: "family",  label: "Family Hx: anxiety" },
+          { type: "obs",     label: "Stress reported" }
         ]
       },
       {
-        id: 4,
-        name: "Maria Okonkwo",
-        age: 61,
-        lastVisit: "Apr 2, 2026",
-        risk: "medium",
-        referred: false,
+        id: 4, name: "Maria Okonkwo", age: 61, lastVisit: "Apr 2, 2026",
+        risk: "medium", enrolled: false,
         reasoning: "Chronic condition with family history and fatigue — may be masking underlying depression.",
         signals: [
-          { type: "chronic",     label: "Type 2 diabetes" },
-          { type: "family",      label: "Family Hx: depression" },
-          { type: "observation", label: "Fatigue reported" }
+          { type: "chronic", label: "Type 2 diabetes" },
+          { type: "family",  label: "Family Hx: depression" },
+          { type: "obs",     label: "Fatigue reported" }
         ]
       },
       {
-        id: 5,
-        name: "David Walsh",
-        age: 29,
-        lastVisit: "Apr 5, 2026",
-        risk: "low",
-        referred: false,
+        id: 5, name: "David Walsh", age: 29, lastVisit: "Apr 5, 2026",
+        risk: "low", enrolled: false,
         reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; monitor at routine visits.",
         signals: [
-          { type: "family",      label: "Family Hx: depression" },
-          { type: "observation", label: "Sleep complaints" }
+          { type: "family", label: "Family Hx: depression" },
+          { type: "obs",    label: "Sleep complaints" }
+        ]
+      },
+      {
+        id: 6, name: "Linda Park", age: 55, lastVisit: "Apr 1, 2026",
+        risk: "high", enrolled: true,
+        reasoning: "Two chronic conditions with a recent ER visit and clinician-observed low mood — strong candidate for CoCM enrollment.",
+        signals: [
+          { type: "chronic", label: "COPD" },
+          { type: "chronic", label: "Hypertension" },
+          { type: "er",      label: "1 ER visit / 30 days" },
+          { type: "obs",     label: "Low mood reported" }
         ]
       }
     ];
 
-    let patients = PATIENTS.map(p => ({ ...p }));
     let activeFilter = 'all';
 
     const FILTERS = [
@@ -628,7 +467,7 @@
       { key: 'high',     label: 'High risk' },
       { key: 'medium',   label: 'Medium risk' },
       { key: 'low',      label: 'Low risk' },
-      { key: 'referred', label: 'Referred' },
+      { key: 'enrolled', label: 'Enrolled' },
     ];
 
     function initials(name) {
@@ -636,23 +475,17 @@
     }
 
     function countFor(key) {
-      if (key === 'all')      return patients.filter(p => !p.referred).length;
-      if (key === 'referred') return patients.filter(p => p.referred).length;
-      return patients.filter(p => p.risk === key && !p.referred).length;
-    }
-
-    function getFiltered() {
-      if (activeFilter === 'all')      return patients.filter(p => !p.referred);
-      if (activeFilter === 'referred') return patients.filter(p => p.referred);
-      return patients.filter(p => p.risk === activeFilter && !p.referred);
+      if (key === 'all')      return PATIENTS.length;
+      if (key === 'enrolled') return PATIENTS.filter(p => p.enrolled).length;
+      return PATIENTS.filter(p => p.risk === key && !p.enrolled).length;
     }
 
     function renderMetrics() {
-      const total   = patients.length;
-      const active  = patients.filter(p => !p.referred).length;
-      const pct     = total ? Math.round(active / total * 100) : 0;
-      const high    = patients.filter(p => p.risk === 'high' && !p.referred).length;
-      const referred = patients.filter(p => p.referred).length;
+      const total    = PATIENTS.length;
+      const candidates = PATIENTS.filter(p => !p.enrolled).length;
+      const pct      = Math.round(candidates / total * 100);
+      const highRisk = PATIENTS.filter(p => p.risk === 'high' && !p.enrolled).length;
+      const enrolled = PATIENTS.filter(p => p.enrolled).length;
 
       document.getElementById('metrics-row').innerHTML = `
         <div class="metric-card">
@@ -662,18 +495,18 @@
         </div>
         <div class="metric-card">
           <div class="metric-label">CoCM Candidates</div>
-          <div class="metric-value">${active}</div>
+          <div class="metric-value">${candidates}</div>
           <div class="metric-sub">${pct}% of panel</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">High Risk</div>
-          <div class="metric-value danger">${high}</div>
+          <div class="metric-value danger">${highRisk}</div>
           <div class="metric-sub">Refer this week</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Referred This Month</div>
-          <div class="metric-value">${referred}</div>
-          <div class="metric-sub">Successfully actioned</div>
+          <div class="metric-label">Enrolled in CoCM</div>
+          <div class="metric-value">${enrolled}</div>
+          <div class="metric-sub">Active program participants</div>
         </div>
       `;
     }
@@ -688,20 +521,17 @@
     }
 
     function renderRow(p) {
-      const borderCls = p.referred ? 'row-referred-border' : `row-${p.risk}`;
-      const riskLabel = p.risk.charAt(0).toUpperCase() + p.risk.slice(1);
-      const badges    = p.signals.map(s =>
-        `<span class="signal-badge sig-${s.type}">${s.label}</span>`
+      const borderCls = p.enrolled ? 'row-enrolled' : `row-${p.risk}`;
+      const pillCls   = p.enrolled ? 'pill-enrolled' : `pill-${p.risk}`;
+      const pillLabel = p.enrolled ? 'Enrolled in CoCM'
+                      : p.risk.charAt(0).toUpperCase() + p.risk.slice(1);
+
+      const badges = p.signals.map(s =>
+        `<span class="sig sig-${s.type}">${s.label}</span>`
       ).join('');
-      const actions = p.referred
-        ? `<span class="referred-label">Referred ✓</span>`
-        : `<div class="btn-actions">
-             <button class="btn-refer"   onclick="refer(${p.id})">Refer to CoCM</button>
-             <button class="btn-notnow"  onclick="notnow(${p.id})">Not now</button>
-           </div>`;
 
       return `
-        <div class="patient-row ${p.referred ? 'referred' : ''} ${borderCls}" id="row-${p.id}">
+        <div class="patient-row ${p.enrolled ? 'enrolled' : ''} ${borderCls}">
           <div class="avatar">${initials(p.name)}</div>
           <div class="row-body">
             <div class="row-top">
@@ -712,60 +542,49 @@
             <div class="reasoning">${p.reasoning}</div>
           </div>
           <div class="row-right">
-            <span class="risk-label risk-${p.risk}">${riskLabel}</span>
+            <span class="risk-pill ${pillCls}">${pillLabel}</span>
             <span class="signal-count">${p.signals.length} signal${p.signals.length !== 1 ? 's' : ''}</span>
-            ${actions}
           </div>
         </div>`;
     }
 
     function renderPatients() {
-      const list     = document.getElementById('patient-list');
-      const filtered = getFiltered();
+      const list = document.getElementById('patient-list');
 
-      if (!filtered.length) {
-        list.innerHTML = `<div class="empty-state">No patients in this category.</div>`;
+      if (activeFilter === 'enrolled') {
+        const rows = PATIENTS.filter(p => p.enrolled);
+        list.innerHTML = rows.length
+          ? rows.map(renderRow).join('')
+          : `<div class="empty-state">No enrolled patients.</div>`;
         return;
       }
 
-      if (activeFilter === 'referred') {
-        list.innerHTML = `
-          <div class="section-header section-referred">Already referred</div>
-          ${filtered.map(renderRow).join('')}`;
+      if (activeFilter !== 'all') {
+        const rows = PATIENTS.filter(p => p.risk === activeFilter && !p.enrolled);
+        list.innerHTML = rows.length
+          ? rows.map(renderRow).join('')
+          : `<div class="empty-state">No patients in this category.</div>`;
         return;
       }
 
       const sections = [
-        { key: 'high',   label: 'High risk — refer this week',    cls: 'section-high' },
-        { key: 'medium', label: 'Medium risk — review this month', cls: 'section-medium' },
-        { key: 'low',    label: 'Low risk — monitor',              cls: 'section-low' },
+        { key: 'high',   label: 'High risk — refer this week',    cls: 'sh-high',     filter: p => p.risk === 'high'   && !p.enrolled },
+        { key: 'medium', label: 'Medium risk — review this month', cls: 'sh-medium',   filter: p => p.risk === 'medium' && !p.enrolled },
+        { key: 'low',    label: 'Low risk — monitor',              cls: 'sh-low',      filter: p => p.risk === 'low'    && !p.enrolled },
+        { key: 'enr',    label: 'Enrolled in CoCM',                cls: 'sh-enrolled', filter: p => p.enrolled },
       ];
 
-      const toShow = activeFilter === 'all'
-        ? sections
-        : sections.filter(s => s.key === activeFilter);
-
-      list.innerHTML = toShow.map(sec => {
-        const rows = filtered.filter(p => p.risk === sec.key);
+      list.innerHTML = sections.map(sec => {
+        const rows = PATIENTS.filter(sec.filter);
         if (!rows.length) return '';
         return `<div class="section-header ${sec.cls}">${sec.label}</div>` + rows.map(renderRow).join('');
       }).join('');
     }
 
-    function refer(id) {
-      const p = patients.find(p => p.id === id);
-      if (p) p.referred = true;
-      render();
-    }
-
-    function notnow(id) {
-      patients = patients.filter(p => p.id !== id);
-      render();
-    }
-
     function setFilter(key) {
       activeFilter = key;
-      render();
+      renderFilters();
+      renderPatients();
     }
 
     function render() {
