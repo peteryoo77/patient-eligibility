@@ -20,6 +20,9 @@
       --pill-eligible-text:  #3b6d11;
       --pill-enrolled-bg:    #dbeafe;
       --pill-enrolled-text:  #1e40af;
+      --risk-high-bg:   #fee2e2; --risk-high-text:   #991b1b;
+      --risk-medium-bg: #fef3c7; --risk-medium-text: #92400e;
+      --risk-low-bg:    #f3f4f6; --risk-low-text:    #374151;
 
       --pill-ambiguous-bg:   #faeeda;
       --pill-ambiguous-text: #854f0b;
@@ -63,6 +66,9 @@
         --pill-eligible-text:  #86efac;
         --pill-enrolled-bg:    #1e3a5f;
         --pill-enrolled-text:  #93c5fd;
+        --risk-high-bg:   #2d0f0f; --risk-high-text:   #fca5a5;
+        --risk-medium-bg: #2d2208; --risk-medium-text: #fcd34d;
+        --risk-low-bg:    #1f2937; --risk-low-text:    #9ca3af;
 
         --pill-ambiguous-bg:   #2d2208;
         --pill-ambiguous-text: #fbbf24;
@@ -209,8 +215,16 @@
     .dot-family  { background: #7c3aed; }
     .dot-obs     { background: #2563eb; }
 
+    /* ── RISK BADGES ── */
+    .risk-badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+    .risk-high   { background: var(--risk-high-bg);   color: var(--risk-high-text); }
+    .risk-medium { background: var(--risk-medium-bg); color: var(--risk-medium-text); }
+    .risk-low    { background: var(--risk-low-bg);    color: var(--risk-low-text); }
+
     /* ── FILTERS ── */
-    .filter-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+    .filter-section { margin-bottom: 24px; }
+    .filter-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+    .filter-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
 
     .filter-btn {
       padding: 7px 16px;
@@ -384,7 +398,12 @@
       <div class="legend-item"><div class="legend-dot dot-obs"></div> Clinical observation</div>
     </div>
 
-    <div class="filter-bar" id="filter-bar"></div>
+    <div class="filter-section">
+      <div class="filter-label">Status</div>
+      <div class="filter-bar" id="filter-bar"></div>
+      <div class="filter-label">Risk</div>
+      <div class="filter-bar" id="risk-bar"></div>
+    </div>
     <div id="patient-list"></div>
   </main>
 
@@ -405,7 +424,7 @@
     const PATIENTS = [
       {
         id: 1, name: "James Lee", age: 52, gender: "Male", lastVisit: "Apr 8, 2026",
-        status: "eligible",
+        status: "eligible", riskTier: "high",
         reasoning: "3 chronic conditions with recent ER utilization and patient-reported low mood — multiple converging signals suggest unaddressed behavioral health need.",
         signals: [
           { type: "obs",     label: "PHQ-9: 14" },
@@ -428,7 +447,7 @@
       },
       {
         id: 2, name: "Sofia Reyes", age: 38, gender: "Female", lastVisit: "Apr 10, 2026",
-        status: "eligible",
+        status: "eligible", riskTier: "high",
         reasoning: "Chronic pain with frequent ER visits and clinically observed anxiety — pattern consistent with undertreated behavioral health need.",
         signals: [
           { type: "obs",     label: "PHQ-9: 11" },
@@ -450,7 +469,7 @@
       },
       {
         id: 3, name: "Thomas Nguyen", age: 45, gender: "Male", lastVisit: "Mar 28, 2026",
-        status: "ineligible",
+        status: "ineligible", riskTier: "low",
         note: "Single chronic condition with mild anxiety signals — does not meet CoCM threshold at this time.",
         reasoning: "Single chronic condition with family history and self-reported stress — worth monitoring closely.",
         signals: [
@@ -472,7 +491,7 @@
       },
       {
         id: 4, name: "Maria Okonkwo", age: 61, gender: "Female", lastVisit: "Apr 2, 2026",
-        status: "ineligible",
+        status: "ineligible", riskTier: "medium",
         note: "Chronic condition with fatigue — insufficient behavioral health signals for CoCM enrollment.",
         reasoning: "Chronic condition with family history and fatigue — may be masking underlying depression.",
         signals: [
@@ -494,7 +513,7 @@
       },
       {
         id: 5, name: "David Walsh", age: 29, gender: "Male", lastVisit: "Apr 5, 2026",
-        status: "ineligible",
+        status: "ineligible", riskTier: "low",
         note: "Insufficient signals. Family history only, no chronic conditions or ER visits.",
         reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; monitor at routine visits.",
         signals: [
@@ -515,7 +534,7 @@
       },
       {
         id: 6, name: "Linda Park", age: 55, gender: "Female", lastVisit: "Apr 1, 2026",
-        status: "eligible",
+        status: "eligible", riskTier: "high",
         reasoning: "Two chronic conditions with a recent ER visit and clinician-observed low mood — signals strongly align with CoCM eligibility criteria.",
         signals: [
           { type: "obs",     label: "PHQ-9: 12" },
@@ -538,13 +557,23 @@
     ];
 
     let activeFilter = 'all';
+    let activeRisk   = 'all';
 
     const FILTERS = [
-      { key: 'all',        label: 'All patients' },
+      { key: 'all',        label: 'All' },
       { key: 'eligible',   label: 'Eligible' },
       { key: 'ineligible', label: 'Ineligible' },
       { key: 'archived',   label: 'Archived' },
     ];
+
+    const RISK_FILTERS = [
+      { key: 'all',    label: 'All' },
+      { key: 'high',   label: 'High Risk' },
+      { key: 'medium', label: 'Medium Risk' },
+      { key: 'low',    label: 'Low Risk' },
+    ];
+
+    const RISK_ORDER = { high: 0, medium: 1, low: 2 };
 
     function initials(name) {
       return name.split(' ').map(w => w[0]).join('').toUpperCase();
@@ -557,6 +586,11 @@
     function countFor(key) {
       if (key === 'all') return PATIENTS.filter(p => getEffectiveStatus(p) !== 'archived').length;
       return PATIENTS.filter(p => getEffectiveStatus(p) === key).length;
+    }
+
+    function countRisk(key) {
+      if (key === 'all') return PATIENTS.filter(p => getEffectiveStatus(p) !== 'archived').length;
+      return PATIENTS.filter(p => p.riskTier === key && getEffectiveStatus(p) !== 'archived').length;
     }
 
     function archivePatient(id, e) {
@@ -628,6 +662,12 @@
           ${f.label} (${countFor(f.key)})
         </button>
       `).join('');
+      document.getElementById('risk-bar').innerHTML = RISK_FILTERS.map(f => `
+        <button class="filter-btn ${activeRisk === f.key ? 'active' : ''}"
+                onclick="setRisk('${f.key}')">
+          ${f.label} (${countRisk(f.key)})
+        </button>
+      `).join('');
     }
 
     function renderRow(p) {
@@ -637,11 +677,15 @@
         `<span class="sig sig-${s.type}">${s.label}</span>`
       ).join('');
 
+      const RISK_LABELS = { high: 'High Risk', medium: 'Medium Risk', low: 'Low Risk' };
       const archiveBtn = status === 'ineligible'
         ? `<button class="btn-archive-row" onclick="archivePatient(${p.id}, event)">Archive</button>`
         : '';
       const enrollBtn = status === 'eligible'
         ? `<button class="btn-enroll-row" onclick="enrollPatient(${p.id}, event)">Enroll</button>`
+        : '';
+      const riskBadge = p.riskTier
+        ? `<span class="risk-badge risk-${p.riskTier}">${RISK_LABELS[p.riskTier]}</span>`
         : '';
 
       return `
@@ -656,6 +700,7 @@
             <div class="reasoning">${p.reasoning}</div>
           </div>
           <div class="row-right">
+            ${riskBadge}
             <span class="risk-pill pill-${status}">${pillLabel}</span>
             ${enrollBtn}
             ${archiveBtn}
@@ -663,23 +708,34 @@
         </a>`;
     }
 
+    function applyFilters(patients) {
+      return patients
+        .filter(p => {
+          const s = getEffectiveStatus(p);
+          if (activeFilter === 'all') return s !== 'archived';
+          return s === activeFilter;
+        })
+        .filter(p => activeRisk === 'all' || p.riskTier === activeRisk)
+        .sort((a, b) => (RISK_ORDER[a.riskTier] ?? 9) - (RISK_ORDER[b.riskTier] ?? 9));
+    }
+
     function renderPatients() {
       const list = document.getElementById('patient-list');
-      if (activeFilter !== 'all') {
-        const rows = PATIENTS.filter(p => getEffectiveStatus(p) === activeFilter);
-        list.innerHTML = rows.length
-          ? rows.map(renderRow).join('')
-          : `<div class="empty-state">No patients in this category.</div>`;
-        return;
-      }
-
-      const ORDER = ['eligible', 'enrolled', 'ineligible'];
-      list.innerHTML = ORDER.flatMap(s => PATIENTS.filter(p => getEffectiveStatus(p) === s)).map(renderRow).join('');
+      const rows = applyFilters(PATIENTS);
+      list.innerHTML = rows.length
+        ? rows.map(renderRow).join('')
+        : `<div class="empty-state">No patients in this category.</div>`;
     }
 
 
     function setFilter(key) {
       activeFilter = key;
+      renderFilters();
+      renderPatients();
+    }
+
+    function setRisk(key) {
+      activeRisk = key;
       renderFilters();
       renderPatients();
     }
