@@ -187,7 +187,6 @@
     }
 
     .metric-value { font-size: 32px; font-weight: 700; color: var(--text); line-height: 1; }
-    .metric-value.danger { color: var(--high); }
     .metric-sub { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
 
     /* ── LEGEND ── */
@@ -224,14 +223,20 @@
 
     /* ── PATIENT ROW ── */
     .patient-row {
+      display: flex; align-items: flex-start; gap: 14px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-left: 3px solid transparent;
       border-radius: 0;
+      padding: 16px 18px;
       margin-bottom: 8px;
       cursor: pointer;
-      user-select: none;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.12s;
     }
+
+    .patient-row:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
 
     .patient-row.ineligible { opacity: 0.65; }
 
@@ -239,31 +244,26 @@
     .row-ambiguous  { border-left-color: #ef9f27; }
     .row-ineligible { border-left-color: #888780; }
 
-    /* ── ROW HEADER (always visible) ── */
-    .row-header {
-      display: flex; align-items: center; gap: 12px;
-      padding: 10px 14px;
-      min-height: 60px;
-    }
-
+    /* ── AVATAR ── */
     .avatar {
-      width: 34px; height: 34px; border-radius: 50%;
+      width: 38px; height: 38px; border-radius: 50%;
       background: var(--primary-light); color: var(--primary);
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 700; flex-shrink: 0;
+      font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
     }
 
-    .row-info { flex: 1; min-width: 0; }
+    /* ── ROW BODY ── */
+    .row-body { flex: 1; min-width: 0; }
 
-    .row-name-line { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
-    .patient-name { font-size: 14px; font-weight: 600; color: var(--text); }
-    .patient-meta { font-size: 12px; color: var(--text-muted); }
+    .row-top { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .patient-name { font-size: 15px; font-weight: 600; color: var(--text); }
+    .patient-meta { font-size: 13px; color: var(--text-muted); }
 
-    .row-preview { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .signals { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 
     .sig {
-      font-size: 11px; font-weight: 500;
-      padding: 2px 7px; border-radius: var(--radius-sm); white-space: nowrap;
+      font-size: 12px; font-weight: 500;
+      padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap;
     }
 
     .sig-chronic { background: var(--sig-chronic-bg); color: var(--sig-chronic-text); }
@@ -271,68 +271,24 @@
     .sig-family  { background: var(--sig-family-bg);  color: var(--sig-family-text); }
     .sig-obs     { background: var(--sig-obs-bg);     color: var(--sig-obs-text); }
 
-    .signal-more { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+    .reasoning { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
 
-    .row-aside {
-      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    /* ── ROW RIGHT ── */
+    .row-right {
+      display: flex; flex-direction: column; align-items: flex-end;
+      gap: 8px; flex-shrink: 0; padding-left: 8px;
     }
 
     .risk-pill {
-      font-size: 11px; font-weight: 700;
-      padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap;
+      font-size: 12px; font-weight: 700;
+      padding: 3px 10px; border-radius: var(--radius-sm); white-space: nowrap;
     }
 
     .pill-eligible   { background: var(--pill-eligible-bg);   color: var(--pill-eligible-text); }
     .pill-ambiguous  { background: var(--pill-ambiguous-bg);  color: var(--pill-ambiguous-text); }
     .pill-ineligible { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
 
-    .chevron {
-      font-size: 16px; color: var(--text-muted);
-      transition: transform 0.2s ease;
-      line-height: 1;
-    }
-
-    .patient-row.expanded .chevron { transform: rotate(90deg); }
-
-    /* ── DETAIL PANEL ── */
-    .row-detail {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.25s ease;
-      border-top: 0px solid var(--border);
-    }
-
-    .patient-row.expanded .row-detail {
-      max-height: 800px;
-      border-top-width: 0.5px;
-    }
-
-    .detail-inner {
-      padding: 16px 18px 18px 60px;
-      display: flex; flex-direction: column; gap: 14px;
-    }
-
-    .detail-signals { display: flex; flex-wrap: wrap; gap: 6px; }
-
-    .detail-sig {
-      font-size: 12px; font-weight: 500;
-      padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap;
-    }
-
-    .reasoning { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 6px 16px;
-    }
-
-    .detail-label { font-size: 12px; color: var(--text-muted); padding-top: 2px; }
-    .detail-value { font-size: 13px; color: var(--text); font-weight: 500; }
-
-    .score-block { display: flex; flex-direction: column; gap: 1px; }
-    .score-num   { font-size: 16px; font-weight: 500; color: var(--text); }
-    .score-date  { font-size: 11px; color: var(--text-muted); }
+    .signal-count { font-size: 12px; color: var(--text-muted); }
 
     /* ── EMPTY ── */
     .empty-state {
@@ -345,7 +301,8 @@
       .sidebar { display: none; }
       .topbar, .main { margin-left: 0; }
       .metrics-row { grid-template-columns: repeat(2, 1fr); }
-      .detail-inner { padding-left: 18px; }
+      .patient-row { flex-wrap: wrap; }
+      .row-right { flex-direction: row; align-items: center; width: 100%; justify-content: space-between; padding-left: 0; padding-top: 8px; border-top: 1px solid var(--border); }
     }
   </style>
 </head>
@@ -549,7 +506,6 @@
     ];
 
     let activeFilter = 'all';
-    let expandedId   = null;
 
     const FILTERS = [
       { key: 'all',        label: 'All candidates' },
@@ -607,107 +563,29 @@
       `).join('');
     }
 
-    function topSignals(p) {
-      const d = p.details;
-      const out = [];
-      if (d.phq9)                        out.push({ type: 'obs',     label: `PHQ-9: ${d.phq9.score}` });
-      if (d.gad7)                        out.push({ type: 'obs',     label: `GAD-7: ${d.gad7.score}` });
-      if (d.mentalHealthDx)              out.push({ type: 'obs',     label: d.mentalHealthDx.split(' — ')[1] || d.mentalHealthDx });
-      if (d.psychiatricMeds && d.psychiatricMeds[0]) out.push({ type: 'obs', label: d.psychiatricMeds[0] });
-      if (d.chronicDx && d.chronicDx[0]) out.push({ type: 'chronic', label: d.chronicDx[0] });
-      if (d.erVisits)                    out.push({ type: 'er',      label: d.erVisits });
-      return out.slice(0, 2);
-    }
-
-    function toggleRow(id) {
-      const prev = expandedId;
-      if (prev !== null) {
-        const prevEl = document.getElementById(`row-${prev}`);
-        if (prevEl) prevEl.classList.remove('expanded');
-      }
-      if (prev === id) {
-        expandedId = null;
-      } else {
-        expandedId = id;
-        const el = document.getElementById(`row-${id}`);
-        if (el) el.classList.add('expanded');
-      }
-    }
-
     function renderRow(p) {
       const pillLabel = p.status.charAt(0).toUpperCase() + p.status.slice(1);
-      const top  = topSignals(p);
-      const more = Math.max(0, p.signals.length - top.length);
-
-      const previewBadges = top.map(s =>
+      const badges    = p.signals.map(s =>
         `<span class="sig sig-${s.type}">${s.label}</span>`
       ).join('');
-      const moreText = more > 0 ? `<span class="signal-more">+${more} more</span>` : '';
-
-      const allBadges = p.signals.map(s =>
-        `<span class="detail-sig sig-${s.type}">${s.label}</span>`
-      ).join('');
-
-      const d = p.details;
-      const gridRows = [];
-      if (d.phq9) gridRows.push(
-        `<span class="detail-label">PHQ-9</span>` +
-        `<span class="detail-value"><span class="score-block"><span class="score-num">${d.phq9.score}</span><span class="score-date">${d.phq9.date}</span></span></span>`
-      );
-      if (d.gad7) gridRows.push(
-        `<span class="detail-label">GAD-7</span>` +
-        `<span class="detail-value"><span class="score-block"><span class="score-num">${d.gad7.score}</span><span class="score-date">${d.gad7.date}</span></span></span>`
-      );
-      if (d.mentalHealthDx) gridRows.push(
-        `<span class="detail-label">Mental health Dx</span>` +
-        `<span class="detail-value">${d.mentalHealthDx}</span>`
-      );
-      if (d.psychiatricMeds && d.psychiatricMeds.length) gridRows.push(
-        `<span class="detail-label">Psychiatric meds</span>` +
-        `<span class="detail-value">${d.psychiatricMeds.join(', ')}</span>`
-      );
-      if (d.chronicDx && d.chronicDx.length) gridRows.push(
-        `<span class="detail-label">Chronic Dx</span>` +
-        `<span class="detail-value">${d.chronicDx.join(', ')}</span>`
-      );
-      if (d.erVisits) gridRows.push(
-        `<span class="detail-label">ER visits</span>` +
-        `<span class="detail-value">${d.erVisits}</span>`
-      );
-      if (d.substanceUse) gridRows.push(
-        `<span class="detail-label">Substance use</span>` +
-        `<span class="detail-value">${d.substanceUse}</span>`
-      );
-      if (d.familyHistory) gridRows.push(
-        `<span class="detail-label">Family history</span>` +
-        `<span class="detail-value">${d.familyHistory}</span>`
-      );
 
       return `
-        <div class="patient-row${p.status === 'ineligible' ? ' ineligible' : ''} row-${p.status}"
-             id="row-${p.id}" onclick="toggleRow(${p.id})">
-          <div class="row-header">
-            <div class="avatar">${initials(p.name)}</div>
-            <div class="row-info">
-              <div class="row-name-line">
-                <span class="patient-name">${p.name}</span>
-                <span class="patient-meta">${p.age} yo · Last visit ${p.lastVisit}</span>
-              </div>
-              <div class="row-preview">${previewBadges}${moreText}</div>
+        <a class="patient-row ${p.status === 'ineligible' ? 'ineligible' : ''} row-${p.status}"
+           href="patient.html?id=${p.id}">
+          <div class="avatar">${initials(p.name)}</div>
+          <div class="row-body">
+            <div class="row-top">
+              <span class="patient-name">${p.name}</span>
+              <span class="patient-meta">${p.age} yo · Last visit ${p.lastVisit}</span>
             </div>
-            <div class="row-aside">
-              <span class="risk-pill pill-${p.status}">${pillLabel}</span>
-              <i class="ti ti-chevron-right chevron"></i>
-            </div>
+            <div class="signals">${badges}</div>
+            <div class="reasoning">${p.reasoning}</div>
           </div>
-          <div class="row-detail">
-            <div class="detail-inner">
-              <div class="detail-signals">${allBadges}</div>
-              <p class="reasoning">${p.reasoning}</p>
-              ${gridRows.length ? `<div class="detail-grid">${gridRows.join('')}</div>` : ''}
-            </div>
+          <div class="row-right">
+            <span class="risk-pill pill-${p.status}">${pillLabel}</span>
+            <span class="signal-count">${p.signals.length} signal${p.signals.length !== 1 ? 's' : ''}</span>
           </div>
-        </div>`;
+        </a>`;
     }
 
     function renderPatients() {
