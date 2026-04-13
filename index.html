@@ -241,7 +241,6 @@
     .patient-row.ineligible { opacity: 0.65; }
 
     .row-eligible   { border-left-color: #639922; }
-    .row-ambiguous  { border-left-color: #ef9f27; }
     .row-ineligible { border-left-color: #888780; }
 
     /* ── AVATAR ── */
@@ -421,7 +420,7 @@
       },
       {
         id: 3, name: "Thomas Nguyen", age: 45, lastVisit: "Mar 28, 2026",
-        status: "ambiguous",
+        status: "eligible",
         reasoning: "Single chronic condition with family history and self-reported stress — worth monitoring closely.",
         signals: [
           { type: "obs",     label: "GAD-7: 9" },
@@ -442,7 +441,7 @@
       },
       {
         id: 4, name: "Maria Okonkwo", age: 61, lastVisit: "Apr 2, 2026",
-        status: "ambiguous",
+        status: "eligible",
         reasoning: "Chronic condition with family history and fatigue — may be masking underlying depression.",
         signals: [
           { type: "obs",     label: "PHQ-9: 8" },
@@ -464,6 +463,7 @@
       {
         id: 5, name: "David Walsh", age: 29, lastVisit: "Apr 5, 2026",
         status: "ineligible",
+        note: "Insufficient signals. Family history only, no chronic conditions or ER visits.",
         reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; monitor at routine visits.",
         signals: [
           { type: "obs",    label: "PHQ-9: 4" },
@@ -508,9 +508,8 @@
     let activeFilter = 'all';
 
     const FILTERS = [
-      { key: 'all',        label: 'All candidates' },
+      { key: 'all',        label: 'All patients' },
       { key: 'eligible',   label: 'Eligible' },
-      { key: 'ambiguous',  label: 'Ambiguous' },
       { key: 'ineligible', label: 'Ineligible' },
     ];
 
@@ -518,17 +517,19 @@
       return name.split(' ').map(w => w[0]).join('').toUpperCase();
     }
 
+    function getEffectiveStatus(p) {
+      return localStorage.getItem('status_' + p.id) || p.status;
+    }
+
     function countFor(key) {
       if (key === 'all') return PATIENTS.length;
-      return PATIENTS.filter(p => p.status === key).length;
+      return PATIENTS.filter(p => getEffectiveStatus(p) === key).length;
     }
 
     function renderMetrics() {
       const total      = PATIENTS.length;
-      const eligible   = PATIENTS.filter(p => p.status === 'eligible').length;
-      const ambiguous  = PATIENTS.filter(p => p.status === 'ambiguous').length;
-      const ineligible = PATIENTS.filter(p => p.status === 'ineligible').length;
-      const pct        = Math.round(eligible / total * 100);
+      const eligible   = PATIENTS.filter(p => getEffectiveStatus(p) === 'eligible').length;
+      const ineligible = PATIENTS.filter(p => getEffectiveStatus(p) === 'ineligible').length;
 
       document.getElementById('metrics-row').innerHTML = `
         <div class="metric-card">
@@ -539,17 +540,12 @@
         <div class="metric-card">
           <div class="metric-label">Eligible</div>
           <div class="metric-value">${eligible}</div>
-          <div class="metric-sub">${pct}% of panel</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Ambiguous</div>
-          <div class="metric-value">${ambiguous}</div>
-          <div class="metric-sub">Screening needed</div>
+          <div class="metric-sub">Ready for outreach</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Ineligible</div>
           <div class="metric-value">${ineligible}</div>
-          <div class="metric-sub">Does not meet criteria</div>
+          <div class="metric-sub">Ruled out</div>
         </div>
       `;
     }
@@ -564,13 +560,14 @@
     }
 
     function renderRow(p) {
-      const pillLabel = p.status.charAt(0).toUpperCase() + p.status.slice(1);
+      const status    = getEffectiveStatus(p);
+      const pillLabel = status.charAt(0).toUpperCase() + status.slice(1);
       const badges    = p.signals.map(s =>
         `<span class="sig sig-${s.type}">${s.label}</span>`
       ).join('');
 
       return `
-        <a class="patient-row ${p.status === 'ineligible' ? 'ineligible' : ''} row-${p.status}"
+        <a class="patient-row ${status === 'ineligible' ? 'ineligible' : ''} row-${status}"
            href="patient.html?id=${p.id}">
           <div class="avatar">${initials(p.name)}</div>
           <div class="row-body">
@@ -582,7 +579,7 @@
             <div class="reasoning">${p.reasoning}</div>
           </div>
           <div class="row-right">
-            <span class="risk-pill pill-${p.status}">${pillLabel}</span>
+            <span class="risk-pill pill-${status}">${pillLabel}</span>
             <span class="signal-count">${p.signals.length} signal${p.signals.length !== 1 ? 's' : ''}</span>
           </div>
         </a>`;
@@ -590,17 +587,17 @@
 
     function renderPatients() {
       const list = document.getElementById('patient-list');
-      const ORDER = ['eligible', 'ambiguous', 'ineligible'];
+      const ORDER = ['eligible', 'ineligible'];
 
       if (activeFilter !== 'all') {
-        const rows = PATIENTS.filter(p => p.status === activeFilter);
+        const rows = PATIENTS.filter(p => getEffectiveStatus(p) === activeFilter);
         list.innerHTML = rows.length
           ? rows.map(renderRow).join('')
           : `<div class="empty-state">No patients in this category.</div>`;
         return;
       }
 
-      list.innerHTML = ORDER.flatMap(s => PATIENTS.filter(p => p.status === s)).map(renderRow).join('');
+      list.innerHTML = ORDER.flatMap(s => PATIENTS.filter(p => getEffectiveStatus(p) === s)).map(renderRow).join('');
     }
 
     function setFilter(key) {
