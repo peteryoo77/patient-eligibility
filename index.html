@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Eligibility Overview</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
     :root {
       --bg:             #f8f9fa;
@@ -56,6 +57,81 @@
       min-height: 100vh;
     }
 
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 216px;
+      min-height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 14px 14px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-logo-left { display: flex; align-items: center; gap: 10px; }
+
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: #1e293b;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .logo-sub  { font-size: 9.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; }
+
+    .sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0 8px; }
+
+    .nav-section-label {
+      font-size: 10.5px; font-weight: 600; color: var(--text-muted);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 14px 16px 4px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 10px; margin: 1px 8px;
+      font-size: 13.5px; font-weight: 500; color: var(--text-mid);
+      border-radius: 7px; cursor: pointer; text-decoration: none;
+      transition: background 0.12s, color 0.12s;
+    }
+
+    .nav-item i { font-size: 17px; color: var(--text-muted); flex-shrink: 0; }
+    .nav-item:hover { background: var(--bg); }
+    .nav-item:hover i { color: var(--text-mid); }
+    .nav-item.active { background: var(--primary-light); color: var(--primary); }
+    .nav-item.active i { color: var(--primary); }
+
+    .sidebar-user {
+      border-top: 1px solid var(--border);
+      padding: 10px 12px;
+      display: flex; align-items: center; gap: 9px; cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
+    }
+
+    .user-info { flex: 1; min-width: 0; }
+    .user-name  { font-size: 12.5px; font-weight: 600; color: var(--text); }
+    .user-email { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
     /* ── TOP BAR ── */
     .topbar {
       background: var(--surface);
@@ -68,6 +144,7 @@
       position: sticky;
       top: 0;
       z-index: 10;
+      margin-left: 216px;
     }
 
     .topbar-title {
@@ -102,8 +179,8 @@
 
     /* ── MAIN ── */
     .main {
+      margin-left: 216px;
       max-width: 1100px;
-      margin: 0 auto;
       padding: 32px 24px 80px;
     }
 
@@ -395,6 +472,49 @@
   </style>
 </head>
 <body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-left">
+        <div class="logo-icon">
+          <i class="ti ti-heartbeat" style="font-size:17px;color:white;"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">Integral Health</span>
+          <span class="logo-sub">Mission Control</span>
+        </div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Dashboard</a>
+      <div class="nav-section-label">General</div>
+      <a class="nav-item" href="#"><i class="ti ti-users"></i> Patients</a>
+      <a class="nav-item" href="#"><i class="ti ti-calendar"></i> Appointments</a>
+      <div class="nav-section-label">Clinical</div>
+      <a class="nav-item" href="#"><i class="ti ti-stethoscope"></i> Team</a>
+      <a class="nav-item" href="#"><i class="ti ti-clock"></i> Time</a>
+      <a class="nav-item" href="#"><i class="ti ti-clipboard-list"></i> Caseload</a>
+      <a class="nav-item" href="#"><i class="ti ti-chart-bar"></i> Performance</a>
+      <a class="nav-item active" href="#"><i class="ti ti-shield-check"></i> Eligibility</a>
+      <div class="nav-section-label">Operations</div>
+      <a class="nav-item" href="#"><i class="ti ti-list"></i> Waitlist</a>
+      <a class="nav-item" href="#"><i class="ti ti-bookmark"></i> Follow-up</a>
+      <a class="nav-item" href="#"><i class="ti ti-flag"></i> Flagging</a>
+      <a class="nav-item" href="#"><i class="ti ti-shield"></i> Enrollments</a>
+      <a class="nav-item" href="#"><i class="ti ti-handshake"></i> Partners</a>
+      <div class="nav-section-label">Settings</div>
+      <a class="nav-item" href="#"><i class="ti ti-building"></i> Practice</a>
+      <a class="nav-item" href="#"><i class="ti ti-user-cog"></i> Providers</a>
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-avatar">PY</div>
+      <div class="user-info">
+        <div class="user-name">Peter Yoo</div>
+        <div class="user-email">peter.yoo@integralhealth.me</div>
+      </div>
+      <i class="ti ti-chevron-down" style="font-size:13px;color:#9CA3AF;margin-left:auto;"></i>
+    </div>
+  </aside>
 
   <header class="topbar">
     <div class="topbar-title">Patient eligibility overview</div>
