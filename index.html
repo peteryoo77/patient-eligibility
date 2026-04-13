@@ -288,8 +288,8 @@
 
     /* ── ROW RIGHT ── */
     .row-right {
-      display: flex; flex-direction: column; align-items: flex-end;
-      gap: 10px; flex-shrink: 0; min-width: 110px;
+      display: flex; align-items: center;
+      flex-shrink: 0;
     }
 
     .risk-pill {
@@ -303,9 +303,9 @@
     .pill-ineligible { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
 
     .signal-count { font-size: 12px; color: var(--text-muted); }
-    .btn-archive-row { width: 100%; padding: 9px 0; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; white-space: nowrap; text-align: center; }
+    .btn-archive-row { padding: 9px 18px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; white-space: nowrap; }
     .btn-archive-row:hover { border-color: #9ca3af; color: var(--text-mid); }
-    .btn-enroll-row { width: 100%; padding: 9px 0; border: none; border-radius: var(--radius-sm); background: #00AFF1; color: #fff; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.12s; white-space: nowrap; text-align: center; }
+    .btn-enroll-row { padding: 9px 18px; border: none; border-radius: var(--radius-sm); background: #00AFF1; color: #fff; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.12s; white-space: nowrap; }
     .btn-enroll-row:hover { opacity: 0.88; }
 
     /* ── MODAL ── */
@@ -332,7 +332,8 @@
       .topbar, .main { margin-left: 0; }
       .metrics-row { grid-template-columns: repeat(2, 1fr); }
       .patient-row { flex-wrap: wrap; }
-      .row-right { flex-direction: row; align-items: center; width: 100%; justify-content: space-between; padding-left: 0; padding-top: 8px; border-top: 1px solid var(--border); }
+      .row-right { width: 100%; justify-content: flex-end; padding-top: 8px; border-top: 1px solid var(--border); }
+      .row-top { flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -694,14 +695,14 @@
           <div class="row-body">
             <div class="row-top">
               <span class="patient-name">${p.name}</span>
+              ${riskBadge}
+              <span class="risk-pill pill-${status}">${pillLabel}</span>
               <span class="patient-meta">${p.age} yo · ${p.gender} · Last visit ${p.lastVisit}</span>
             </div>
             <div class="signals">${badges}</div>
             <div class="reasoning">${p.reasoning}</div>
           </div>
           <div class="row-right">
-            ${riskBadge}
-            <span class="risk-pill pill-${status}">${pillLabel}</span>
             ${enrollBtn}
             ${archiveBtn}
           </div>
