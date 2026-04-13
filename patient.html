@@ -227,7 +227,7 @@
   <script>
     const PATIENTS = [
       {
-        id: 1, name: "James Lee", age: 52, lastVisit: "Apr 8, 2026", pcp: "Dr. Peter Yoo",
+        id: 1, name: "James Lee", age: 52, gender: "Male", lastVisit: "Apr 8, 2026", pcp: "Dr. Peter Yoo",
         status: "eligible",
         reasoning: "3 chronic conditions with recent ER utilization and patient-reported low mood — multiple converging signals suggest unaddressed behavioral health need.",
         signals: [
@@ -250,7 +250,7 @@
         }
       },
       {
-        id: 2, name: "Sofia Reyes", age: 38, lastVisit: "Apr 10, 2026", pcp: "Dr. Peter Yoo",
+        id: 2, name: "Sofia Reyes", age: 38, gender: "Female", lastVisit: "Apr 10, 2026", pcp: "Dr. Peter Yoo",
         status: "eligible",
         reasoning: "Chronic pain with frequent ER visits and clinically observed anxiety — pattern consistent with undertreated behavioral health need.",
         signals: [
@@ -272,7 +272,7 @@
         }
       },
       {
-        id: 3, name: "Thomas Nguyen", age: 45, lastVisit: "Mar 28, 2026", pcp: "Dr. Peter Yoo",
+        id: 3, name: "Thomas Nguyen", age: 45, gender: "Male", lastVisit: "Mar 28, 2026", pcp: "Dr. Peter Yoo",
         status: "eligible",
         reasoning: "Single chronic condition with family history and self-reported stress — worth monitoring closely.",
         signals: [
@@ -293,7 +293,7 @@
         }
       },
       {
-        id: 4, name: "Maria Okonkwo", age: 61, lastVisit: "Apr 2, 2026", pcp: "Dr. Peter Yoo",
+        id: 4, name: "Maria Okonkwo", age: 61, gender: "Female", lastVisit: "Apr 2, 2026", pcp: "Dr. Peter Yoo",
         status: "eligible",
         reasoning: "Chronic condition with family history and fatigue — may be masking underlying depression.",
         signals: [
@@ -314,7 +314,7 @@
         }
       },
       {
-        id: 5, name: "David Walsh", age: 29, lastVisit: "Apr 5, 2026", pcp: "Dr. Peter Yoo",
+        id: 5, name: "David Walsh", age: 29, gender: "Male", lastVisit: "Apr 5, 2026", pcp: "Dr. Peter Yoo",
         status: "ineligible",
         note: "Insufficient signals. Family history only, no chronic conditions or ER visits.",
         reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; does not meet CoCM threshold at this time.",
@@ -335,7 +335,7 @@
         }
       },
       {
-        id: 6, name: "Linda Park", age: 55, lastVisit: "Apr 1, 2026", pcp: "Dr. Peter Yoo",
+        id: 6, name: "Linda Park", age: 55, gender: "Female", lastVisit: "Apr 1, 2026", pcp: "Dr. Peter Yoo",
         status: "eligible",
         reasoning: "Two chronic conditions with a recent ER visit and a documented depression diagnosis — signals strongly align with CoCM eligibility criteria.",
         signals: [
@@ -544,7 +544,7 @@
               <span class="header-name">${p.name}</span>
               <span class="status-pill pill-${status}">${pillLabel}</span>
             </div>
-            <div class="header-meta">${p.age} yo · Last visit ${p.lastVisit} · ${p.pcp}</div>
+            <div class="header-meta">${p.age} yo · ${p.gender} · Last visit ${p.lastVisit} · ${p.pcp}</div>
           </div>
         </div>
         ${actionHtml}
