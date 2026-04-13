@@ -18,8 +18,6 @@
 
       --pill-eligible-bg:    #eaf3de; --pill-eligible-text:  #3b6d11;
       --pill-ineligible-bg:  #f1efe8; --pill-ineligible-text:#5f5e5a;
-      --pill-enrolled-bg:    #dbeafe; --pill-enrolled-text:  #1e40af;
-      --warn-bg: #fffbeb; --warn-border: #fde68a; --warn-text: #92400e;
 
       --sig-chronic-bg:   #fcebeb; --sig-chronic-text: #a32d2d;
       --sig-er-bg:        #faeeda; --sig-er-text:      #854f0b;
@@ -42,8 +40,7 @@
         --primary-light:#1e3a5f;
         --pill-eligible-bg:    #152009; --pill-eligible-text:  #86efac;
         --pill-ineligible-bg:  #2a2a27; --pill-ineligible-text:#a8a8a3;
-        --pill-enrolled-bg:    #1e3a5f; --pill-enrolled-text:  #93c5fd;
-        --warn-bg: #2d2208; --warn-border: #854f0b; --warn-text: #fbbf24;
+
         --sig-chronic-bg: #2d1515; --sig-chronic-text: #f87171;
         --sig-er-bg:      #2d2208; --sig-er-text:      #fbbf24;
         --sig-family-bg:  #1e1a3a; --sig-family-text:  #a78bfa;
@@ -125,26 +122,13 @@
     .action-area { display: flex; flex-direction: column; gap: 10px; }
     .btn-enroll { align-self: flex-start; padding: 8px 20px; background: var(--primary); color: #fff; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.12s; }
     .btn-enroll:hover { opacity: 0.88; }
-    .btn-enroll-outline { align-self: flex-start; padding: 7px 16px; border: 1px solid var(--primary); border-radius: var(--radius-sm); background: transparent; color: var(--primary); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.12s; }
-    .btn-enroll-outline:hover { background: var(--primary-light); }
     .btn-ineligible { align-self: flex-start; padding: 7px 16px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; }
     .btn-ineligible:hover { border-color: #9ca3af; color: var(--text-mid); }
-    .btn-cancel { align-self: flex-start; padding: 7px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--text-muted); font-family: inherit; font-size: 13px; cursor: pointer; }
-    .action-secondary { display: flex; padding-top: 4px; border-top: 1px solid var(--border); margin-top: 2px; }
-    .note-field { display: flex; flex-direction: column; gap: 4px; }
-    .note-label { font-size: 12px; color: var(--text-muted); }
-    .note-input { width: 100%; padding: 7px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px; }
-    .note-input:focus { outline: none; border-color: #9ca3af; }
-    .ineligible-state { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+    .action-secondary { display: flex; padding-top: 10px; border-top: 1px solid var(--border); margin-top: 4px; }
+    .ineligible-state { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
     .ineligible-note { font-size: 13px; color: var(--text-muted); flex: 1; min-width: 0; line-height: 1.5; }
     .undo-link { font-size: 13px; color: var(--text-muted); text-decoration: none; white-space: nowrap; align-self: center; }
     .undo-link:hover { color: var(--text); text-decoration: underline; }
-    .enroll-warning { background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: var(--radius-sm); padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
-    .warning-text { font-size: 13px; color: var(--warn-text); }
-    .warning-actions { display: flex; gap: 8px; }
-    .enrolled-state { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .enrolled-meta { font-size: 13px; color: var(--text-muted); flex: 1; }
-    .pill-enrolled { background: var(--pill-enrolled-bg); color: var(--pill-enrolled-text); }
 
     /* ── SIGNAL BADGES ── */
     .signals-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
@@ -372,7 +356,6 @@
     ];
 
     let currentPatientId = null;
-    let pendingEnroll    = false;
 
     function initials(name) {
       return name.split(' ').map(w => w[0]).join('').toUpperCase();
@@ -387,50 +370,18 @@
       return stored !== null ? stored : (p.note || null);
     }
 
-    function enroll() {
-      const now = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      localStorage.setItem('status_' + currentPatientId, 'enrolled');
-      localStorage.setItem('enrolledDate_' + currentPatientId, now);
-      pendingEnroll = false;
-      render();
-    }
-
-    function triggerEnroll() {
-      const p = PATIENTS.find(x => x.id === currentPatientId);
-      if (getEffectiveStatus(p) === 'ineligible') {
-        pendingEnroll = true;
-        render();
-      } else {
-        enroll();
-      }
-    }
-
-    function cancelEnroll() {
-      pendingEnroll = false;
-      render();
-    }
-
-    function unenroll() {
-      localStorage.removeItem('status_' + currentPatientId);
-      localStorage.removeItem('enrolledDate_' + currentPatientId);
-      pendingEnroll = false;
-      render();
-    }
-
     function markIneligible() {
       const noteEl = document.getElementById('note-input');
       const note   = noteEl ? noteEl.value.trim() : '';
       localStorage.setItem('status_' + currentPatientId, 'ineligible');
       if (note) localStorage.setItem('note_' + currentPatientId, note);
       else      localStorage.removeItem('note_' + currentPatientId);
-      pendingEnroll = false;
       render();
     }
 
     function markEligible() {
       localStorage.setItem('status_' + currentPatientId, 'eligible');
       localStorage.removeItem('note_' + currentPatientId);
-      pendingEnroll = false;
       render();
     }
 
@@ -479,35 +430,17 @@
 
       // ── Action card ──────────────────────────────────────────
       let actionHtml;
-      if (status === 'enrolled') {
-        const enrolledDate = localStorage.getItem('enrolledDate_' + p.id) || '';
-        actionHtml = `
-          <div class="section-card">
-            <div class="enrolled-state">
-              <span class="status-pill pill-enrolled">Enrolled</span>
-              <span class="enrolled-meta">${enrolledDate ? 'Enrolled ' + enrolledDate : ''}</span>
-              <a class="undo-link" href="#" onclick="unenroll(); return false;">Undo</a>
-            </div>
-          </div>`;
-      } else if (status === 'eligible') {
+      if (status === 'eligible') {
         actionHtml = `
           <div class="section-card">
             <div class="action-area">
-              <button class="btn-enroll" onclick="triggerEnroll()">Enroll in CoCM</button>
+              <button class="btn-enroll" onclick="alert('Enrollment flow coming soon.')">Enroll in CoCM</button>
               <div class="action-secondary">
                 <button class="btn-ineligible" onclick="markIneligible()">Mark ineligible</button>
               </div>
             </div>
           </div>`;
       } else {
-        const warningHtml = pendingEnroll ? `
-          <div class="enroll-warning">
-            <span class="warning-text">This patient is marked ineligible. Enroll anyway?</span>
-            <div class="warning-actions">
-              <button class="btn-enroll" onclick="enroll()">Confirm enrollment</button>
-              <button class="btn-cancel" onclick="cancelEnroll()">Cancel</button>
-            </div>
-          </div>` : `<button class="btn-enroll-outline" onclick="triggerEnroll()">Enroll in CoCM</button>`;
         actionHtml = `
           <div class="section-card">
             <div class="ineligible-state">
@@ -515,7 +448,6 @@
               ${note ? `<span class="ineligible-note">${note}</span>` : ''}
               <a class="undo-link" href="#" onclick="markEligible(); return false;">Mark eligible</a>
             </div>
-            ${warningHtml}
           </div>`;
       }
 
