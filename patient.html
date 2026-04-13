@@ -270,32 +270,34 @@
     }
 
     /* ── ACTION AREA ── */
-    .action-area { display: flex; flex-direction: column; gap: 10px; }
-
-    .note-input {
-      width: 100%; padding: 10px 12px;
-      border: 1px solid var(--border); border-radius: var(--radius-sm);
-      background: var(--bg); color: var(--text);
-      font-family: inherit; font-size: 14px; line-height: 1.5;
-      resize: vertical; min-height: 72px;
-    }
-
-    .note-input:focus { outline: none; border-color: #9ca3af; }
-    .note-input::placeholder { color: var(--text-muted); }
+    .action-area { display: flex; flex-direction: column; gap: 12px; }
 
     .btn-ineligible {
       align-self: flex-start;
       padding: 7px 16px;
-      border: 1px solid var(--border);
+      border: 1px solid #d1d5db;
       border-radius: var(--radius-sm);
       background: transparent;
-      color: var(--text-muted);
+      color: #5f5e5a;
       font-family: inherit; font-size: 13px; font-weight: 500;
       cursor: pointer;
       transition: border-color 0.12s, color 0.12s;
     }
 
-    .btn-ineligible:hover { border-color: #9ca3af; color: var(--text); }
+    .btn-ineligible:hover { border-color: #9ca3af; color: var(--text-mid); }
+
+    .note-field { display: flex; flex-direction: column; gap: 5px; }
+
+    .note-label { font-size: 12px; color: var(--text-muted); }
+
+    .note-input {
+      width: 100%; padding: 8px 10px;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--bg); color: var(--text);
+      font-family: inherit; font-size: 14px;
+    }
+
+    .note-input:focus { outline: none; border-color: #9ca3af; }
 
     .ineligible-state { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
 
@@ -624,16 +626,17 @@
       if (status === 'eligible') {
         actionHtml = `
           <div class="section-card">
-            <div class="section-title">BHCM Decision</div>
             <div class="action-area">
-              <textarea class="note-input" id="note-input" placeholder="Add a note (optional)"></textarea>
               <button class="btn-ineligible" onclick="markIneligible()">Mark ineligible</button>
+              <div class="note-field">
+                <label class="note-label" for="note-input">Add a note (optional)</label>
+                <input class="note-input" type="text" id="note-input">
+              </div>
             </div>
           </div>`;
       } else {
         actionHtml = `
           <div class="section-card">
-            <div class="section-title">BHCM Decision</div>
             <div class="ineligible-state">
               <span class="status-pill pill-ineligible">Ineligible</span>
               ${note ? `<span class="ineligible-note">${note}</span>` : ''}
@@ -654,6 +657,8 @@
           </div>
         </div>
 
+        ${actionHtml}
+
         <div class="section-card">
           <div class="section-title">Signals</div>
           <div class="signals-row">${signalBadges}</div>
@@ -666,7 +671,6 @@
 
         ${scoresHtml}
         ${emrHtml}
-        ${actionHtml}
       `;
     }
 
