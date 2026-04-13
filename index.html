@@ -574,11 +574,7 @@
         { key: 'enr',    label: 'Enrolled in CoCM',                cls: 'sh-enrolled', filter: p => p.enrolled },
       ];
 
-      list.innerHTML = sections.map(sec => {
-        const rows = PATIENTS.filter(sec.filter);
-        if (!rows.length) return '';
-        return `<div class="section-header ${sec.cls}">${sec.label}</div>` + rows.map(renderRow).join('');
-      }).join('');
+      list.innerHTML = sections.flatMap(sec => PATIENTS.filter(sec.filter)).map(renderRow).join('');
     }
 
     function setFilter(key) {
