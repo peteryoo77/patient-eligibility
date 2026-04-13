@@ -243,8 +243,8 @@
     .patient-row.ineligible { opacity: 0.65; }
 
     .row-eligible   { border-left-color: #639922; }
-
     .row-ineligible { border-left-color: #888780; }
+    .row-archived   { border-left-color: #d1d5db; opacity: 0.5; }
 
     /* ── AVATAR ── */
     .avatar {
@@ -292,6 +292,8 @@
     .pill-ineligible { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
 
     .signal-count { font-size: 12px; color: var(--text-muted); }
+    .btn-archive-row { padding: 5px 12px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; white-space: nowrap; }
+    .btn-archive-row:hover { border-color: #9ca3af; color: var(--text-mid); }
 
     /* ── EMPTY ── */
     .empty-state {
@@ -515,6 +517,7 @@
       { key: 'all',        label: 'All patients' },
       { key: 'eligible',   label: 'Eligible' },
       { key: 'ineligible', label: 'Ineligible' },
+      { key: 'archived',   label: 'Archived' },
     ];
 
     function initials(name) {
@@ -526,12 +529,19 @@
     }
 
     function countFor(key) {
-      if (key === 'all') return PATIENTS.length;
+      if (key === 'all') return PATIENTS.filter(p => getEffectiveStatus(p) !== 'archived').length;
       return PATIENTS.filter(p => getEffectiveStatus(p) === key).length;
     }
 
+    function archivePatient(id, e) {
+      e.preventDefault();
+      e.stopPropagation();
+      localStorage.setItem('status_' + id, 'archived');
+      render();
+    }
+
     function renderMetrics() {
-      const total      = PATIENTS.length;
+      const total      = PATIENTS.filter(p => getEffectiveStatus(p) !== 'archived').length;
       const eligible   = PATIENTS.filter(p => getEffectiveStatus(p) === 'eligible').length;
       const ineligible = PATIENTS.filter(p => getEffectiveStatus(p) === 'ineligible').length;
 
@@ -570,6 +580,10 @@
         `<span class="sig sig-${s.type}">${s.label}</span>`
       ).join('');
 
+      const archiveBtn = status === 'ineligible'
+        ? `<button class="btn-archive-row" onclick="archivePatient(${p.id}, event)">Archive</button>`
+        : '';
+
       return `
         <a class="patient-row ${status === 'ineligible' ? 'ineligible' : ''} row-${status}"
            href="patient.html?id=${p.id}">
@@ -585,6 +599,7 @@
           <div class="row-right">
             <span class="risk-pill pill-${status}">${pillLabel}</span>
             <span class="signal-count">${p.signals.length} signal${p.signals.length !== 1 ? 's' : ''}</span>
+            ${archiveBtn}
           </div>
         </a>`;
     }
@@ -602,6 +617,7 @@
       const ORDER = ['eligible', 'ineligible'];
       list.innerHTML = ORDER.flatMap(s => PATIENTS.filter(p => getEffectiveStatus(p) === s)).map(renderRow).join('');
     }
+
 
     function setFilter(key) {
       activeFilter = key;
