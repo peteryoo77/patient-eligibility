@@ -616,11 +616,11 @@
               <span class="patient-name">${p.name}</span>
               <span class="patient-meta">${p.age} yo · ${p.gender} · Last visit ${p.lastVisit}</span>
             </div>
+            <div class="signals">${badges}</div>
             <div class="reasoning">${p.reasoning}</div>
           </div>
           <div class="row-right">
             <span class="risk-pill pill-${status}">${pillLabel}</span>
-            <span class="signal-count">${p.signals.length} signal${p.signals.length !== 1 ? 's' : ''}</span>
             ${enrollBtn}
             ${archiveBtn}
           </div>
