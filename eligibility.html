@@ -196,29 +196,23 @@
   <main class="main">
 
     <h1 class="page-title">Behavioral Health Eligibility</h1>
-    <p class="page-sub">Patients with a documented behavioral health need and no active BH treatment.<br>Review each flag and decide: refer, dismiss, or schedule a screening.</p>
-    <div class="practice-meta">
-      <strong>Riverside Family Medicine</strong>
-      <span class="meta-sep">·</span>
-      Dr. Peter Yoo
-      <span class="meta-sep">·</span>
-      <span class="sync-dot"></span> Last synced Apr 10, 2026 at 2:14 PM
-    </div>
+    <p class="page-sub"></p>
+    <div class="practice-meta"></div>
 
     <div class="metrics-row">
       <div class="metric-card">
         <div class="metric-label">Total Panel</div>
-        <div class="metric-value">847</div>
+        <div class="metric-value">—</div>
         <div class="metric-sub">Active patients</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Est. BH Need</div>
-        <div class="metric-value">~170</div>
+        <div class="metric-value">—</div>
         <div class="metric-sub">~20% of panel, unmet</div>
       </div>
       <div class="metric-card urgent">
         <div class="metric-label">Needs Review</div>
-        <div class="metric-value" id="metric-identified">16</div>
+        <div class="metric-value" id="metric-identified">—</div>
         <div class="metric-sub">Flagged by EMR signal</div>
       </div>
       <div class="metric-card">
@@ -269,7 +263,8 @@
     };
 
     const PATIENTS = [
-      {
+      // No patients yet
+      /*{
         id: 1, name: "Patricia Chen", age: 68,
         diagnoses: ["PTSD", "Chronic Pain"],
         pathway: "high_utilization", score: 91, tier: "high",
@@ -458,7 +453,7 @@
         ],
         signals: { phq9: 5, gad7: null, erVisits: 0, missedVisits: 0 },
         history: { mhDiagnosis: "Dysthymia (2022)", lastBHContact: "Never", familyHistory: "N/A" }
-      }
+      }*/
     ];
 
     const actioned    = {};
