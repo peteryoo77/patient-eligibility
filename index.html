@@ -224,13 +224,13 @@
 
     /* ── PATIENT ROW ── */
     .patient-row {
-      display: flex; align-items: flex-start; gap: 14px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-left: 3px solid transparent;
       border-radius: 0;
-      padding: 16px 18px;
       margin-bottom: 8px;
+      cursor: pointer;
+      user-select: none;
     }
 
     .patient-row.ineligible { opacity: 0.65; }
@@ -239,26 +239,31 @@
     .row-ambiguous  { border-left-color: #ef9f27; }
     .row-ineligible { border-left-color: #888780; }
 
-    /* ── AVATAR ── */
-    .avatar {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: var(--primary-light); color: var(--primary);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    /* ── ROW HEADER (always visible) ── */
+    .row-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px;
+      min-height: 60px;
     }
 
-    /* ── ROW BODY ── */
-    .row-body { flex: 1; min-width: 0; }
+    .avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--primary-light); color: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; flex-shrink: 0;
+    }
 
-    .row-top { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
-    .patient-name { font-size: 15px; font-weight: 600; color: var(--text); }
-    .patient-meta { font-size: 13px; color: var(--text-muted); }
+    .row-info { flex: 1; min-width: 0; }
 
-    .signals { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .row-name-line { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+    .patient-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .patient-meta { font-size: 12px; color: var(--text-muted); }
+
+    .row-preview { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
     .sig {
-      font-size: 12px; font-weight: 500;
-      padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap;
+      font-size: 11px; font-weight: 500;
+      padding: 2px 7px; border-radius: var(--radius-sm); white-space: nowrap;
     }
 
     .sig-chronic { background: var(--sig-chronic-bg); color: var(--sig-chronic-text); }
@@ -266,24 +271,68 @@
     .sig-family  { background: var(--sig-family-bg);  color: var(--sig-family-text); }
     .sig-obs     { background: var(--sig-obs-bg);     color: var(--sig-obs-text); }
 
-    .reasoning { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+    .signal-more { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
 
-    /* ── ROW RIGHT ── */
-    .row-right {
-      display: flex; flex-direction: column; align-items: flex-end;
-      gap: 8px; flex-shrink: 0; padding-left: 8px;
+    .row-aside {
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
     }
 
     .risk-pill {
-      font-size: 12px; font-weight: 700;
-      padding: 3px 10px; border-radius: var(--radius-sm); white-space: nowrap;
+      font-size: 11px; font-weight: 700;
+      padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap;
     }
 
     .pill-eligible   { background: var(--pill-eligible-bg);   color: var(--pill-eligible-text); }
     .pill-ambiguous  { background: var(--pill-ambiguous-bg);  color: var(--pill-ambiguous-text); }
     .pill-ineligible { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
 
-    .signal-count { font-size: 12px; color: var(--text-muted); }
+    .chevron {
+      font-size: 16px; color: var(--text-muted);
+      transition: transform 0.2s ease;
+      line-height: 1;
+    }
+
+    .patient-row.expanded .chevron { transform: rotate(90deg); }
+
+    /* ── DETAIL PANEL ── */
+    .row-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+      border-top: 0px solid var(--border);
+    }
+
+    .patient-row.expanded .row-detail {
+      max-height: 800px;
+      border-top-width: 0.5px;
+    }
+
+    .detail-inner {
+      padding: 16px 18px 18px 60px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    .detail-signals { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .detail-sig {
+      font-size: 12px; font-weight: 500;
+      padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap;
+    }
+
+    .reasoning { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 6px 16px;
+    }
+
+    .detail-label { font-size: 12px; color: var(--text-muted); padding-top: 2px; }
+    .detail-value { font-size: 13px; color: var(--text); font-weight: 500; }
+
+    .score-block { display: flex; flex-direction: column; gap: 1px; }
+    .score-num   { font-size: 16px; font-weight: 500; color: var(--text); }
+    .score-date  { font-size: 11px; color: var(--text-muted); }
 
     /* ── EMPTY ── */
     .empty-state {
@@ -296,8 +345,7 @@
       .sidebar { display: none; }
       .topbar, .main { margin-left: 0; }
       .metrics-row { grid-template-columns: repeat(2, 1fr); }
-      .patient-row { flex-wrap: wrap; }
-      .row-right { flex-direction: row; align-items: center; width: 100%; justify-content: space-between; padding-left: 0; padding-top: 8px; border-top: 1px solid var(--border); }
+      .detail-inner { padding-left: 18px; }
     }
   </style>
 </head>
@@ -374,68 +422,134 @@
         status: "eligible",
         reasoning: "3 chronic conditions with recent ER utilization and patient-reported low mood — multiple converging signals suggest unaddressed behavioral health need.",
         signals: [
+          { type: "obs",     label: "PHQ-9: 14" },
           { type: "chronic", label: "Type 2 diabetes" },
           { type: "chronic", label: "Hypertension" },
           { type: "er",      label: "2 ER visits / 90 days" },
           { type: "family",  label: "Family Hx: depression" },
-          { type: "obs",     label: "Low mood reported" },
           { type: "obs",     label: "Sleep complaints" }
-        ]
+        ],
+        details: {
+          mentalHealthDx:  null,
+          psychiatricMeds: [],
+          chronicDx:       ["Type 2 diabetes", "Hypertension", "Obesity"],
+          erVisits:        "2 visits in the last 90 days",
+          substanceUse:    null,
+          familyHistory:   "Father: depression",
+          phq9:            { score: 14, date: "Mar 20, 2026" },
+          gad7:            null
+        }
       },
       {
         id: 2, name: "Sofia Reyes", age: 38, lastVisit: "Apr 10, 2026",
         status: "eligible",
         reasoning: "Chronic pain with frequent ER visits and clinically observed anxiety — pattern consistent with undertreated behavioral health need.",
         signals: [
-          { type: "chronic", label: "Chronic pain" },
+          { type: "obs",     label: "PHQ-9: 11" },
+          { type: "obs",     label: "GAD-7: 12" },
+          { type: "chronic", label: "Chronic pain syndrome" },
           { type: "er",      label: "3 ER visits / 6 months" },
-          { type: "obs",     label: "Mild anxiety observed" },
           { type: "obs",     label: "Sleep complaints" }
-        ]
+        ],
+        details: {
+          mentalHealthDx:  null,
+          psychiatricMeds: [],
+          chronicDx:       ["Chronic pain syndrome", "Fibromyalgia"],
+          erVisits:        "3 visits in the last 6 months",
+          substanceUse:    null,
+          familyHistory:   null,
+          phq9:            { score: 11, date: "Mar 30, 2026" },
+          gad7:            { score: 12, date: "Mar 30, 2026" }
+        }
       },
       {
         id: 3, name: "Thomas Nguyen", age: 45, lastVisit: "Mar 28, 2026",
         status: "ambiguous",
         reasoning: "Single chronic condition with family history and self-reported stress — worth monitoring closely.",
         signals: [
+          { type: "obs",     label: "GAD-7: 9" },
           { type: "chronic", label: "Hypertension" },
           { type: "family",  label: "Family Hx: anxiety" },
           { type: "obs",     label: "Stress reported" }
-        ]
+        ],
+        details: {
+          mentalHealthDx:  null,
+          psychiatricMeds: [],
+          chronicDx:       ["Hypertension"],
+          erVisits:        null,
+          substanceUse:    null,
+          familyHistory:   "Mother: generalized anxiety disorder",
+          phq9:            { score: 7, date: "Feb 14, 2026" },
+          gad7:            { score: 9, date: "Feb 14, 2026" }
+        }
       },
       {
         id: 4, name: "Maria Okonkwo", age: 61, lastVisit: "Apr 2, 2026",
         status: "ambiguous",
         reasoning: "Chronic condition with family history and fatigue — may be masking underlying depression.",
         signals: [
+          { type: "obs",     label: "PHQ-9: 8" },
           { type: "chronic", label: "Type 2 diabetes" },
           { type: "family",  label: "Family Hx: depression" },
           { type: "obs",     label: "Fatigue reported" }
-        ]
+        ],
+        details: {
+          mentalHealthDx:  null,
+          psychiatricMeds: [],
+          chronicDx:       ["Type 2 diabetes", "Hypothyroidism"],
+          erVisits:        null,
+          substanceUse:    null,
+          familyHistory:   "Mother: major depression",
+          phq9:            { score: 8, date: "Mar 5, 2026" },
+          gad7:            null
+        }
       },
       {
         id: 5, name: "David Walsh", age: 29, lastVisit: "Apr 5, 2026",
         status: "ineligible",
         reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; monitor at routine visits.",
         signals: [
+          { type: "obs",    label: "PHQ-9: 4" },
           { type: "family", label: "Family Hx: depression" },
           { type: "obs",    label: "Sleep complaints" }
-        ]
+        ],
+        details: {
+          mentalHealthDx:  null,
+          psychiatricMeds: [],
+          chronicDx:       [],
+          erVisits:        null,
+          substanceUse:    null,
+          familyHistory:   "Sibling: depression",
+          phq9:            { score: 4, date: "Apr 1, 2026" },
+          gad7:            null
+        }
       },
       {
         id: 6, name: "Linda Park", age: 55, lastVisit: "Apr 1, 2026",
         status: "eligible",
         reasoning: "Two chronic conditions with a recent ER visit and clinician-observed low mood — signals strongly align with CoCM eligibility criteria.",
         signals: [
+          { type: "obs",     label: "PHQ-9: 12" },
           { type: "chronic", label: "COPD" },
           { type: "chronic", label: "Hypertension" },
           { type: "er",      label: "1 ER visit / 30 days" },
           { type: "obs",     label: "Low mood reported" }
-        ]
+        ],
+        details: {
+          mentalHealthDx:  "F32.0 — Major depressive disorder, mild",
+          psychiatricMeds: ["Sertraline 50mg"],
+          chronicDx:       ["COPD", "Hypertension"],
+          erVisits:        "1 visit in the last 30 days",
+          substanceUse:    null,
+          familyHistory:   null,
+          phq9:            { score: 12, date: "Mar 28, 2026" },
+          gad7:            null
+        }
       }
     ];
 
     let activeFilter = 'all';
+    let expandedId   = null;
 
     const FILTERS = [
       { key: 'all',        label: 'All candidates' },
@@ -493,26 +607,105 @@
       `).join('');
     }
 
+    function topSignals(p) {
+      const d = p.details;
+      const out = [];
+      if (d.phq9)                        out.push({ type: 'obs',     label: `PHQ-9: ${d.phq9.score}` });
+      if (d.gad7)                        out.push({ type: 'obs',     label: `GAD-7: ${d.gad7.score}` });
+      if (d.mentalHealthDx)              out.push({ type: 'obs',     label: d.mentalHealthDx.split(' — ')[1] || d.mentalHealthDx });
+      if (d.psychiatricMeds && d.psychiatricMeds[0]) out.push({ type: 'obs', label: d.psychiatricMeds[0] });
+      if (d.chronicDx && d.chronicDx[0]) out.push({ type: 'chronic', label: d.chronicDx[0] });
+      if (d.erVisits)                    out.push({ type: 'er',      label: d.erVisits });
+      return out.slice(0, 2);
+    }
+
+    function toggleRow(id) {
+      const prev = expandedId;
+      if (prev !== null) {
+        const prevEl = document.getElementById(`row-${prev}`);
+        if (prevEl) prevEl.classList.remove('expanded');
+      }
+      if (prev === id) {
+        expandedId = null;
+      } else {
+        expandedId = id;
+        const el = document.getElementById(`row-${id}`);
+        if (el) el.classList.add('expanded');
+      }
+    }
+
     function renderRow(p) {
       const pillLabel = p.status.charAt(0).toUpperCase() + p.status.slice(1);
-      const badges    = p.signals.map(s =>
+      const top  = topSignals(p);
+      const more = Math.max(0, p.signals.length - top.length);
+
+      const previewBadges = top.map(s =>
         `<span class="sig sig-${s.type}">${s.label}</span>`
       ).join('');
+      const moreText = more > 0 ? `<span class="signal-more">+${more} more</span>` : '';
+
+      const allBadges = p.signals.map(s =>
+        `<span class="detail-sig sig-${s.type}">${s.label}</span>`
+      ).join('');
+
+      const d = p.details;
+      const gridRows = [];
+      if (d.phq9) gridRows.push(
+        `<span class="detail-label">PHQ-9</span>` +
+        `<span class="detail-value"><span class="score-block"><span class="score-num">${d.phq9.score}</span><span class="score-date">${d.phq9.date}</span></span></span>`
+      );
+      if (d.gad7) gridRows.push(
+        `<span class="detail-label">GAD-7</span>` +
+        `<span class="detail-value"><span class="score-block"><span class="score-num">${d.gad7.score}</span><span class="score-date">${d.gad7.date}</span></span></span>`
+      );
+      if (d.mentalHealthDx) gridRows.push(
+        `<span class="detail-label">Mental health Dx</span>` +
+        `<span class="detail-value">${d.mentalHealthDx}</span>`
+      );
+      if (d.psychiatricMeds && d.psychiatricMeds.length) gridRows.push(
+        `<span class="detail-label">Psychiatric meds</span>` +
+        `<span class="detail-value">${d.psychiatricMeds.join(', ')}</span>`
+      );
+      if (d.chronicDx && d.chronicDx.length) gridRows.push(
+        `<span class="detail-label">Chronic Dx</span>` +
+        `<span class="detail-value">${d.chronicDx.join(', ')}</span>`
+      );
+      if (d.erVisits) gridRows.push(
+        `<span class="detail-label">ER visits</span>` +
+        `<span class="detail-value">${d.erVisits}</span>`
+      );
+      if (d.substanceUse) gridRows.push(
+        `<span class="detail-label">Substance use</span>` +
+        `<span class="detail-value">${d.substanceUse}</span>`
+      );
+      if (d.familyHistory) gridRows.push(
+        `<span class="detail-label">Family history</span>` +
+        `<span class="detail-value">${d.familyHistory}</span>`
+      );
 
       return `
-        <div class="patient-row ${p.status === 'ineligible' ? 'ineligible' : ''} row-${p.status}">
-          <div class="avatar">${initials(p.name)}</div>
-          <div class="row-body">
-            <div class="row-top">
-              <span class="patient-name">${p.name}</span>
-              <span class="patient-meta">${p.age} yo · Last visit ${p.lastVisit}</span>
+        <div class="patient-row${p.status === 'ineligible' ? ' ineligible' : ''} row-${p.status}"
+             id="row-${p.id}" onclick="toggleRow(${p.id})">
+          <div class="row-header">
+            <div class="avatar">${initials(p.name)}</div>
+            <div class="row-info">
+              <div class="row-name-line">
+                <span class="patient-name">${p.name}</span>
+                <span class="patient-meta">${p.age} yo · Last visit ${p.lastVisit}</span>
+              </div>
+              <div class="row-preview">${previewBadges}${moreText}</div>
             </div>
-            <div class="signals">${badges}</div>
-            <div class="reasoning">${p.reasoning}</div>
+            <div class="row-aside">
+              <span class="risk-pill pill-${p.status}">${pillLabel}</span>
+              <i class="ti ti-chevron-right chevron"></i>
+            </div>
           </div>
-          <div class="row-right">
-            <span class="risk-pill pill-${p.status}">${pillLabel}</span>
-            <span class="signal-count">${p.signals.length} signal${p.signals.length !== 1 ? 's' : ''}</span>
+          <div class="row-detail">
+            <div class="detail-inner">
+              <div class="detail-signals">${allBadges}</div>
+              <p class="reasoning">${p.reasoning}</p>
+              ${gridRows.length ? `<div class="detail-grid">${gridRows.join('')}</div>` : ''}
+            </div>
           </div>
         </div>`;
     }
