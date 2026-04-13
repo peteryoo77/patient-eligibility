@@ -269,6 +269,48 @@
       margin: 2px 0;
     }
 
+    /* ── ACTION AREA ── */
+    .action-area { display: flex; flex-direction: column; gap: 10px; }
+
+    .note-input {
+      width: 100%; padding: 10px 12px;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--bg); color: var(--text);
+      font-family: inherit; font-size: 14px; line-height: 1.5;
+      resize: vertical; min-height: 72px;
+    }
+
+    .note-input:focus { outline: none; border-color: #9ca3af; }
+    .note-input::placeholder { color: var(--text-muted); }
+
+    .btn-ineligible {
+      align-self: flex-start;
+      padding: 7px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit; font-size: 13px; font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.12s, color 0.12s;
+    }
+
+    .btn-ineligible:hover { border-color: #9ca3af; color: var(--text); }
+
+    .ineligible-state { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+
+    .ineligible-note {
+      font-size: 14px; color: var(--text-muted);
+      flex: 1; min-width: 0; line-height: 1.5;
+    }
+
+    .undo-link {
+      font-size: 13px; color: var(--primary);
+      text-decoration: none; white-space: nowrap; align-self: center;
+    }
+
+    .undo-link:hover { text-decoration: underline; }
+
     /* ── NOT FOUND ── */
     .not-found {
       text-align: center; padding: 80px 24px;
@@ -388,7 +430,7 @@
       },
       {
         id: 3, name: "Thomas Nguyen", age: 45, lastVisit: "Mar 28, 2026",
-        status: "ambiguous",
+        status: "eligible",
         reasoning: "Single chronic condition with family history and self-reported stress — worth monitoring closely.",
         signals: [
           { type: "obs",     label: "GAD-7: 9" },
@@ -409,7 +451,7 @@
       },
       {
         id: 4, name: "Maria Okonkwo", age: 61, lastVisit: "Apr 2, 2026",
-        status: "ambiguous",
+        status: "eligible",
         reasoning: "Chronic condition with family history and fatigue — may be masking underlying depression.",
         signals: [
           { type: "obs",     label: "PHQ-9: 8" },
@@ -431,6 +473,7 @@
       {
         id: 5, name: "David Walsh", age: 29, lastVisit: "Apr 5, 2026",
         status: "ineligible",
+        note: "Insufficient signals. Family history only, no chronic conditions or ER visits.",
         reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; monitor at routine visits.",
         signals: [
           { type: "obs",    label: "PHQ-9: 4" },
@@ -472,14 +515,41 @@
       }
     ];
 
+    let currentPatientId = null;
+
     function initials(name) {
       return name.split(' ').map(w => w[0]).join('').toUpperCase();
+    }
+
+    function getEffectiveStatus(p) {
+      return localStorage.getItem('status_' + p.id) || p.status;
+    }
+
+    function getEffectiveNote(p) {
+      const stored = localStorage.getItem('note_' + p.id);
+      return stored !== null ? stored : (p.note || null);
+    }
+
+    function markIneligible() {
+      const noteEl = document.getElementById('note-input');
+      const note   = noteEl ? noteEl.value.trim() : '';
+      localStorage.setItem('status_' + currentPatientId, 'ineligible');
+      if (note) localStorage.setItem('note_' + currentPatientId, note);
+      else      localStorage.removeItem('note_' + currentPatientId);
+      render();
+    }
+
+    function undoIneligible() {
+      localStorage.setItem('status_' + currentPatientId, 'eligible');
+      localStorage.removeItem('note_' + currentPatientId);
+      render();
     }
 
     function render() {
       const params = new URLSearchParams(location.search);
       const id = parseInt(params.get('id'), 10);
       const p  = PATIENTS.find(x => x.id === id);
+      currentPatientId = id;
       const main = document.getElementById('main-content');
 
       if (!p) {
@@ -490,14 +560,16 @@
       document.title = p.name + ' — Patient Detail';
       document.getElementById('topbar-name').textContent = p.name;
 
-      const pillLabel = p.status.charAt(0).toUpperCase() + p.status.slice(1);
+      const status    = getEffectiveStatus(p);
+      const note      = getEffectiveNote(p);
+      const pillLabel = status.charAt(0).toUpperCase() + status.slice(1);
       const d = p.details;
 
       const signalBadges = p.signals.map(s =>
         `<span class="sig sig-${s.type}">${s.label}</span>`
       ).join('');
 
-      // Scores section (only if at least one exists)
+      // Scores section
       let scoresHtml = '';
       if (d.phq9 || d.gad7) {
         const blocks = [];
@@ -547,13 +619,36 @@
           <div class="emr-grid">${rows.join('<div class="emr-divider"></div>')}</div>
         </div>` : '';
 
+      // Action section
+      let actionHtml;
+      if (status === 'eligible') {
+        actionHtml = `
+          <div class="section-card">
+            <div class="section-title">BHCM Decision</div>
+            <div class="action-area">
+              <textarea class="note-input" id="note-input" placeholder="Add a note (optional)"></textarea>
+              <button class="btn-ineligible" onclick="markIneligible()">Mark ineligible</button>
+            </div>
+          </div>`;
+      } else {
+        actionHtml = `
+          <div class="section-card">
+            <div class="section-title">BHCM Decision</div>
+            <div class="ineligible-state">
+              <span class="status-pill pill-ineligible">Ineligible</span>
+              ${note ? `<span class="ineligible-note">${note}</span>` : ''}
+              <a class="undo-link" href="#" onclick="undoIneligible(); return false;">Undo</a>
+            </div>
+          </div>`;
+      }
+
       main.innerHTML = `
         <div class="patient-header">
           <div class="header-avatar">${initials(p.name)}</div>
           <div class="header-info">
             <div class="header-name-row">
               <span class="header-name">${p.name}</span>
-              <span class="status-pill pill-${p.status}">${pillLabel}</span>
+              <span class="status-pill pill-${status}">${pillLabel}</span>
             </div>
             <div class="header-meta">${p.age} years old · Last visit ${p.lastVisit}</div>
           </div>
@@ -571,6 +666,7 @@
 
         ${scoresHtml}
         ${emrHtml}
+        ${actionHtml}
       `;
     }
 
