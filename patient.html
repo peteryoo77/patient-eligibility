@@ -18,19 +18,13 @@
 
       --pill-eligible-bg:    #eaf3de;
       --pill-eligible-text:  #3b6d11;
-      --pill-ambiguous-bg:   #faeeda;
-      --pill-ambiguous-text: #854f0b;
       --pill-ineligible-bg:  #f1efe8;
       --pill-ineligible-text:#5f5e5a;
 
-      --sig-chronic-bg:   #fcebeb;
-      --sig-chronic-text: #a32d2d;
-      --sig-er-bg:        #faeeda;
-      --sig-er-text:      #854f0b;
-      --sig-family-bg:    #eeedfe;
-      --sig-family-text:  #3c3489;
-      --sig-obs-bg:       #e6f1fb;
-      --sig-obs-text:     #185fa5;
+      --sig-chronic-bg:   #fcebeb; --sig-chronic-text: #a32d2d;
+      --sig-er-bg:        #faeeda; --sig-er-text:      #854f0b;
+      --sig-family-bg:    #eeedfe; --sig-family-text:  #3c3489;
+      --sig-obs-bg:       #e6f1fb; --sig-obs-text:     #185fa5;
 
       --radius-sm: 8px;
       --radius-md: 12px;
@@ -47,21 +41,8 @@
         --primary:      #3b82f6;
         --primary-light:#1e3a5f;
 
-        --sig-chronic-bg:   #2d1515;
-        --sig-chronic-text: #f87171;
-        --sig-er-bg:        #2d2208;
-        --sig-er-text:      #fbbf24;
-        --sig-family-bg:    #1e1a3a;
-        --sig-family-text:  #a78bfa;
-        --sig-obs-bg:       #162035;
-        --sig-obs-text:     #60a5fa;
-
-        --pill-eligible-bg:    #152009;
-        --pill-eligible-text:  #86efac;
-        --pill-ambiguous-bg:   #2d2208;
-        --pill-ambiguous-text: #fbbf24;
-        --pill-ineligible-bg:  #2a2a27;
-        --pill-ineligible-text:#a8a8a3;
+        --pill-eligible-bg:    #152009; --pill-eligible-text:  #86efac;
+        --pill-ineligible-bg:  #2a2a27; --pill-ineligible-text:#a8a8a3;
       }
     }
 
@@ -69,51 +50,33 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      font-size: 15px;
-      line-height: 1.5;
-      min-height: 100vh;
+      background: var(--bg); color: var(--text);
+      font-size: 15px; line-height: 1.5; min-height: 100vh;
     }
 
     /* ── SIDEBAR ── */
     .sidebar {
-      width: 216px;
-      min-height: 100vh;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      z-index: 100;
+      width: 216px; min-height: 100vh;
+      background: var(--surface); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
     }
-
     .sidebar-logo {
       display: flex; align-items: center; gap: 10px;
-      padding: 14px 12px;
-      border-bottom: 1px solid var(--border);
+      padding: 14px 12px; border-bottom: 1px solid var(--border);
     }
-
     .logo-icon {
-      width: 34px; height: 34px;
-      background: #1e293b;
+      width: 34px; height: 34px; background: #1e293b;
       border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-
     .logo-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
     .logo-sub  { font-size: 9.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; }
-
     .sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0 8px; }
-
     .nav-label {
       font-size: 10.5px; font-weight: 600; color: var(--text-muted);
-      letter-spacing: 0.07em; text-transform: uppercase;
-      padding: 14px 16px 4px;
+      letter-spacing: 0.07em; text-transform: uppercase; padding: 14px 16px 4px;
     }
-
     .nav-item {
       display: flex; align-items: center; gap: 9px;
       padding: 7px 10px; margin: 1px 8px;
@@ -121,212 +84,127 @@
       border-radius: 7px; cursor: pointer; text-decoration: none;
       transition: background 0.12s, color 0.12s;
     }
-
     .nav-item i { font-size: 17px; color: var(--text-muted); flex-shrink: 0; }
     .nav-item:hover { background: var(--bg); }
     .nav-item:hover i { color: var(--text-mid); }
     .nav-item.active { background: var(--primary-light); color: var(--primary); }
     .nav-item.active i { color: var(--primary); }
-
     .sidebar-user {
-      border-top: 1px solid var(--border);
-      padding: 10px 12px;
+      border-top: 1px solid var(--border); padding: 10px 12px;
       display: flex; align-items: center; gap: 9px;
     }
-
     .user-avatar {
       width: 30px; height: 30px; border-radius: 50%;
       background: var(--primary); color: #fff;
       display: flex; align-items: center; justify-content: center;
       font-size: 11px; font-weight: 700; flex-shrink: 0;
     }
-
     .user-name  { font-size: 12.5px; font-weight: 600; color: var(--text); }
     .user-email { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
 
     /* ── TOPBAR ── */
     .topbar {
-      margin-left: 216px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 32px;
-      height: 56px;
+      margin-left: 216px; background: var(--surface);
+      border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px;
       display: flex; align-items: center; gap: 14px;
       position: sticky; top: 0; z-index: 10;
     }
-
     .back-btn {
       display: flex; align-items: center; gap: 6px;
       font-size: 13px; font-weight: 500; color: var(--text-muted);
-      text-decoration: none;
-      padding: 5px 10px; border-radius: var(--radius-sm);
+      text-decoration: none; padding: 5px 10px; border-radius: var(--radius-sm);
       transition: background 0.12s, color 0.12s;
     }
-
     .back-btn:hover { background: var(--bg); color: var(--text); }
     .back-btn i { font-size: 15px; }
-
     .topbar-divider { width: 1px; height: 18px; background: var(--border); }
-
     .topbar-title { font-size: 15px; font-weight: 600; color: var(--text); }
 
     /* ── MAIN ── */
-    .main { margin-left: 216px; padding: 36px 40px 80px; max-width: 860px; }
+    .main { margin-left: 216px; padding: 28px 32px 80px; max-width: 760px; }
 
     /* ── PATIENT HEADER ── */
     .patient-header {
-      display: flex; align-items: flex-start; gap: 18px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 24px 28px;
-      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 16px 20px;
+      margin-bottom: 10px;
     }
-
     .header-avatar {
-      width: 52px; height: 52px; border-radius: 50%;
+      width: 40px; height: 40px; border-radius: 50%;
       background: var(--primary-light); color: var(--primary);
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px; font-weight: 700; flex-shrink: 0;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
     }
-
-    .header-info { flex: 1; }
-
-    .header-name-row { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; flex-wrap: wrap; }
-    .header-name { font-size: 20px; font-weight: 700; color: var(--text); }
-
+    .header-info { flex: 1; min-width: 0; }
+    .header-name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .header-name { font-size: 16px; font-weight: 700; color: var(--text); }
     .status-pill {
-      font-size: 12px; font-weight: 700;
-      padding: 3px 10px; border-radius: var(--radius-sm); white-space: nowrap;
+      font-size: 11px; font-weight: 700;
+      padding: 2px 9px; border-radius: var(--radius-sm); white-space: nowrap;
     }
-
     .pill-eligible   { background: var(--pill-eligible-bg);   color: var(--pill-eligible-text); }
-    .pill-ambiguous  { background: var(--pill-ambiguous-bg);  color: var(--pill-ambiguous-text); }
     .pill-ineligible { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
+    .header-meta { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
 
-    .header-meta { font-size: 14px; color: var(--text-muted); }
-
-    /* ── SECTION CARD ── */
-    .section-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 22px 24px;
-      margin-bottom: 16px;
+    /* ── CARD ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 18px 20px;
+      margin-bottom: 10px;
     }
 
-    .section-title {
-      font-size: 11px; font-weight: 700; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 0.07em;
-      margin-bottom: 14px;
-    }
-
-    /* ── SIGNALS ── */
-    .signals-row { display: flex; flex-wrap: wrap; gap: 7px; }
-
-    .sig {
-      font-size: 13px; font-weight: 500;
-      padding: 4px 11px; border-radius: var(--radius-sm); white-space: nowrap;
-    }
-
-    .sig-chronic { background: var(--sig-chronic-bg); color: var(--sig-chronic-text); }
-    .sig-er      { background: var(--sig-er-bg);      color: var(--sig-er-text); }
-    .sig-family  { background: var(--sig-family-bg);  color: var(--sig-family-text); }
-    .sig-obs     { background: var(--sig-obs-bg);     color: var(--sig-obs-text); }
-
-    /* ── REASONING ── */
-    .reasoning-text {
-      font-size: 15px; color: var(--text-mid); line-height: 1.65;
-    }
-
-    /* ── SCORE PAIR ── */
-    .scores-row { display: flex; gap: 32px; }
-
-    .score-block { display: flex; flex-direction: column; gap: 2px; }
-    .score-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-    .score-num   { font-size: 28px; font-weight: 700; color: var(--text); line-height: 1; }
-    .score-date  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
-    /* ── EMR GRID ── */
-    .emr-grid {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 10px 20px;
-    }
-
-    .emr-label {
-      font-size: 13px; color: var(--text-muted); padding-top: 1px;
-    }
-
-    .emr-value {
-      font-size: 14px; color: var(--text); font-weight: 500;
-    }
-
-    .emr-divider {
-      grid-column: 1 / -1;
-      height: 1px;
-      background: var(--border);
-      margin: 2px 0;
-    }
-
-    /* ── ACTION AREA ── */
-    .action-area { display: flex; flex-direction: column; gap: 12px; }
-
+    /* ── ACTION ── */
+    .action-area { display: flex; flex-direction: column; gap: 10px; }
     .btn-ineligible {
-      align-self: flex-start;
-      padding: 7px 16px;
-      border: 1px solid #d1d5db;
-      border-radius: var(--radius-sm);
-      background: transparent;
-      color: #5f5e5a;
-      font-family: inherit; font-size: 13px; font-weight: 500;
-      cursor: pointer;
+      align-self: flex-start; padding: 7px 16px;
+      border: 1px solid #d1d5db; border-radius: var(--radius-sm);
+      background: transparent; color: #5f5e5a;
+      font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
       transition: border-color 0.12s, color 0.12s;
     }
-
     .btn-ineligible:hover { border-color: #9ca3af; color: var(--text-mid); }
-
-    .note-field { display: flex; flex-direction: column; gap: 5px; }
-
+    .note-field { display: flex; flex-direction: column; gap: 4px; }
     .note-label { font-size: 12px; color: var(--text-muted); }
-
     .note-input {
-      width: 100%; padding: 8px 10px;
+      width: 100%; padding: 7px 10px;
       border: 1px solid var(--border); border-radius: var(--radius-sm);
       background: var(--bg); color: var(--text);
       font-family: inherit; font-size: 14px;
     }
-
     .note-input:focus { outline: none; border-color: #9ca3af; }
 
-    .ineligible-state { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+    .ineligible-state { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+    .ineligible-note { font-size: 13px; color: var(--text-muted); flex: 1; min-width: 0; line-height: 1.5; }
+    .undo-link { font-size: 13px; color: var(--text-muted); text-decoration: none; white-space: nowrap; align-self: center; }
+    .undo-link:hover { color: var(--text); text-decoration: underline; }
 
-    .ineligible-note {
-      font-size: 14px; color: var(--text-muted);
-      flex: 1; min-width: 0; line-height: 1.5;
+    /* ── CLINICAL DATA ── */
+    .scores-row { display: flex; gap: 28px; margin-bottom: 0; }
+    .score-block { display: flex; flex-direction: column; gap: 1px; }
+    .score-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .score-num   { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1.1; }
+    .score-date  { font-size: 11px; color: var(--text-muted); }
+
+    .emr-grid {
+      display: grid; grid-template-columns: 150px 1fr; gap: 8px 16px;
     }
-
-    .undo-link {
-      font-size: 13px; color: var(--primary);
-      text-decoration: none; white-space: nowrap; align-self: center;
-    }
-
-    .undo-link:hover { text-decoration: underline; }
+    .emr-grid.with-scores { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .emr-label { font-size: 13px; color: var(--text-muted); }
+    .emr-value { font-size: 13px; color: var(--text); font-weight: 500; }
+    .emr-divider { grid-column: 1 / -1; height: 1px; background: var(--border); margin: 1px 0; }
 
     /* ── NOT FOUND ── */
-    .not-found {
-      text-align: center; padding: 80px 24px;
-      color: var(--text-muted); font-size: 15px;
-    }
+    .not-found { text-align: center; padding: 80px 24px; color: var(--text-muted); font-size: 15px; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 680px) {
       .sidebar { display: none; }
       .topbar, .main { margin-left: 0; }
-      .main { padding: 20px 16px 60px; }
+      .main { padding: 16px 16px 60px; }
       .emr-grid { grid-template-columns: 1fr; gap: 2px; }
-      .emr-label { color: var(--text-muted); font-size: 11px; margin-top: 8px; }
-      .scores-row { gap: 24px; }
+      .emr-label { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+      .scores-row { gap: 20px; }
     }
   </style>
 </head>
@@ -567,13 +445,35 @@
       const pillLabel = status.charAt(0).toUpperCase() + status.slice(1);
       const d = p.details;
 
-      const signalBadges = p.signals.map(s =>
-        `<span class="sig sig-${s.type}">${s.label}</span>`
-      ).join('');
+      // Action card
+      let actionHtml;
+      if (status === 'eligible') {
+        actionHtml = `
+          <div class="card">
+            <div class="action-area">
+              <button class="btn-ineligible" onclick="markIneligible()">Mark ineligible</button>
+              <div class="note-field">
+                <label class="note-label" for="note-input">Add a note (optional)</label>
+                <input class="note-input" type="text" id="note-input">
+              </div>
+            </div>
+          </div>`;
+      } else {
+        actionHtml = `
+          <div class="card">
+            <div class="ineligible-state">
+              <span class="status-pill pill-ineligible">Ineligible</span>
+              ${note ? `<span class="ineligible-note">${note}</span>` : ''}
+              <a class="undo-link" href="#" onclick="undoIneligible(); return false;">Undo</a>
+            </div>
+          </div>`;
+      }
 
-      // Scores section
-      let scoresHtml = '';
-      if (d.phq9 || d.gad7) {
+      // Clinical data card — scores + EMR in one block
+      const hasScores = d.phq9 || d.gad7;
+
+      let scoresBlock = '';
+      if (hasScores) {
         const blocks = [];
         if (d.phq9) blocks.push(`
           <div class="score-block">
@@ -587,63 +487,28 @@
             <span class="score-num">${d.gad7.score}</span>
             <span class="score-date">${d.gad7.date}</span>
           </div>`);
-        scoresHtml = `
-          <div class="section-card">
-            <div class="section-title">Screening scores</div>
-            <div class="scores-row">${blocks.join('')}</div>
-          </div>`;
+        scoresBlock = `<div class="scores-row">${blocks.join('')}</div>`;
       }
 
-      // EMR data grid
-      const rows = [];
-      if (d.mentalHealthDx) rows.push(
-        `<span class="emr-label">Mental health Dx</span><span class="emr-value">${d.mentalHealthDx}</span>`
-      );
-      if (d.psychiatricMeds && d.psychiatricMeds.length) rows.push(
-        `<span class="emr-label">Psychiatric meds</span><span class="emr-value">${d.psychiatricMeds.join(', ')}</span>`
-      );
-      if (d.chronicDx && d.chronicDx.length) rows.push(
-        `<span class="emr-label">Chronic Dx</span><span class="emr-value">${d.chronicDx.join(', ')}</span>`
-      );
-      if (d.erVisits) rows.push(
-        `<span class="emr-label">ER visits</span><span class="emr-value">${d.erVisits}</span>`
-      );
-      if (d.substanceUse) rows.push(
-        `<span class="emr-label">Substance use</span><span class="emr-value">${d.substanceUse}</span>`
-      );
-      if (d.familyHistory) rows.push(
-        `<span class="emr-label">Family history</span><span class="emr-value">${d.familyHistory}</span>`
-      );
+      const emrRows = [];
+      if (d.mentalHealthDx)                    emrRows.push(['Mental health Dx', d.mentalHealthDx]);
+      if (d.psychiatricMeds?.length)           emrRows.push(['Psychiatric meds', d.psychiatricMeds.join(', ')]);
+      if (d.chronicDx?.length)                 emrRows.push(['Chronic Dx',       d.chronicDx.join(', ')]);
+      if (d.erVisits)                          emrRows.push(['ER visits',         d.erVisits]);
+      if (d.substanceUse)                      emrRows.push(['Substance use',     d.substanceUse]);
+      if (d.familyHistory)                     emrRows.push(['Family history',    d.familyHistory]);
 
-      const emrHtml = rows.length ? `
-        <div class="section-card">
-          <div class="section-title">EMR data</div>
-          <div class="emr-grid">${rows.join('<div class="emr-divider"></div>')}</div>
-        </div>` : '';
-
-      // Action section
-      let actionHtml;
-      if (status === 'eligible') {
-        actionHtml = `
-          <div class="section-card">
-            <div class="action-area">
-              <button class="btn-ineligible" onclick="markIneligible()">Mark ineligible</button>
-              <div class="note-field">
-                <label class="note-label" for="note-input">Add a note (optional)</label>
-                <input class="note-input" type="text" id="note-input">
-              </div>
-            </div>
-          </div>`;
-      } else {
-        actionHtml = `
-          <div class="section-card">
-            <div class="ineligible-state">
-              <span class="status-pill pill-ineligible">Ineligible</span>
-              ${note ? `<span class="ineligible-note">${note}</span>` : ''}
-              <a class="undo-link" href="#" onclick="undoIneligible(); return false;">Undo</a>
-            </div>
-          </div>`;
+      let emrBlock = '';
+      if (emrRows.length) {
+        const cells = emrRows.map(([label, value], i) => {
+          const divider = i > 0 ? '<div class="emr-divider"></div>' : '';
+          return `${divider}<span class="emr-label">${label}</span><span class="emr-value">${value}</span>`;
+        }).join('');
+        emrBlock = `<div class="emr-grid${hasScores ? ' with-scores' : ''}">${cells}</div>`;
       }
+
+      const clinicalHtml = (scoresBlock || emrBlock) ? `
+        <div class="card">${scoresBlock}${emrBlock}</div>` : '';
 
       main.innerHTML = `
         <div class="patient-header">
@@ -653,24 +518,11 @@
               <span class="header-name">${p.name}</span>
               <span class="status-pill pill-${status}">${pillLabel}</span>
             </div>
-            <div class="header-meta">${p.age} years old · Last visit ${p.lastVisit}</div>
+            <div class="header-meta">${p.age} yo · Last visit ${p.lastVisit}</div>
           </div>
         </div>
-
         ${actionHtml}
-
-        <div class="section-card">
-          <div class="section-title">Signals</div>
-          <div class="signals-row">${signalBadges}</div>
-        </div>
-
-        <div class="section-card">
-          <div class="section-title">Clinical reasoning</div>
-          <p class="reasoning-text">${p.reasoning}</p>
-        </div>
-
-        ${scoresHtml}
-        ${emrHtml}
+        ${clinicalHtml}
       `;
     }
 
