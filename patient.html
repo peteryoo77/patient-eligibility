@@ -13,11 +13,16 @@
       --text:         #111827;
       --text-mid:     #374151;
       --text-muted:   #6b7280;
-      --primary:      #2563eb;
-      --primary-light:#eff6ff;
+      --primary:      #00AFF1;
+      --primary-dark: #0099d4;
+      --primary-light:#e0f6fe;
 
       --pill-eligible-bg:    #eaf3de; --pill-eligible-text:  #3b6d11;
       --pill-ineligible-bg:  #f1efe8; --pill-ineligible-text:#5f5e5a;
+
+      --risk-high-bg:   #fee2e2; --risk-high-text:   #991b1b;
+      --risk-medium-bg: #fef3c7; --risk-medium-text: #92400e;
+      --risk-low-bg:    #f3f4f6; --risk-low-text:    #374151;
 
       --sig-chronic-bg:   #fcebeb; --sig-chronic-text: #a32d2d;
       --sig-er-bg:        #faeeda; --sig-er-text:      #854f0b;
@@ -36,11 +41,14 @@
         --text:         #f1f5f9;
         --text-mid:     #cbd5e1;
         --text-muted:   #8b92a8;
-        --primary:      #3b82f6;
-        --primary-light:#1e3a5f;
+        --primary:      #00AFF1;
+        --primary-dark: #0099d4;
+        --primary-light:#003d52;
         --pill-eligible-bg:    #152009; --pill-eligible-text:  #86efac;
         --pill-ineligible-bg:  #2a2a27; --pill-ineligible-text:#a8a8a3;
-
+        --risk-high-bg:   #2d0f0f; --risk-high-text:   #fca5a5;
+        --risk-medium-bg: #2d2208; --risk-medium-text: #fcd34d;
+        --risk-low-bg:    #1f2937; --risk-low-text:    #9ca3af;
         --sig-chronic-bg: #2d1515; --sig-chronic-text: #f87171;
         --sig-er-bg:      #2d2208; --sig-er-text:      #fbbf24;
         --sig-family-bg:  #1e1a3a; --sig-family-text:  #a78bfa;
@@ -92,19 +100,23 @@
 
     /* ── PATIENT HEADER ── */
     .patient-header {
-      display: flex; align-items: center; gap: 16px;
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 20px 24px;
+      border-radius: var(--radius-md); padding: 24px 28px;
       margin-bottom: 12px;
     }
-    .header-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; flex-shrink: 0; }
-    .header-info { flex: 1; min-width: 0; }
-    .header-name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 3px; }
-    .header-name { font-size: 18px; font-weight: 700; color: var(--text); }
+    .header-name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+    .header-name { font-size: 22px; font-weight: 700; color: var(--text); }
+    .header-meta { font-size: 13px; color: var(--text-muted); }
+
     .status-pill { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap; }
     .pill-eligible   { background: var(--pill-eligible-bg);   color: var(--pill-eligible-text); }
     .pill-ineligible { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
-    .header-meta { font-size: 13px; color: var(--text-muted); }
+    .pill-archived   { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
+
+    .risk-badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+    .risk-high   { background: var(--risk-high-bg);   color: var(--risk-high-text); }
+    .risk-medium { background: var(--risk-medium-bg); color: var(--risk-medium-text); }
+    .risk-low    { background: var(--risk-low-bg);    color: var(--risk-low-text); }
 
     /* ── SECTION CARD ── */
     .section-card {
@@ -114,35 +126,42 @@
     }
     .section-title {
       font-size: 10px; font-weight: 700; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 0.08em;
-      margin-bottom: 14px;
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px;
     }
 
-    /* ── ACTION ── */
-    .action-area { display: flex; flex-direction: column; gap: 10px; }
-    .btn-enroll { align-self: flex-start; padding: 8px 20px; background: var(--primary); color: #fff; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.12s; }
-    .btn-enroll:hover { opacity: 0.88; }
-    .btn-ineligible { align-self: flex-start; padding: 7px 16px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; }
-    .btn-ineligible:hover { border-color: #9ca3af; color: var(--text-mid); }
-    .btn-archive { align-self: flex-start; padding: 7px 16px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; }
-    .btn-archive:hover { border-color: #9ca3af; color: var(--text-mid); }
-    .action-secondary { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--border); margin-top: 4px; }
+    /* ── REFERRAL DECISION ── */
+    .referral-rec { margin-bottom: 16px; }
+    .referral-rec-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+    .referral-rec-text { font-size: 15px; font-weight: 600; color: var(--text); }
+    .referral-rec-text.rec-yes { color: #0369a1; }
+    .referral-rec-text.rec-no  { color: var(--text-muted); }
+    .referral-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-refer-cocm { padding: 10px 22px; background: var(--primary); color: #fff; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.12s; }
+    .btn-refer-cocm:hover { opacity: 0.88; }
+    .btn-refer-specialty { padding: 10px 22px; background: transparent; color: var(--text-mid); border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; }
+    .btn-refer-specialty:hover { border-color: #9ca3af; color: var(--text); }
+    .action-tertiary { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .btn-ineligible { background: none; border: none; font-family: inherit; font-size: 13px; color: var(--text-muted); cursor: pointer; padding: 0; text-decoration: underline; text-decoration-color: transparent; transition: color 0.12s, text-decoration-color 0.12s; }
+    .btn-ineligible:hover { color: var(--text); text-decoration-color: var(--text-muted); }
+
+    /* ── INELIGIBLE / ARCHIVED STATES ── */
     .ineligible-state { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
     .ineligible-note { font-size: 13px; color: var(--text-muted); flex: 1; min-width: 0; line-height: 1.5; }
+    .archived-state { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .state-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .btn-archive { padding: 7px 16px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: border-color 0.12s; }
+    .btn-archive:hover { border-color: #9ca3af; color: var(--text-mid); }
     .undo-link { font-size: 13px; color: var(--text-muted); text-decoration: none; white-space: nowrap; align-self: center; }
     .undo-link:hover { color: var(--text); text-decoration: underline; }
-    .archived-state { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .pill-archived { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
 
     /* ── SIGNAL BADGES ── */
     .signals-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-    .sig { font-size: 12px; font-weight: 500; padding: 3px 9px; border-radius: var(--radius-sm); white-space: nowrap; }
+    .sig { font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
     .sig-chronic { background: var(--sig-chronic-bg); color: var(--sig-chronic-text); }
     .sig-er      { background: var(--sig-er-bg);      color: var(--sig-er-text); }
     .sig-family  { background: var(--sig-family-bg);  color: var(--sig-family-text); }
     .sig-obs     { background: var(--sig-obs-bg);     color: var(--sig-obs-text); }
 
-    /* ── REASONING ── */
     .reasoning-text { font-size: 14px; color: var(--text-mid); line-height: 1.65; }
 
     /* ── SCREENING SCORES ── */
@@ -154,7 +173,7 @@
     .score-na { font-size: 13px; color: var(--text-muted); font-style: italic; padding: 6px 0; }
 
     /* ── CLINICAL GRID ── */
-    .detail-grid { display: grid; grid-template-columns: 160px 1fr; gap: 10px 20px; align-items: start; }
+    .detail-grid { display: grid; grid-template-columns: 180px 1fr; gap: 12px 24px; align-items: start; }
     .detail-label { font-size: 13px; color: var(--text-muted); padding-top: 1px; }
     .detail-value { font-size: 14px; color: var(--text); font-weight: 500; line-height: 1.5; }
     .detail-na    { font-size: 13px; color: var(--text-muted); font-style: italic; }
@@ -169,7 +188,7 @@
       .main { padding: 16px 16px 60px; }
       .scores-pair { grid-template-columns: 1fr; }
       .detail-grid { grid-template-columns: 1fr; gap: 4px; }
-      .detail-label { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
+      .detail-label { font-size: 11px; margin-top: 8px; }
     }
   </style>
 </head>
@@ -228,7 +247,7 @@
     const PATIENTS = [
       {
         id: 1, name: "James Lee", age: 52, gender: "Male", lastVisit: "Apr 8, 2026", pcp: "Dr. Peter Yoo",
-        status: "eligible",
+        status: "eligible", riskTier: "high",
         reasoning: "3 chronic conditions with recent ER utilization and patient-reported low mood — multiple converging signals suggest unaddressed behavioral health need.",
         signals: [
           { type: "obs",     label: "PHQ-9: 14" },
@@ -251,7 +270,7 @@
       },
       {
         id: 2, name: "Sofia Reyes", age: 38, gender: "Female", lastVisit: "Apr 10, 2026", pcp: "Dr. Peter Yoo",
-        status: "eligible",
+        status: "eligible", riskTier: "high",
         reasoning: "Chronic pain with frequent ER visits and clinically observed anxiety — pattern consistent with undertreated behavioral health need.",
         signals: [
           { type: "obs",     label: "PHQ-9: 11" },
@@ -273,7 +292,7 @@
       },
       {
         id: 3, name: "Thomas Nguyen", age: 45, gender: "Male", lastVisit: "Mar 28, 2026", pcp: "Dr. Peter Yoo",
-        status: "ineligible",
+        status: "ineligible", riskTier: "low",
         note: "Single chronic condition with mild anxiety signals — does not meet CoCM threshold at this time.",
         reasoning: "Single chronic condition with family history and self-reported stress — worth monitoring closely.",
         signals: [
@@ -295,7 +314,7 @@
       },
       {
         id: 4, name: "Maria Okonkwo", age: 61, gender: "Female", lastVisit: "Apr 2, 2026", pcp: "Dr. Peter Yoo",
-        status: "ineligible",
+        status: "ineligible", riskTier: "medium",
         note: "Chronic condition with fatigue — insufficient behavioral health signals for CoCM enrollment.",
         reasoning: "Chronic condition with family history and fatigue — may be masking underlying depression.",
         signals: [
@@ -317,7 +336,7 @@
       },
       {
         id: 5, name: "David Walsh", age: 29, gender: "Male", lastVisit: "Apr 5, 2026", pcp: "Dr. Peter Yoo",
-        status: "ineligible",
+        status: "ineligible", riskTier: "low",
         note: "Insufficient signals. Family history only, no chronic conditions or ER visits.",
         reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; does not meet CoCM threshold at this time.",
         signals: [
@@ -338,7 +357,7 @@
       },
       {
         id: 6, name: "Linda Park", age: 55, gender: "Female", lastVisit: "Apr 1, 2026", pcp: "Dr. Peter Yoo",
-        status: "eligible",
+        status: "eligible", riskTier: "high",
         reasoning: "Two chronic conditions with a recent ER visit and a documented depression diagnosis — signals strongly align with CoCM eligibility criteria.",
         signals: [
           { type: "obs",     label: "PHQ-9: 12" },
@@ -363,9 +382,7 @@
 
     let currentPatientId = null;
 
-    function initials(name) {
-      return name.split(' ').map(w => w[0]).join('').toUpperCase();
-    }
+    const RISK_LABELS = { high: 'High Risk', medium: 'Medium Risk', low: 'Low Risk' };
 
     function getEffectiveStatus(p) {
       return localStorage.getItem('status_' + p.id) || p.status;
@@ -377,11 +394,7 @@
     }
 
     function markIneligible() {
-      const noteEl = document.getElementById('note-input');
-      const note   = noteEl ? noteEl.value.trim() : '';
       localStorage.setItem('status_' + currentPatientId, 'ineligible');
-      if (note) localStorage.setItem('note_' + currentPatientId, note);
-      else      localStorage.removeItem('note_' + currentPatientId);
       render();
     }
 
@@ -403,18 +416,16 @@
 
     function scoreBox(label, scoreObj) {
       if (scoreObj) {
-        return `
-          <div class="score-box">
-            <div class="score-box-label">${label}</div>
-            <div class="score-box-num">${scoreObj.score}</div>
-            <div class="score-box-date">${scoreObj.date}</div>
-          </div>`;
-      }
-      return `
-        <div class="score-box">
+        return `<div class="score-box">
           <div class="score-box-label">${label}</div>
-          <div class="score-na">Not yet administered</div>
+          <div class="score-box-num">${scoreObj.score}</div>
+          <div class="score-box-date">${scoreObj.date}</div>
         </div>`;
+      }
+      return `<div class="score-box">
+        <div class="score-box-label">${label}</div>
+        <div class="score-na">Not yet administered</div>
+      </div>`;
     }
 
     function row(label, value) {
@@ -442,13 +453,26 @@
       const status    = getEffectiveStatus(p);
       const note      = getEffectiveNote(p);
       const pillLabel = status.charAt(0).toUpperCase() + status.slice(1);
+      const tierLabel = RISK_LABELS[p.riskTier] || '';
       const d = p.details;
 
-      // ── Action card ──────────────────────────────────────────
+      // ── Patient header ───────────────────────────────────────
+      const headerHtml = `
+        <div class="patient-header">
+          <div class="header-name-row">
+            <span class="header-name">${p.name}</span>
+            <span class="risk-badge risk-${p.riskTier}">${tierLabel}</span>
+            <span class="status-pill pill-${status}">${pillLabel}</span>
+          </div>
+          <div class="header-meta">${p.age} yo · ${p.gender} · Last visit ${p.lastVisit} · ${p.pcp}</div>
+        </div>`;
+
+      // ── Referral decision card ───────────────────────────────
       let actionHtml;
       if (status === 'archived') {
         actionHtml = `
           <div class="section-card">
+            <div class="section-title">Referral Decision</div>
             <div class="archived-state">
               <span class="status-pill pill-archived">Archived</span>
               <span style="font-size:13px;color:var(--text-muted);flex:1;">This patient has been archived.</span>
@@ -458,35 +482,46 @@
       } else if (status === 'eligible') {
         actionHtml = `
           <div class="section-card">
-            <div class="action-area">
-              <button class="btn-enroll" onclick="alert('Enrollment flow coming soon.')">Enroll in CoCM</button>
-              <div class="action-secondary">
-                <button class="btn-ineligible" onclick="markIneligible()">Mark ineligible</button>
-              </div>
+            <div class="section-title">Referral Decision</div>
+            <div class="referral-rec">
+              <div class="referral-rec-label">Recommendation</div>
+              <div class="referral-rec-text rec-yes">Refer to CoCM</div>
+            </div>
+            <div class="referral-buttons">
+              <button class="btn-refer-cocm" onclick="alert('Referral flow coming soon.')">Refer to CoCM</button>
+              <button class="btn-refer-specialty" onclick="alert('Specialty referral flow coming soon.')">Refer to specialty care</button>
+            </div>
+            <div class="action-tertiary">
+              <button class="btn-ineligible" onclick="markIneligible()">Mark as ineligible</button>
             </div>
           </div>`;
       } else {
         actionHtml = `
           <div class="section-card">
+            <div class="section-title">Referral Decision</div>
+            <div class="referral-rec">
+              <div class="referral-rec-label">Recommendation</div>
+              <div class="referral-rec-text rec-no">Not eligible for CoCM at this time</div>
+            </div>
             <div class="ineligible-state">
               <span class="status-pill pill-ineligible">Ineligible</span>
               ${note ? `<span class="ineligible-note">${note}</span>` : ''}
               <a class="undo-link" href="#" onclick="markEligible(); return false;">Mark eligible</a>
             </div>
-            <div class="action-secondary">
+            <div class="state-actions">
               <button class="btn-archive" onclick="archive()">Archive</button>
             </div>
           </div>`;
       }
 
-      // ── Eligibility summary ──────────────────────────────────
+      // ── Why this patient ─────────────────────────────────────
       const signalBadges = p.signals.map(s =>
         `<span class="sig sig-${s.type}">${s.label}</span>`
       ).join('');
 
-      const summaryHtml = `
+      const whyHtml = `
         <div class="section-card">
-          <div class="section-title">Eligibility Summary</div>
+          <div class="section-title">Why This Patient</div>
           <div class="signals-wrap">${signalBadges}</div>
           <p class="reasoning-text">${p.reasoning}</p>
         </div>`;
@@ -501,60 +536,33 @@
           </div>
         </div>`;
 
-      // ── Mental health ────────────────────────────────────────
-      const mhRows = [
-        row('Diagnosis',         d.mentalHealthDx),
+      // ── Clinical picture (merged) ────────────────────────────
+      const clinicalRows = [
+        row('Mental health dx',   d.mentalHealthDx),
         '<div class="detail-divider"></div>',
-        row('Psychiatric meds',  d.psychiatricMeds?.length ? d.psychiatricMeds.join('<br>') : null),
+        row('Psychiatric meds',   d.psychiatricMeds?.length ? d.psychiatricMeds.join('<br>') : null),
         '<div class="detail-divider"></div>',
-        row('Substance use',     d.substanceUse),
-      ].join('');
-
-      const mentalHtml = `
-        <div class="section-card">
-          <div class="section-title">Mental Health</div>
-          <div class="detail-grid">${mhRows}</div>
-        </div>`;
-
-      // ── Physical health ──────────────────────────────────────
-      const phRows = [
         row('Chronic conditions', d.chronicDx?.length ? d.chronicDx.join('<br>') : null),
         '<div class="detail-divider"></div>',
         row('ER visits',          d.erVisits),
+        '<div class="detail-divider"></div>',
+        row('Substance use',      d.substanceUse),
+        '<div class="detail-divider"></div>',
+        row('Family history',     d.familyHistory),
       ].join('');
 
-      const physicalHtml = `
+      const clinicalHtml = `
         <div class="section-card">
-          <div class="section-title">Physical Health</div>
-          <div class="detail-grid">${phRows}</div>
-        </div>`;
-
-      // ── Background ───────────────────────────────────────────
-      const bgHtml = `
-        <div class="section-card">
-          <div class="section-title">Background</div>
-          <div class="detail-grid">
-            ${row('Family history', d.familyHistory)}
-          </div>
+          <div class="section-title">Clinical Picture</div>
+          <div class="detail-grid">${clinicalRows}</div>
         </div>`;
 
       main.innerHTML = `
-        <div class="patient-header">
-          <div class="header-avatar">${initials(p.name)}</div>
-          <div class="header-info">
-            <div class="header-name-row">
-              <span class="header-name">${p.name}</span>
-              <span class="status-pill pill-${status}">${pillLabel}</span>
-            </div>
-            <div class="header-meta">${p.age} yo · ${p.gender} · Last visit ${p.lastVisit} · ${p.pcp}</div>
-          </div>
-        </div>
+        ${headerHtml}
         ${actionHtml}
-        ${summaryHtml}
+        ${whyHtml}
         ${scoresHtml}
-        ${mentalHtml}
-        ${physicalHtml}
-        ${bgHtml}
+        ${clinicalHtml}
       `;
     }
 
