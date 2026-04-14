@@ -3,726 +3,872 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patient Eligibility Overview</title>
+  <title>Eligibility | Nightingale</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>@import url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css');</style>
   <style>
     :root {
-      --bg:           #f8f9fa;
-      --surface:      #ffffff;
-      --border:       #e5e7eb;
-      --text:         #111827;
-      --text-mid:     #374151;
-      --text-muted:   #6b7280;
-      --primary:      #2563eb;
-      --primary-light:#eff6ff;
+      --primary:       hsl(199, 89%, 48%);
+      --primary-hover: hsl(199, 89%, 42%);
+      --primary-light: hsl(199, 89%, 95%);
+      --bg:            hsl(210, 20%, 98%);
+      --card:          #ffffff;
+      --border:        hsl(214, 14%, 89%);
+      --text:          hsl(220, 20%, 10%);
+      --text-mid:      #374151;
+      --text-muted:    #6B7280;
+      --radius:        10px;
 
-      --pill-eligible-bg:    #eaf3de;
-      --pill-eligible-text:  #3b6d11;
-      --pill-enrolled-bg:    #dbeafe;
-      --pill-enrolled-text:  #1e40af;
-      --risk-high-bg:   #fee2e2; --risk-high-text:   #991b1b;
-      --risk-medium-bg: #fef3c7; --risk-medium-text: #92400e;
-      --risk-low-bg:    #f3f4f6; --risk-low-text:    #374151;
-
-      --pill-ambiguous-bg:   #faeeda;
-      --pill-ambiguous-text: #854f0b;
-      --pill-ineligible-bg:  #f1efe8;
-      --pill-ineligible-text:#5f5e5a;
-
-      --sig-chronic-bg:   #fcebeb;
-      --sig-chronic-text: #a32d2d;
-      --sig-er-bg:        #faeeda;
-      --sig-er-text:      #854f0b;
-      --sig-family-bg:    #eeedfe;
-      --sig-family-text:  #3c3489;
-      --sig-obs-bg:       #e6f1fb;
-      --sig-obs-text:     #185fa5;
-
-      --radius-sm: 8px;
-      --radius-md: 12px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg:           #0f1117;
-        --surface:      #1a1d27;
-        --border:       #2d3040;
-        --text:         #f1f5f9;
-        --text-mid:     #cbd5e1;
-        --text-muted:   #8b92a8;
-        --primary:      #3b82f6;
-        --primary-light:#1e3a5f;
-
-        --sig-chronic-bg:   #2d1515;
-        --sig-chronic-text: #f87171;
-        --sig-er-bg:        #2d2208;
-        --sig-er-text:      #fbbf24;
-        --sig-family-bg:    #1e1a3a;
-        --sig-family-text:  #a78bfa;
-        --sig-obs-bg:       #162035;
-        --sig-obs-text:     #60a5fa;
-
-        --pill-eligible-bg:    #152009;
-        --pill-eligible-text:  #86efac;
-        --pill-enrolled-bg:    #1e3a5f;
-        --pill-enrolled-text:  #93c5fd;
-        --risk-high-bg:   #2d0f0f; --risk-high-text:   #fca5a5;
-        --risk-medium-bg: #2d2208; --risk-medium-text: #fcd34d;
-        --risk-low-bg:    #1f2937; --risk-low-text:    #9ca3af;
-
-        --pill-ambiguous-bg:   #2d2208;
-        --pill-ambiguous-text: #fbbf24;
-        --pill-ineligible-bg:  #2a2a27;
-        --pill-ineligible-text:#a8a8a3;
-      }
+      --high-text:   #B91C1C; --high-bg: #FEF2F2; --high-border: #FECACA; --high-bar: #EF4444;
+      --med-text:    #B45309; --med-bg:  #FFFBEB; --med-border:  #FDE68A; --med-bar: #F59E0B;
+      --low-text:    #166534; --low-bg:  #F0FDF4; --low-border:  #BBF7D0; --low-bar: #22C55E;
+      --ref-text:    #6D28D9; --ref-bg:  #F5F3FF; --ref-border:  #DDD6FE; --ref-bar: #8B5CF6;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Geist', 'Inter', sans-serif;
       background: var(--bg);
       color: var(--text);
-      font-size: 15px;
-      line-height: 1.5;
       min-height: 100vh;
+      display: flex;
+      font-size: 13px;
     }
 
     /* ── SIDEBAR ── */
     .sidebar {
-      width: 216px;
-      min-height: 100vh;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      z-index: 100;
+      width: 216px; min-height: 100vh;
+      background: var(--card); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; flex-shrink: 0;
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
     }
-
     .sidebar-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 12px;
-      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 14px 14px 12px; border-bottom: 1px solid var(--border);
     }
-
+    .sidebar-logo-left { display: flex; align-items: center; gap: 10px; }
     .logo-icon {
-      width: 34px; height: 34px;
-      background: #1e293b;
-      border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      width: 34px; height: 34px; background: #1E293B;
+      border-radius: var(--radius); display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0;
     }
-
-    .logo-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
-    .logo-sub  { font-size: 9.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; }
-
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-name { font-size: 13px; font-weight: 700; color: #111827; line-height: 1.3; }
+    .logo-sub  { font-size: 9.5px; font-weight: 600; color: #9CA3AF; letter-spacing: 0.07em; text-transform: uppercase; }
     .sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0 8px; }
-
-    .nav-label {
-      font-size: 10.5px; font-weight: 600; color: var(--text-muted);
-      letter-spacing: 0.07em; text-transform: uppercase;
-      padding: 14px 16px 4px;
+    .nav-section-label {
+      font-size: 10.5px; font-weight: 600; color: #9CA3AF;
+      letter-spacing: 0.07em; text-transform: uppercase; padding: 14px 16px 4px;
     }
-
     .nav-item {
       display: flex; align-items: center; gap: 9px;
-      padding: 7px 10px; margin: 1px 8px;
-      font-size: 13.5px; font-weight: 500; color: var(--text-mid);
-      border-radius: 7px; cursor: pointer; text-decoration: none;
-      transition: background 0.12s, color 0.12s;
+      padding: 7px 10px; margin: 1px 8px; font-size: 13.5px; font-weight: 500;
+      color: #374151; border-radius: calc(var(--radius) - 2px);
+      cursor: pointer; text-decoration: none; transition: background 0.12s, color 0.12s;
     }
-
-    .nav-item i { font-size: 17px; color: var(--text-muted); flex-shrink: 0; }
-    .nav-item:hover { background: var(--bg); }
-    .nav-item:hover i { color: var(--text-mid); }
+    .nav-item i { font-size: 17px; color: #9CA3AF; flex-shrink: 0; }
+    .nav-item:hover { background: #F9FAFB; }
+    .nav-item:hover i { color: #6B7280; }
     .nav-item.active { background: var(--primary-light); color: var(--primary); }
     .nav-item.active i { color: var(--primary); }
-
     .sidebar-user {
-      border-top: 1px solid var(--border);
-      padding: 10px 12px;
-      display: flex; align-items: center; gap: 9px;
+      border-top: 1px solid var(--border); padding: 10px 12px;
+      display: flex; align-items: center; gap: 9px; cursor: pointer;
     }
-
     .user-avatar {
-      width: 30px; height: 30px; border-radius: 50%;
-      background: var(--primary); color: #fff;
+      width: 30px; height: 30px; border-radius: 50%; background: #3B82F6;
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; flex-shrink: 0;
+      font-size: 11px; font-weight: 700; color: white; flex-shrink: 0;
     }
-
-    .user-name  { font-size: 12.5px; font-weight: 600; color: var(--text); }
-    .user-email { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
-
-    /* ── TOPBAR ── */
-    .topbar {
-      margin-left: 216px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 32px;
-      height: 56px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 10;
-    }
-
-    .topbar-title { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
-
-    .topbar-right { display: flex; align-items: center; gap: 18px; font-size: 14px; color: var(--text-muted); }
-    .provider-name { font-weight: 600; color: var(--text-mid); }
-    .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 5px; }
+    .user-info { flex: 1; min-width: 0; }
+    .user-name  { font-size: 12.5px; font-weight: 600; color: #111827; }
+    .user-email { font-size: 11px; color: #9CA3AF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* ── MAIN ── */
-    .main { margin-left: 216px; padding: 32px 32px 80px; }
+    .main { margin-left: 216px; flex: 1; padding: 28px 28px 48px; min-height: 100vh; }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .page-title { font-size: 24px; font-weight: 700; color: #111827; line-height: 1.2; }
+    .page-sub   { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+    .practice-meta {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--text-muted); margin-top: 10px;
+    }
+    .practice-meta span { color: var(--text-mid); font-weight: 500; }
+    .meta-sep { color: #D1D5DB; }
+    .sync-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #22C55E;
+      display: inline-block; margin-right: 3px;
+    }
 
     /* ── METRICS ── */
     .metrics-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 24px;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin: 20px 0;
     }
-
     .metric-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 20px 22px;
+      background: var(--card); border: 0.5px solid var(--border);
+      border-radius: var(--radius); padding: 18px 20px;
     }
-
     .metric-label {
-      font-size: 11px; font-weight: 700; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px;
+      font-size: 11px; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
+    }
+    .metric-value { font-size: 28px; font-weight: 700; color: #111827; line-height: 1; }
+    .metric-sub   { font-size: 11.5px; color: var(--text-muted); margin-top: 5px; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 0;
+      border-bottom: 1px solid var(--border); padding-right: 16px;
+    }
+    .filter-pills { display: flex; gap: 0; }
+    .filter-pill {
+      padding: 16px 16px; border: none; border-bottom: 2px solid transparent;
+      font-size: 13px; font-weight: 500; color: var(--text-muted);
+      background: none; cursor: pointer; white-space: nowrap;
+      font-family: 'Geist','Inter',sans-serif; transition: all 0.12s;
+      margin-bottom: -1px;
+    }
+    .filter-pill:hover { color: var(--text); }
+    .filter-pill.active {
+      color: var(--primary); font-weight: 600;
+      border-bottom-color: var(--primary);
+    }
+    .filter-count {
+      font-size: 11px; font-weight: 600; margin-left: 6px;
+      color: inherit; opacity: 0.7;
+    }
+    .search-wrap {
+      position: relative; flex-shrink: 0;
+    }
+    .search-wrap i {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      font-size: 14px; color: #9CA3AF;
+    }
+    .search-input {
+      padding: 9px 12px 9px 32px; border: 0.5px solid var(--border);
+      border-radius: 8px; font-size: 12.5px; font-family: 'Geist','Inter',sans-serif;
+      color: var(--text); background: var(--card); width: 220px;
+      outline: none; transition: border-color 0.12s;
+    }
+    .search-input:focus { border-color: var(--primary); }
+    .search-input::placeholder { color: #9CA3AF; }
+
+    .toolbar-row {
+      display: flex; align-items: center; justify-content: flex-end;
+      padding: 8px 16px; border-bottom: 1px solid var(--border);
+      background: var(--bg);
     }
 
-    .metric-value { font-size: 32px; font-weight: 700; color: var(--text); line-height: 1; }
-    .metric-sub { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
-
-    /* ── LEGEND ── */
-    .legend {
-      display: flex; align-items: center; gap: 22px;
-      margin-bottom: 20px; flex-wrap: wrap;
+    /* ── TABLE CARD ── */
+    .table-card {
+      background: var(--card); border: 0.5px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
     }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
 
-    .legend-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-muted); }
-
-    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .dot-chronic { background: #dc2626; }
-    .dot-er      { background: #d97706; }
-    .dot-family  { background: #7c3aed; }
-    .dot-obs     { background: #2563eb; }
-
-    /* ── RISK BADGES ── */
-    .risk-badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
-    .risk-high   { background: var(--risk-high-bg);   color: var(--risk-high-text); }
-    .risk-medium { background: var(--risk-medium-bg); color: var(--risk-medium-text); }
-    .risk-low    { background: var(--risk-low-bg);    color: var(--risk-low-text); }
-
-    /* ── FILTERS ── */
-    .filter-section { margin-bottom: 24px; }
-    .filter-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
-    .filter-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
-
-    .filter-btn {
-      padding: 7px 16px;
-      border: 1px solid var(--border);
-      border-radius: 9999px;
-      background: var(--surface);
-      color: var(--text-muted);
-      font-size: 14px; font-weight: 500;
-      cursor: pointer; font-family: inherit;
-      transition: border-color 0.12s, color 0.12s, background 0.12s;
+    thead th {
+      padding: 14px 14px; text-align: left;
+      font-size: 10.5px; font-weight: 600; color: #9CA3AF;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      border-bottom: 0.5px solid var(--border); background: #FAFAFA;
       white-space: nowrap;
     }
 
-    .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
-    .filter-btn.active { background: #00AFF1; border-color: #00AFF1; color: #fff; }
-
-    /* ── PATIENT ROW ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes rowIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { opacity: 0; animation: fadeUp 0.35s ease forwards; }
     .patient-row {
-      display: flex; align-items: center; gap: 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 3px solid transparent;
-      border-radius: var(--radius-sm);
-      padding: 16px 20px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      transition: box-shadow 0.12s;
+      cursor: pointer; transition: background 0.1s;
+      animation: rowIn 0.25s ease both;
+    }
+    .patient-row:hover td { background: #FAFAFA; }
+    .patient-row.expanded td { background: #F9FAFB; }
+
+    tbody td {
+      padding: 14px 14px; vertical-align: middle;
+      border-bottom: 0.5px solid var(--border); color: var(--text-mid);
+    }
+    .patient-row:last-of-type td { border-bottom: none; }
+
+    /* Patient name cell */
+    .pname { font-size: 13px; font-weight: 600; color: #111827; }
+    .page  { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+
+    /* Diagnoses */
+    .diag-list { display: flex; flex-direction: column; gap: 2px; }
+    .diag-item { font-size: 12px; color: var(--text-mid); }
+
+    /* Refer out badge */
+    .refer-badge { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; white-space: nowrap; background: #fff7ed; color: #c2410c; }
+
+    /* Risk badge */
+    .risk-badge {
+      display: inline-flex; align-items: center; padding: 4px 12px;
+      border-radius: 9999px; font-size: 12px; font-weight: 600;
+      border: none; white-space: nowrap;
+    }
+    .risk-high     { color: var(--high-text); background: var(--high-bg); border-color: var(--high-border); }
+    .risk-medium   { color: var(--med-text);  background: var(--med-bg);  border-color: var(--med-border); }
+    .risk-low      { color: var(--low-text);  background: var(--low-bg);  border-color: var(--low-border); }
+    .risk-referred { color: var(--ref-text);  background: var(--ref-bg);  border-color: var(--ref-border); }
+
+    /* Score */
+    .score-cell { display: flex; flex-direction: column; gap: 5px; min-width: 90px; }
+    .score-num  { font-size: 13px; font-weight: 700; color: #111827; }
+    .score-bar  { height: 4px; background: #F3F4F6; border-radius: 9999px; width: 80px; }
+    .score-fill { height: 100%; border-radius: 9999px; transition: width 0.3s; }
+    .fill-high     { background: var(--high-bar); }
+    .fill-medium   { background: var(--med-bar); }
+    .fill-low      { background: var(--low-bar); }
+    .fill-referred { background: var(--ref-bar); }
+
+    /* Reasoning */
+    .reasoning { font-size: 12px; color: var(--text-muted); line-height: 1.5; max-width: 340px; }
+
+    /* Actions */
+    .action-group { display: flex; align-items: center; gap: 6px; }
+    .btn-refer {
+      padding: 8px 0; width: 90px; text-align: center; background: var(--primary); color: white;
+      border: none; border-radius: 6px; font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
+      transition: background 0.12s;
+    }
+    .btn-refer:hover { background: var(--primary-hover); }
+    .btn-dismiss {
+      padding: 8px 0; width: 90px; text-align: center; background: none; border: 0.5px solid var(--border);
+      color: var(--text-mid); font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
+      border-radius: 6px; transition: border-color 0.12s, color 0.12s;
+    }
+    .btn-dismiss:hover { border-color: #9CA3AF; color: var(--text); }
+    .btn-screen {
+      padding: 5px 12px; background: none; border: 0.5px solid var(--border);
+      color: var(--text-mid); border-radius: 6px; font-size: 11.5px; font-weight: 500;
+      cursor: pointer; font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
+      transition: border-color 0.12s, color 0.12s;
+    }
+    .btn-screen:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-view-status {
+      padding: 5px 12px; background: none; border: 0.5px solid var(--ref-border);
+      color: var(--ref-text); border-radius: 6px; font-size: 11.5px; font-weight: 500;
+      cursor: pointer; font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
     }
 
-    .patient-row:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
-
-    .patient-row.ineligible { opacity: 0.65; }
-
-    .row-eligible   { border-left-color: #639922; }
-    .row-enrolled   { border-left-color: #2563eb; }
-    .row-ineligible { border-left-color: #888780; }
-    .row-archived   { border-left-color: #d1d5db; opacity: 0.5; }
-
-    /* ── ROW BODY ── */
-    .row-body { flex: 1; min-width: 0; }
-
-    .row-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
-    .patient-name { font-size: 15px; font-weight: 600; color: var(--text); }
-    .patient-meta { font-size: 13px; color: var(--text-muted); }
-
-    .signals { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
-
-    .sig {
-      font-size: 12px; font-weight: 500;
-      padding: 3px 10px; border-radius: 999px; white-space: nowrap;
+    /* ── DETAIL PANEL ── */
+    .detail-row td { padding: 0; border-bottom: 0.5px solid var(--border); background: #FAFAFA; }
+    .detail-panel {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 0; border-top: 0.5px solid var(--border);
     }
-
-    .sig-chronic { background: var(--sig-chronic-bg); color: var(--sig-chronic-text); }
-    .sig-er      { background: var(--sig-er-bg);      color: var(--sig-er-text); }
-    .sig-family  { background: var(--sig-family-bg);  color: var(--sig-family-text); }
-    .sig-obs     { background: var(--sig-obs-bg);     color: var(--sig-obs-text); }
-    .sig-more    { background: var(--border); color: var(--text-muted); }
-
-    .signals { margin-bottom: 0; }
-
-    /* ── ROW RIGHT ── */
-    .row-right {
-      display: flex; align-items: center;
-      flex-shrink: 0;
+    .detail-col {
+      padding: 18px 20px; border-right: 0.5px solid var(--border);
     }
-
-    .risk-pill {
-      font-size: 12px; font-weight: 700;
-      padding: 3px 10px; border-radius: var(--radius-sm); white-space: nowrap;
+    .detail-col:last-child { border-right: none; }
+    .detail-col-title {
+      font-size: 10.5px; font-weight: 700; color: #9CA3AF;
+      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px;
     }
+    .detail-row-item {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 8px; padding: 5px 0; border-bottom: 0.5px solid #F3F4F6;
+      font-size: 12px;
+    }
+    .detail-row-item:last-child { border-bottom: none; }
+    .detail-key   { color: var(--text-muted); flex-shrink: 0; }
+    .detail-val   { color: #111827; font-weight: 500; text-align: right; }
+    .med-active   { color: #16A34A; font-size: 10.5px; font-weight: 600; }
+    .badge-signal {
+      font-size: 11px; font-weight: 700; padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .signal-elevated { background: #FEF3C7; color: #B45309; }
+    .signal-high     { background: #FEF2F2; color: #B91C1C; }
+    .signal-normal   { background: #F3F4F6; color: #6B7280; }
 
-    .pill-eligible   { background: var(--pill-eligible-bg);   color: var(--pill-eligible-text); }
-    .pill-enrolled   { background: var(--pill-enrolled-bg);   color: var(--pill-enrolled-text); }
-    .pill-ambiguous  { background: var(--pill-ambiguous-bg);  color: var(--pill-ambiguous-text); }
-    .pill-ineligible { background: var(--pill-ineligible-bg); color: var(--pill-ineligible-text); }
-
-    .signal-count { font-size: 12px; color: var(--text-muted); }
-    .btn-archive-row { padding: 9px 18px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); background: transparent; color: #5f5e5a; font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.12s, color 0.12s; white-space: nowrap; }
-    .btn-archive-row:hover { border-color: #9ca3af; color: var(--text-mid); }
-    .btn-enroll-row { padding: 9px 18px; border: none; border-radius: var(--radius-sm); background: #00AFF1; color: #fff; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.12s; white-space: nowrap; }
-    .btn-enroll-row:hover { opacity: 0.88; }
-
-    /* ── MODAL ── */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: flex; align-items: center; justify-content: center; }
-    .modal-overlay.hidden { display: none; }
-    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 28px 28px 24px; width: 360px; max-width: calc(100vw - 48px); }
-    .modal-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-    .modal-body { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
-    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
-    .modal-btn-confirm { padding: 9px 22px; background: var(--primary); color: #fff; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.12s; }
-    .modal-btn-confirm:hover { opacity: 0.88; }
-    .modal-btn-cancel { padding: 9px 18px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-muted); font-family: inherit; font-size: 14px; cursor: pointer; transition: border-color 0.12s; }
-    .modal-btn-cancel:hover { border-color: #9ca3af; color: var(--text); }
-
-    /* ── EMPTY ── */
+    /* Empty state */
     .empty-state {
-      text-align: center; padding: 64px 24px;
-      color: var(--text-muted); font-size: 15px;
+      padding: 48px; text-align: center; color: var(--text-muted);
+      font-size: 13px;
     }
+    .empty-state i { font-size: 28px; color: #D1D5DB; display: block; margin-bottom: 10px; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 680px) {
-      .sidebar { display: none; }
-      .topbar, .main { margin-left: 0; }
-      .metrics-row { grid-template-columns: repeat(2, 1fr); }
-      .patient-row { flex-wrap: wrap; }
-      .row-right { width: 100%; justify-content: flex-end; padding-top: 8px; border-top: 1px solid var(--border); }
-      .row-top { flex-wrap: wrap; }
+    /* New badge */
+    .new-badge {
+      display: inline-block; font-size: 9px; font-weight: 700;
+      background: var(--primary-light); color: var(--primary);
+      padding: 1px 5px; border-radius: 4px; margin-left: 6px;
+      vertical-align: middle; letter-spacing: 0.04em;
     }
   </style>
 </head>
 <body>
 
+  <!-- ── SIDEBAR ── -->
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-icon">
-        <i class="ti ti-heartbeat" style="font-size:17px;color:white;"></i>
+      <div class="sidebar-logo-left">
+        <div class="logo-icon">
+          <img src="nightingale-assets/logo-light.svg" width="22" height="22" alt="logo">
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">Integral Health</span>
+          <span class="logo-sub">Mission Control</span>
+        </div>
       </div>
-      <div>
-        <div class="logo-name">Integral Health</div>
-        <div class="logo-sub">Mission Control</div>
-      </div>
+      <i class="ti ti-moon" style="font-size:15px;color:#9CA3AF;cursor:pointer;"></i>
     </div>
+
     <nav class="sidebar-nav">
       <a class="nav-item" href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Dashboard</a>
-      <div class="nav-label">General</div>
+
+      <div class="nav-section-label">General</div>
       <a class="nav-item" href="#"><i class="ti ti-users"></i> Patients</a>
       <a class="nav-item" href="#"><i class="ti ti-calendar"></i> Appointments</a>
-      <div class="nav-label">Clinical</div>
+
+      <div class="nav-section-label">Clinical</div>
       <a class="nav-item" href="#"><i class="ti ti-stethoscope"></i> Team</a>
       <a class="nav-item" href="#"><i class="ti ti-clock"></i> Time</a>
       <a class="nav-item" href="#"><i class="ti ti-clipboard-list"></i> Caseload</a>
       <a class="nav-item" href="#"><i class="ti ti-chart-bar"></i> Performance</a>
-      <a class="nav-item active" href="#"><i class="ti ti-shield-check"></i> Eligibility</a>
-      <div class="nav-label">Operations</div>
+      <a class="nav-item active" href="eligibility.html"><i class="ti ti-shield-check"></i> Eligibility</a>
+
+      <div class="nav-section-label">Operations</div>
       <a class="nav-item" href="#"><i class="ti ti-list"></i> Waitlist</a>
       <a class="nav-item" href="#"><i class="ti ti-bookmark"></i> Follow-up</a>
       <a class="nav-item" href="#"><i class="ti ti-flag"></i> Flagging</a>
       <a class="nav-item" href="#"><i class="ti ti-shield"></i> Enrollments</a>
       <a class="nav-item" href="#"><i class="ti ti-handshake"></i> Partners</a>
-      <div class="nav-label">Settings</div>
-      <a class="nav-item" href="#"><i class="ti ti-building"></i> Practice</a>
+
+      <div class="nav-section-label">Settings</div>
+      <a class="nav-item" href="#"><i class="ti ti-building"></i> Partners</a>
       <a class="nav-item" href="#"><i class="ti ti-user-cog"></i> Providers</a>
     </nav>
+
     <div class="sidebar-user">
       <div class="user-avatar">PY</div>
-      <div style="flex:1;min-width:0;">
+      <div class="user-info">
         <div class="user-name">Peter Yoo</div>
-        <div class="user-email">peter.yoo@integralhealth.me</div>
+        <div class="user-email">peter.yoo@integ...</div>
       </div>
-      <i class="ti ti-chevron-down" style="font-size:13px;color:#9CA3AF;margin-left:auto;"></i>
+      <i class="ti ti-chevron-down" style="font-size:13px;color:#9CA3AF;"></i>
+      <i class="ti ti-layout-sidebar" style="font-size:15px;color:#9CA3AF;margin-left:2px;"></i>
     </div>
   </aside>
 
-  <header class="topbar">
-    <div class="topbar-title">Patient eligibility overview</div>
-    <div class="topbar-right">
-      <span class="provider-name">Dr. Peter Yoo</span>
-      <span>Internal Medicine</span>
-      <span><span class="sync-dot"></span>Last synced Apr 13, 2026</span>
-    </div>
-  </header>
-
+  <!-- ── MAIN ── -->
   <main class="main">
-    <div class="metrics-row" id="metrics-row"></div>
 
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot dot-chronic"></div> Chronic condition</div>
-      <div class="legend-item"><div class="legend-dot dot-er"></div> ER visit history</div>
-      <div class="legend-item"><div class="legend-dot dot-family"></div> Family history</div>
-      <div class="legend-item"><div class="legend-dot dot-obs"></div> Clinical observation</div>
+    <!-- Page header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Eligible Patients</h1>
+        <div class="practice-meta">
+          <span class="sync-dot"></span> Last synced Apr 10, 2026 at 2:14 PM
+        </div>
+      </div>
     </div>
 
-    <div class="filter-section">
-      <div class="filter-label">Status</div>
-      <div class="filter-bar" id="filter-bar"></div>
+    <!-- Metrics -->
+    <div class="metrics-row">
+      <div class="metric-card animate-in" style="animation-delay:0ms">
+        <div class="metric-label">Total Panel</div>
+        <div class="metric-value" id="metric-total">0</div>
+        <div class="metric-sub">Active patients</div>
+      </div>
+      <div class="metric-card animate-in" style="animation-delay:60ms">
+        <div class="metric-label">Eligible</div>
+        <div class="metric-value" id="metric-eligible">0</div>
+        <div class="metric-sub">Ready to enroll</div>
+      </div>
+      <div class="metric-card animate-in" style="animation-delay:120ms">
+        <div class="metric-label">Refer Out</div>
+        <div class="metric-value" id="metric-referout">0</div>
+        <div class="metric-sub">Needs specialty care</div>
+      </div>
     </div>
-    <div id="patient-list"></div>
+
+    <!-- Table card -->
+    <div class="table-card animate-in" style="animation-delay:180ms">
+      <!-- Tabs row -->
+      <div class="filter-bar">
+        <div class="filter-pills">
+          <button class="filter-pill active" data-filter="all">All <span class="filter-count" id="count-all"></span></button>
+          <button class="filter-pill" data-filter="referout">Refer Out <span class="filter-count" id="count-referout"></span></button>
+          <button class="filter-pill" data-filter="archived">Archived <span class="filter-count" id="count-archived"></span></button>
+        </div>
+        <div class="search-wrap">
+          <i class="ti ti-search"></i>
+          <input class="search-input" id="patient-search" type="text" placeholder="Search patients…">
+        </div>
+      </div>
+
+      <!-- Patient table -->
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
+              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
+              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('referOut')">Refer Out <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
+              <th style="width:46%">Description</th>
+              <th style="width:12%">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="patient-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
   </main>
 
-  <div class="modal-overlay hidden" id="enroll-modal">
-    <div class="modal">
-      <div class="modal-title">Enroll patient</div>
-      <div class="modal-body" id="modal-body">Would you like to enroll this patient in CoCM?</div>
-      <div class="modal-actions">
-        <button class="modal-btn-cancel" onclick="closeEnrollModal()">Cancel</button>
-        <button class="modal-btn-confirm" onclick="confirmEnroll()">Enroll</button>
+  <!-- Enroll Modal -->
+  <div id="enroll-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:12px; padding:28px; width:360px; box-shadow:0 8px 32px rgba(0,0,0,0.12);">
+      <div style="font-size:16px; font-weight:700; color:#111827; margin-bottom:8px;">Enroll patient</div>
+      <div id="modal-patient-name" style="font-size:14px; color:#6B7280; margin-bottom:24px;"></div>
+      <div style="display:flex; gap:10px; justify-content:flex-end;">
+        <button onclick="closeModal()" style="padding:8px 16px; border:1px solid #E5E7EB; border-radius:8px; background:none; font-size:13px; cursor:pointer; font-family:inherit;">Cancel</button>
+        <button onclick="confirmEnroll()" style="padding:8px 16px; border:none; border-radius:8px; background:var(--primary); color:white; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit;">Enroll</button>
       </div>
     </div>
   </div>
 
   <script>
-    localStorage.clear();
-
     const PATIENTS = [
       {
-        id: 1, name: "James Lee", age: 52, gender: "Male", lastVisit: "Apr 8, 2026",
-        status: "eligible", riskTier: "high",
-        reasoning: "3 chronic conditions with recent ER utilization and patient-reported low mood — multiple converging signals suggest unaddressed behavioral health need.",
-        signals: [
-          { type: "obs",     label: "PHQ-9: 14" },
-          { type: "chronic", label: "Type 2 diabetes" },
-          { type: "chronic", label: "Hypertension" },
-          { type: "er",      label: "2 ER visits / 90 days" },
-          { type: "family",  label: "Family Hx: depression" },
-          { type: "obs",     label: "Sleep complaints" }
+        id: 1, name: "Sarah Mitchell", age: 52, gender: "Female",
+        diagnoses: ["Major Depressive Disorder", "Hypertension"],
+        tier: "high", score: 87, isNew: true, status: "pending", eligible: true, referOut: false,
+        reasoning: "PHQ-9 of 14 with no referral in 22 months; active antidepressant with no BH provider on file.",
+        medications: [
+          { name: "Sertraline 100mg", status: "Active", duration: "18 mo" },
+          { name: "Lisinopril 10mg",  status: "Active", duration: "4 yr" }
         ],
-        details: {
-          mentalHealthDx:  null,
-          psychiatricMeds: [],
-          chronicDx:       ["Type 2 diabetes", "Hypertension", "Obesity"],
-          erVisits:        "2 visits in the last 90 days",
-          substanceUse:    null,
-          familyHistory:   "Father: depression",
-          phq9:            { score: 14, date: "Mar 20, 2026" },
-          gad7:            null
-        }
+        signals: { phq9: 14, gad7: null, erVisits: 0, missedVisits: 2 },
+        history: { mhDiagnosis: "MDD (2019)", familyHistory: "Maternal depression", lastBHContact: "22 months ago" }
       },
       {
-        id: 2, name: "Sofia Reyes", age: 38, gender: "Female", lastVisit: "Apr 10, 2026",
-        status: "eligible", riskTier: "high",
-        reasoning: "Chronic pain with frequent ER visits and clinically observed anxiety — pattern consistent with undertreated behavioral health need.",
-        signals: [
-          { type: "obs",     label: "PHQ-9: 11" },
-          { type: "obs",     label: "GAD-7: 12" },
-          { type: "chronic", label: "Chronic pain syndrome" },
-          { type: "er",      label: "3 ER visits / 6 months" },
-          { type: "obs",     label: "Sleep complaints" }
+        id: 2, name: "James Rodriguez", age: 45, gender: "Male",
+        diagnoses: ["Generalized Anxiety Disorder", "Type 2 Diabetes"],
+        tier: "high", score: 82, isNew: true, status: "pending", eligible: true, referOut: false,
+        reasoning: "GAD-7 of 12 and PHQ-9 of 16 both within 6 months; no BH contact in 18 months; 1 ER visit.",
+        medications: [
+          { name: "Escitalopram 20mg", status: "Active", duration: "8 mo" },
+          { name: "Clonazepam 0.5mg",  status: "Active", duration: "14 mo" },
+          { name: "Metformin 1000mg",   status: "Active", duration: "3 yr" }
         ],
-        details: {
-          mentalHealthDx:  null,
-          psychiatricMeds: [],
-          chronicDx:       ["Chronic pain syndrome", "Fibromyalgia"],
-          erVisits:        "3 visits in the last 6 months",
-          substanceUse:    null,
-          familyHistory:   null,
-          phq9:            { score: 11, date: "Mar 30, 2026" },
-          gad7:            { score: 12, date: "Mar 30, 2026" }
-        }
+        signals: { phq9: 16, gad7: 12, erVisits: 1, missedVisits: 3 },
+        history: { mhDiagnosis: "GAD (2021)", familyHistory: "None documented", lastBHContact: "18 months ago" }
       },
       {
-        id: 3, name: "Thomas Nguyen", age: 45, gender: "Male", lastVisit: "Mar 28, 2026",
-        status: "ineligible", riskTier: "low",
-        note: "Single chronic condition with mild anxiety signals — does not meet CoCM threshold at this time.",
-        reasoning: "Single chronic condition with family history and self-reported stress — worth monitoring closely.",
-        signals: [
-          { type: "obs",     label: "GAD-7: 9" },
-          { type: "chronic", label: "Hypertension" },
-          { type: "family",  label: "Family Hx: anxiety" },
-          { type: "obs",     label: "Stress reported" }
+        id: 3, name: "Patricia Chen", age: 68, gender: "Female",
+        diagnoses: ["PTSD", "Chronic Pain Syndrome"],
+        tier: "high", score: 91, isNew: false, status: "pending", eligible: true, referOut: true,
+        reasoning: "Long-term opioid (18 mo) with escalating dosage; 2 ER visits in 90 days; PTSD with no BH contact in 24 months.",
+        medications: [
+          { name: "Oxycodone 15mg",       status: "Active", duration: "18 mo" },
+          { name: "Gabapentin 600mg",      status: "Active", duration: "2 yr" },
+          { name: "Cyclobenzaprine 10mg",  status: "Active", duration: "6 mo" }
         ],
-        details: {
-          mentalHealthDx:  null,
-          psychiatricMeds: [],
-          chronicDx:       ["Hypertension"],
-          erVisits:        null,
-          substanceUse:    null,
-          familyHistory:   "Mother: generalized anxiety disorder",
-          phq9:            { score: 7, date: "Feb 14, 2026" },
-          gad7:            { score: 9, date: "Feb 14, 2026" }
-        }
+        signals: { phq9: 12, gad7: 9, erVisits: 2, missedVisits: 1 },
+        history: { mhDiagnosis: "PTSD (2018)", familyHistory: "N/A", lastBHContact: "24 months ago" }
       },
       {
-        id: 4, name: "Maria Okonkwo", age: 61, gender: "Female", lastVisit: "Apr 2, 2026",
-        status: "ineligible", riskTier: "medium",
-        note: "Chronic condition with fatigue — insufficient behavioral health signals for CoCM enrollment.",
-        reasoning: "Chronic condition with family history and fatigue — may be masking underlying depression.",
-        signals: [
-          { type: "obs",     label: "PHQ-9: 8" },
-          { type: "chronic", label: "Type 2 diabetes" },
-          { type: "family",  label: "Family Hx: depression" },
-          { type: "obs",     label: "Fatigue reported" }
+        id: 4, name: "Michael Thompson", age: 39, gender: "Male",
+        diagnoses: ["Bipolar II Disorder", "Obesity"],
+        tier: "high", score: 78, isNew: false, status: "pending", eligible: true, referOut: true,
+        reasoning: "Bipolar II with mood stabilizer but no BH provider; 4 missed visits; last BH contact 14 months ago.",
+        medications: [
+          { name: "Lamotrigine 150mg", status: "Active", duration: "3 yr" },
+          { name: "Quetiapine 50mg",   status: "Active", duration: "2 yr" },
+          { name: "Metoprolol 25mg",   status: "Active", duration: "1 yr" }
         ],
-        details: {
-          mentalHealthDx:  null,
-          psychiatricMeds: [],
-          chronicDx:       ["Type 2 diabetes", "Hypothyroidism"],
-          erVisits:        null,
-          substanceUse:    null,
-          familyHistory:   "Mother: major depression",
-          phq9:            { score: 8, date: "Mar 5, 2026" },
-          gad7:            null
-        }
+        signals: { phq9: 11, gad7: 7, erVisits: 0, missedVisits: 4 },
+        history: { mhDiagnosis: "Bipolar II (2017)", familyHistory: "Paternal bipolar I", lastBHContact: "14 months ago" }
       },
       {
-        id: 5, name: "David Walsh", age: 29, gender: "Male", lastVisit: "Apr 5, 2026",
-        status: "ineligible", riskTier: "low",
-        note: "Insufficient signals. Family history only, no chronic conditions or ER visits.",
-        reasoning: "Family history only with mild sleep complaints — no chronic conditions or ER visits; monitor at routine visits.",
-        signals: [
-          { type: "obs",    label: "PHQ-9: 4" },
-          { type: "family", label: "Family Hx: depression" },
-          { type: "obs",    label: "Sleep complaints" }
+        id: 5, name: "Linda Park", age: 61, gender: "Female",
+        diagnoses: ["Major Depressive Disorder", "COPD"],
+        tier: "medium", score: 58, isNew: true, status: "pending", eligible: true, referOut: false,
+        reasoning: "Patient presented with mild depressive symptoms (PHQ-9: 8) managed with antidepressant — symptom burden does not yet meet CoCM threshold.",
+        medications: [
+          { name: "Bupropion 150mg",    status: "Active", duration: "15 mo" },
+          { name: "Tiotropium inhaler", status: "Active", duration: "6 yr" }
         ],
-        details: {
-          mentalHealthDx:  null,
-          psychiatricMeds: [],
-          chronicDx:       [],
-          erVisits:        null,
-          substanceUse:    null,
-          familyHistory:   "Sibling: depression",
-          phq9:            { score: 4, date: "Apr 1, 2026" },
-          gad7:            null
-        }
+        signals: { phq9: 8, gad7: null, erVisits: 1, missedVisits: 1 },
+        history: { mhDiagnosis: "MDD (2020)", familyHistory: "None documented", lastBHContact: "15 months ago" }
       },
       {
-        id: 6, name: "Linda Park", age: 55, gender: "Female", lastVisit: "Apr 1, 2026",
-        status: "eligible", riskTier: "high",
-        reasoning: "Two chronic conditions with a recent ER visit and clinician-observed low mood — signals strongly align with CoCM eligibility criteria.",
-        signals: [
-          { type: "obs",     label: "PHQ-9: 12" },
-          { type: "chronic", label: "COPD" },
-          { type: "chronic", label: "Hypertension" },
-          { type: "er",      label: "1 ER visit / 30 days" },
-          { type: "obs",     label: "Low mood reported" }
+        id: 6, name: "Robert Kim", age: 47, gender: "Male",
+        diagnoses: ["Generalized Anxiety Disorder", "Insomnia"],
+        tier: "medium", score: 64, isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Patient reports anxiety and sleep difficulties but GAD-7 of 9 falls below the clinical threshold for CoCM referral at this time.",
+        medications: [
+          { name: "Lorazepam 1mg", status: "Active", duration: "14 mo" },
+          { name: "Zolpidem 10mg", status: "Active", duration: "8 mo" }
         ],
-        details: {
-          mentalHealthDx:  "F32.0 — Major depressive disorder, mild",
-          psychiatricMeds: ["Sertraline 50mg"],
-          chronicDx:       ["COPD", "Hypertension"],
-          erVisits:        "1 visit in the last 30 days",
-          substanceUse:    null,
-          familyHistory:   null,
-          phq9:            { score: 12, date: "Mar 28, 2026" },
-          gad7:            null
-        }
+        signals: { phq9: null, gad7: 9, erVisits: 0, missedVisits: 2 },
+        history: { mhDiagnosis: "GAD (2022)", familyHistory: "N/A", lastBHContact: "Never" }
+      },
+      {
+        id: 7, name: "Nancy Walker", age: 55, gender: "Female",
+        diagnoses: ["Major Depressive Disorder", "Fibromyalgia"],
+        tier: "medium", score: 51, isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Patient has a history of MDD but current PHQ-9 of 7 and GAD-7 of 5 suggest mild, stable symptoms not requiring CoCM level of care.",
+        medications: [
+          { name: "Duloxetine 60mg",  status: "Active", duration: "2 yr" },
+          { name: "Pregabalin 75mg",  status: "Active", duration: "1 yr" }
+        ],
+        signals: { phq9: 7, gad7: 5, erVisits: 1, missedVisits: 0 },
+        history: { mhDiagnosis: "MDD (2021)", familyHistory: "Sibling anxiety", lastBHContact: "15 months ago" }
+      },
+      {
+        id: 8, name: "David Lee", age: 33, gender: "Male",
+        diagnoses: ["PTSD", "Alcohol Use Disorder"],
+        tier: "medium", score: 47, isNew: true, status: "pending", eligible: true, referOut: true,
+        reasoning: "Patient managing PTSD with medication and reports mild symptoms — currently stable and does not meet CoCM criteria.",
+        medications: [
+          { name: "Sertraline 50mg",  status: "Active", duration: "5 mo" },
+          { name: "Naltrexone 50mg",  status: "Active", duration: "3 mo" }
+        ],
+        signals: { phq9: 7, gad7: 6, erVisits: 0, missedVisits: 1 },
+        history: { mhDiagnosis: "PTSD (2023), AUD (2023)", familyHistory: "N/A", lastBHContact: "Never" }
+      },
+      {
+        id: 9, name: "Carol Martinez", age: 71, gender: "Female",
+        diagnoses: ["Generalized Anxiety", "Congestive Heart Failure"],
+        tier: "low", score: 28, isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Patient presented with mild anxiety (GAD-7: 6) — symptoms are subclinical and being monitored; does not meet CoCM threshold.",
+        medications: [
+          { name: "Furosemide 40mg",  status: "Active", duration: "3 yr" },
+          { name: "Carvedilol 12.5mg",status: "Active", duration: "3 yr" }
+        ],
+        signals: { phq9: null, gad7: 6, erVisits: 0, missedVisits: 0 },
+        history: { mhDiagnosis: "GAD (2024)", familyHistory: "None documented", lastBHContact: "Never" }
+      },
+      {
+        id: 10, name: "Thomas Brown", age: 42, gender: "Male",
+        diagnoses: ["Dysthymia"],
+        tier: "low", score: 22, isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Patient has dysthymia but reports low symptom burden (PHQ-9: 5) — mild presentation does not meet CoCM eligibility at this time.",
+        medications: [
+          { name: "Atorvastatin 20mg", status: "Active", duration: "2 yr" }
+        ],
+        signals: { phq9: 5, gad7: null, erVisits: 0, missedVisits: 0 },
+        history: { mhDiagnosis: "Dysthymia (2022)", familyHistory: "N/A", lastBHContact: "13 months ago" }
+      },
+      {
+        id: 11, name: "Jennifer Davis", age: 29, gender: "Female",
+        diagnoses: ["Major Depressive Disorder", "ADHD"],
+        tier: "low", score: 35, isNew: true, status: "pending", eligible: true, referOut: false,
+        reasoning: "Patient flagged for mild depressive symptoms (PHQ-9: 6) — first-time presentation with no acute need; continue monitoring.",
+        medications: [
+          { name: "Amphetamine salts 20mg", status: "Active", duration: "2 yr" }
+        ],
+        signals: { phq9: 6, gad7: null, erVisits: 0, missedVisits: 1 },
+        history: { mhDiagnosis: "MDD (2023), ADHD (2015)", familyHistory: "Maternal ADHD", lastBHContact: "Never" }
+      },
+      {
+        id: 12, name: "William Garcia", age: 58, gender: "Male",
+        diagnoses: ["Major Depressive Disorder", "Hypertension"],
+        tier: "medium", score: 74, isNew: false, status: "referred", eligible: true, referOut: false,
+        reasoning: "Referred after PHQ-9 of 11 and 18-month gap in BH care; active antidepressant with no BH provider.",
+        medications: [
+          { name: "Venlafaxine 150mg", status: "Active", duration: "2 yr" },
+          { name: "Amlodipine 10mg",   status: "Active", duration: "5 yr" }
+        ],
+        signals: { phq9: 11, gad7: null, erVisits: 0, missedVisits: 2 },
+        history: { mhDiagnosis: "MDD (2018)", familyHistory: "None documented", lastBHContact: "18 months ago" }
+      },
+      {
+        id: 13, name: "Margaret Wilson", age: 64, gender: "Female",
+        diagnoses: ["Bipolar I Disorder", "Type 2 Diabetes"],
+        tier: "medium", score: 88, isNew: false, status: "referred", eligible: true, referOut: true,
+        reasoning: "Referred after Bipolar I with no BH contact in 20 months and escalating mood stabilizer dosage.",
+        medications: [
+          { name: "Valproic Acid 1000mg",   status: "Active", duration: "5 yr" },
+          { name: "Lithium Carbonate 600mg", status: "Active", duration: "8 yr" },
+          { name: "Metformin 500mg",         status: "Active", duration: "3 yr" }
+        ],
+        signals: { phq9: 9, gad7: null, erVisits: 1, missedVisits: 3 },
+        history: { mhDiagnosis: "Bipolar I (2012)", familyHistory: "Sibling bipolar I", lastBHContact: "20 months ago" }
       }
     ];
 
-    let activeFilter = 'all';
+    let patients = PATIENTS.map(p => ({ ...p }));
+    let currentFilter = 'all';
+    let searchQuery = '';
+    let expandedId = null;
 
-    const FILTERS = [
-      { key: 'all',        label: 'All' },
-      { key: 'eligible',   label: 'Eligible' },
-      { key: 'ineligible', label: 'Ineligible' },
-      { key: 'archived',   label: 'Archived' },
-    ];
-
-    const RISK_ORDER = { high: 0, medium: 1, low: 2 };
-
-    function initials(name) {
-      return name.split(' ').map(w => w[0]).join('').toUpperCase();
+    function getFiltered() {
+      let list = currentFilter === 'archived'
+        ? patients.filter(p => p.status === 'archived')
+        : patients.filter(p => p.status !== 'archived');
+      if      (currentFilter === 'new')     list = list.filter(p => p.isNew);
+      else if (currentFilter === 'high')    list = list.filter(p => p.tier === 'high');
+      else if (currentFilter === 'medium')  list = list.filter(p => p.tier === 'medium');
+      else if (currentFilter === 'low')     list = list.filter(p => p.tier === 'low');
+      else if (currentFilter === 'referout') list = list.filter(p => p.referOut);
+      if (searchQuery) list = list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
+      if (sortField === 'name') {
+        list.sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+      } else if (sortField === 'eligible') {
+        list.sort((a, b) => sortAsc ? (b.eligible ? 1 : 0) - (a.eligible ? 1 : 0) : (a.eligible ? 1 : 0) - (b.eligible ? 1 : 0));
+      } else if (sortField === 'tier') {
+        const ORDER = { high: 0, medium: 1, low: 2 };
+        list.sort((a, b) => sortAsc ? ORDER[a.tier] - ORDER[b.tier] : ORDER[b.tier] - ORDER[a.tier]);
+      } else if (sortField === 'referOut') {
+        list.sort((a, b) => sortAsc ? (b.referOut ? 1 : 0) - (a.referOut ? 1 : 0) : (a.referOut ? 1 : 0) - (b.referOut ? 1 : 0));
+      } else {
+        list.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+      }
+      return list;
     }
 
-    function getEffectiveStatus(p) {
-      return localStorage.getItem('status_' + p.id) || p.status;
+    function scoreClass(p) {
+      if (p.status === 'referred') return 'fill-referred';
+      if (p.tier === 'high')   return 'fill-high';
+      if (p.tier === 'medium') return 'fill-medium';
+      return 'fill-low';
     }
 
-    function countFor(key) {
-      if (key === 'all') return PATIENTS.filter(p => getEffectiveStatus(p) !== 'archived').length;
-      return PATIENTS.filter(p => getEffectiveStatus(p) === key).length;
+    function badgeClass(p) {
+      if (p.tier === 'high')   return 'risk-high';
+      if (p.tier === 'medium') return 'risk-medium';
+      return 'risk-low';
     }
 
-    function archivePatient(id, e) {
-      e.preventDefault();
-      e.stopPropagation();
-      localStorage.setItem('status_' + id, 'archived');
-      render();
+    function badgeLabel(p) {
+      return p.tier.charAt(0).toUpperCase() + p.tier.slice(1);
+    }
+
+    function signalBadge(val, low, high) {
+      if (val === null || val === undefined) return '<span style="color:#9CA3AF;">—</span>';
+      if (val >= high) return `<span class="badge-signal signal-high">${val}</span>`;
+      if (val >= low)  return `<span class="badge-signal signal-elevated">${val}</span>`;
+      return `<span class="badge-signal signal-normal">${val}</span>`;
+    }
+
+    function renderActions(p) {
+      if (p.status === 'archived') {
+        return `<button class="btn-dismiss" data-id="${p.id}" data-action="unarchive">Unarchive</button>`;
+      }
+      if (p.referOut) {
+        return `<button class="btn-dismiss" data-id="${p.id}" data-action="archive">Archive</button>`;
+      }
+      return `<button class="btn-refer" data-id="${p.id}" data-action="enroll">Enroll</button>`;
+    }
+
+    function renderDetail(p) {
+      return `<div class="detail-panel">
+        <div class="detail-col">
+          <div class="detail-col-title">Medications</div>
+          ${p.medications.map(m => `
+            <div class="detail-row-item">
+              <span class="detail-key">${m.name}</span>
+              <span class="detail-val"><span class="med-active">${m.status}</span> &nbsp;${m.duration}</span>
+            </div>`).join('')}
+        </div>
+        <div class="detail-col">
+          <div class="detail-col-title">Clinical Signals</div>
+          <div class="detail-row-item"><span class="detail-key">PHQ-9 score</span><span class="detail-val">${signalBadge(p.signals.phq9, 5, 10)}</span></div>
+          <div class="detail-row-item"><span class="detail-key">GAD-7 score</span><span class="detail-val">${signalBadge(p.signals.gad7, 5, 10)}</span></div>
+          <div class="detail-row-item"><span class="detail-key">ER visits (90d)</span><span class="detail-val">${signalBadge(p.signals.erVisits, 1, 2)}</span></div>
+          <div class="detail-row-item"><span class="detail-key">Missed visits</span><span class="detail-val">${signalBadge(p.signals.missedVisits, 1, 3)}</span></div>
+        </div>
+        <div class="detail-col">
+          <div class="detail-col-title">History</div>
+          <div class="detail-row-item"><span class="detail-key">MH diagnosis</span><span class="detail-val" style="max-width:160px;text-align:right;">${p.history.mhDiagnosis}</span></div>
+          <div class="detail-row-item"><span class="detail-key">Family history</span><span class="detail-val">${p.history.familyHistory}</span></div>
+          <div class="detail-row-item"><span class="detail-key">Last BH contact</span><span class="detail-val">${p.history.lastBHContact}</span></div>
+        </div>
+      </div>`;
+    }
+
+    function animateCount(el, target, duration = 700) {
+      const start = performance.now();
+      const from = parseInt(el.textContent) || 0;
+      const update = (now) => {
+        const t = Math.min((now - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        el.textContent = Math.round(from + (target - from) * ease);
+        if (t < 1) requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
+    }
+
+    let isFirstRender = true;
+
+    function renderTable() {
+      const tbody = document.getElementById('patient-tbody');
+      const list = getFiltered();
+
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
+          <i class="ti ti-circle-off"></i>No patients match this filter.
+        </div></td></tr>`.replace('colspan="5"', 'colspan="5"');
+        return;
+      }
+
+      tbody.innerHTML = list.map(p => `
+        <tr class="patient-row" data-id="${p.id}">
+          <td>
+            <div class="pname">${p.name}${p.isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
+            <div class="page">${p.age} yo · ${p.gender}</div>
+          </td>
+          <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
+          <td><div style="display:flex; justify-content:center;">
+            ${p.referOut ? `<span class="refer-badge">Refer out</span>` : `<span style="color:var(--text-muted);font-size:13px;">—</span>`}
+          </div></td>
+          <td><span class="reasoning">${p.reasoning}</span></td>
+          <td onclick="event.stopPropagation()">${renderActions(p)}</td>
+        </tr>
+        <tr class="detail-row" id="detail-${p.id}" style="display:none;">
+          <td colspan="5">${renderDetail(p)}</td>
+        </tr>
+      `).join('');
+
+      // Stagger row animations on first load only
+      tbody.querySelectorAll('.patient-row').forEach((row, i) => {
+        row.style.animationDelay = isFirstRender ? `${i * 30}ms` : '0ms';
+      });
+
+      // Row click → navigate to patient detail page
+      tbody.querySelectorAll('.patient-row').forEach(row => {
+        row.addEventListener('click', () => {
+          const id = parseInt(row.dataset.id);
+          window.location.href = `patient.html?id=${id}`;
+        });
+      });
+
+      // Action buttons
+      tbody.querySelectorAll('[data-action]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const id = parseInt(btn.dataset.id);
+          const action = btn.dataset.action;
+          const patient = patients.find(p => p.id === id);
+          if (!patient) return;
+          if (action === 'enroll') { showEnrollModal(patient); return; }
+          const row = document.querySelector(`.patient-row[data-id="${id}"]`);
+          if (action === 'archive' || action === 'unarchive') {
+            if (action === 'archive') patient.status = 'archived';
+            if (action === 'unarchive') patient.status = 'pending';
+            if (row) {
+              row.style.transition = 'opacity 0.2s, transform 0.2s';
+              row.style.opacity = '0';
+              row.style.transform = 'translateX(6px)';
+              setTimeout(() => { renderTable(); updateMetrics(); }, 200);
+            } else {
+              renderTable(); updateMetrics();
+            }
+            return;
+          }
+        });
+      });
+    }
+
+    function updateMetrics() {
+      const eligible  = patients.filter(p => p.eligible && !p.referOut && p.status !== 'archived').length;
+      const referOut  = patients.filter(p => p.referOut  && p.status !== 'archived').length;
+      const archived  = patients.filter(p => p.status === 'archived').length;
+      const all       = patients.filter(p => p.status !== 'archived').length;
+      const newCount  = patients.filter(p => p.isNew && p.status !== 'archived').length;
+      const high      = patients.filter(p => p.tier === 'high'   && p.status !== 'archived').length;
+      const medium    = patients.filter(p => p.tier === 'medium' && p.status !== 'archived').length;
+      const low       = patients.filter(p => p.tier === 'low'    && p.status !== 'archived').length;
+
+      if (isFirstRender) {
+        animateCount(document.getElementById('metric-total'),    all);
+        animateCount(document.getElementById('metric-eligible'), eligible);
+        animateCount(document.getElementById('metric-referout'), referOut);
+        isFirstRender = false;
+      } else {
+        document.getElementById('metric-total').textContent    = all;
+        document.getElementById('metric-eligible').textContent = eligible;
+        document.getElementById('metric-referout').textContent = referOut;
+      }
+
+      document.getElementById('count-all').textContent      = all;
+      document.getElementById('count-referout').textContent = referOut;
+      document.getElementById('count-archived').textContent = archived;
+    }
+
+    // Filter pills
+    document.querySelectorAll('.filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        currentFilter = pill.dataset.filter;
+        expandedId = null;
+        const tbody = document.getElementById('patient-tbody');
+        tbody.style.transition = 'opacity 0.12s';
+        tbody.style.opacity = '0';
+        setTimeout(() => {
+          renderTable();
+          tbody.style.opacity = '1';
+        }, 120);
+      });
+    });
+
+    // Search
+    document.getElementById('patient-search').addEventListener('input', e => {
+      searchQuery = e.target.value;
+      expandedId = null;
+      renderTable();
+    });
+
+    let sortField = null;
+    let sortAsc = true;
+
+    function sortBy(field) {
+      if (sortField === field) sortAsc = !sortAsc;
+      else { sortField = field; sortAsc = true; }
+      renderTable();
     }
 
     let pendingEnrollId = null;
 
-    function enrollPatient(id, e) {
-      e.preventDefault();
-      e.stopPropagation();
-      const p = PATIENTS.find(x => x.id === id);
-      pendingEnrollId = id;
-      document.getElementById('modal-body').textContent = `Would you like to enroll ${p.name} in CoCM?`;
-      document.getElementById('enroll-modal').classList.remove('hidden');
+    function showEnrollModal(patient) {
+      pendingEnrollId = patient.id;
+      document.getElementById('modal-patient-name').textContent = `Would you like to enroll ${patient.name} in CoCM?`;
+      const modal = document.getElementById('enroll-modal');
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      pendingEnrollId = null;
+      document.getElementById('enroll-modal').style.display = 'none';
     }
 
     function confirmEnroll() {
       if (pendingEnrollId) {
-        localStorage.setItem('status_' + pendingEnrollId, 'enrolled');
-        pendingEnrollId = null;
+        const patient = patients.find(p => p.id === pendingEnrollId);
+        if (patient) patient.status = 'enrolled';
       }
-      document.getElementById('enroll-modal').classList.add('hidden');
-      render();
+      closeModal();
+      renderTable();
+      updateMetrics();
     }
 
-    function closeEnrollModal() {
-      pendingEnrollId = null;
-      document.getElementById('enroll-modal').classList.add('hidden');
-    }
-
-    function renderMetrics() {
-      const total      = PATIENTS.filter(p => getEffectiveStatus(p) !== 'archived').length;
-      const eligible   = PATIENTS.filter(p => getEffectiveStatus(p) === 'eligible').length;
-      const enrolled   = PATIENTS.filter(p => getEffectiveStatus(p) === 'enrolled').length;
-      const ineligible = PATIENTS.filter(p => getEffectiveStatus(p) === 'ineligible').length;
-
-      document.getElementById('metrics-row').innerHTML = `
-        <div class="metric-card">
-          <div class="metric-label">Total Panel</div>
-          <div class="metric-value">${total}</div>
-          <div class="metric-sub">Active patients</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Eligible</div>
-          <div class="metric-value">${eligible}</div>
-          <div class="metric-sub">Ready for outreach</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Enrolled</div>
-          <div class="metric-value">${enrolled}</div>
-          <div class="metric-sub">Active in CoCM</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Ineligible</div>
-          <div class="metric-value">${ineligible}</div>
-          <div class="metric-sub">Ruled out</div>
-        </div>
-      `;
-    }
-
-    function renderFilters() {
-      document.getElementById('filter-bar').innerHTML = FILTERS.map(f => `
-        <button class="filter-btn ${activeFilter === f.key ? 'active' : ''}"
-                onclick="setFilter('${f.key}')">
-          ${f.label} (${countFor(f.key)})
-        </button>
-      `).join('');
-    }
-
-    function renderRow(p) {
-      const status = getEffectiveStatus(p);
-
-      const RISK_LABELS = { high: 'High Risk', medium: 'Medium Risk', low: 'Low Risk' };
-      const archiveBtn = status === 'ineligible'
-        ? `<button class="btn-archive-row" onclick="archivePatient(${p.id}, event)">Archive</button>`
-        : '';
-      const enrollBtn = status === 'eligible'
-        ? `<button class="btn-enroll-row" onclick="enrollPatient(${p.id}, event)">Enroll</button>`
-        : '';
-      const riskBadge = p.riskTier
-        ? `<span class="risk-badge risk-${p.riskTier}">${RISK_LABELS[p.riskTier]}</span>`
-        : '';
-
-      const MAX_SIGNALS = 4;
-      const visibleSigs = p.signals.slice(0, MAX_SIGNALS);
-      const extraCount  = p.signals.length - MAX_SIGNALS;
-      const badges = visibleSigs.map(s =>
-        `<span class="sig sig-${s.type}">${s.label}</span>`
-      ).join('') + (extraCount > 0 ? `<span class="sig sig-more">+${extraCount} more</span>` : '');
-
-      return `
-        <a class="patient-row ${status === 'ineligible' ? 'ineligible' : ''} row-${status}"
-           href="patient.html?id=${p.id}">
-          <div class="row-body">
-            <div class="row-top">
-              <span class="patient-name">${p.name}</span>
-              ${riskBadge}
-              <span class="patient-meta">${p.age} yo · ${p.gender} · Last visit ${p.lastVisit}</span>
-            </div>
-            <div class="signals">${badges}</div>
-          </div>
-          <div class="row-right">
-            ${enrollBtn}
-            ${archiveBtn}
-          </div>
-        </a>`;
-    }
-
-    function applyFilters(patients) {
-      return patients
-        .filter(p => {
-          const s = getEffectiveStatus(p);
-          if (activeFilter === 'all') return s !== 'archived';
-          return s === activeFilter;
-        })
-        .sort((a, b) => (RISK_ORDER[a.riskTier] ?? 9) - (RISK_ORDER[b.riskTier] ?? 9));
-    }
-
-    function renderPatients() {
-      const list = document.getElementById('patient-list');
-      const rows = applyFilters(PATIENTS);
-      list.innerHTML = rows.length
-        ? rows.map(renderRow).join('')
-        : `<div class="empty-state">No patients in this category.</div>`;
-    }
-
-
-    function setFilter(key) {
-      activeFilter = key;
-      renderFilters();
-      renderPatients();
-    }
-
-
-    function render() {
-      renderMetrics();
-      renderFilters();
-      renderPatients();
-    }
-
-    render();
+    renderTable();
+    updateMetrics();
   </script>
 </body>
 </html>
