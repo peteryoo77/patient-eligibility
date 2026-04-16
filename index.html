@@ -208,7 +208,7 @@
 
     /* Patient name cell */
     .pname { font-size: 13px; font-weight: 600; color: #111827; }
-    .page  { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .page  { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
 
     /* Diagnoses */
     .diag-list { display: flex; flex-direction: column; gap: 2px; }
@@ -228,16 +228,6 @@
     .risk-low      { color: var(--low-text);  background: var(--low-bg);  border-color: var(--low-border); }
     .risk-referred { color: var(--ref-text);  background: var(--ref-bg);  border-color: var(--ref-border); }
 
-    /* Score */
-    .score-cell { display: flex; flex-direction: column; gap: 5px; min-width: 90px; }
-    .score-num  { font-size: 13px; font-weight: 700; color: #111827; }
-    .score-bar  { height: 4px; background: #F3F4F6; border-radius: 9999px; width: 80px; }
-    .score-fill { height: 100%; border-radius: 9999px; transition: width 0.3s; }
-    .fill-high     { background: var(--high-bar); }
-    .fill-medium   { background: var(--med-bar); }
-    .fill-low      { background: var(--low-bar); }
-    .fill-referred { background: var(--ref-bar); }
-
     /* Reasoning */
     .reasoning { font-size: 12px; color: var(--text-muted); line-height: 1.5; max-width: 340px; }
 
@@ -252,7 +242,7 @@
     .btn-refer:hover { background: var(--primary-hover); }
     .btn-dismiss {
       padding: 8px 0; width: 90px; text-align: center; background: none; border: 0.5px solid var(--border);
-      color: var(--text-mid); font-size: 13px; font-weight: 500; cursor: pointer;
+      color: var(--text-mid); font-size: 13px; font-weight: 600; cursor: pointer;
       font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
       border-radius: 6px; transition: border-color 0.12s, color 0.12s;
     }
@@ -269,6 +259,9 @@
       color: var(--ref-text); border-radius: 6px; font-size: 11.5px; font-weight: 500;
       cursor: pointer; font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
     }
+
+    /* Actioned row state */
+    .patient-row.is-enrolled td { opacity: 0.55; }
 
     /* ── DETAIL PANEL ── */
     .detail-row td { padding: 0; border-bottom: 0.5px solid var(--border); background: #FAFAFA; }
@@ -425,8 +418,9 @@
             <tr>
               <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('referOut')">Refer Out <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:46%">Description</th>
+              <th style="width:8%; cursor:pointer; text-align:center;" onclick="sortBy('score')">Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
+              <th style="width:10%; cursor:pointer; text-align:center;" onclick="sortBy('referOut')">Refer Out <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
+              <th style="width:40%">Description</th>
               <th style="width:12%">Actions</th>
             </tr>
           </thead>
@@ -450,168 +444,206 @@
   </div>
 
   <script>
+    // ── SCORING ENGINE (Step 2: Composite Risk Score, 0–25) ─────────────────
+    function computeScore(raw) {
+      const symptom = Math.min(10,
+        (raw.phq9  >= 10 ? 3 : 0) +
+        (raw.gad7  >= 10 ? 3 : 0) +
+        (raw.pcl5  >= 33 ? 2 : 0) +
+        (raw.cssrs >= 2  ? 2 : 0)
+      );
+      const functional = Math.min(5,
+        (raw.sds >= 7              ? 2 : 0) +
+        (raw.functionalImpairment  ? 2 : 0) +
+        (raw.priorTreatmentFailure ? 1 : 0)
+      );
+      const medical = Math.min(6,
+        (raw.chronicConditions >= 2            ? 2 : 0) +
+        (raw.edVisits >= 2 || raw.hospitalized ? 2 : 0) +
+        (raw.chronicPainOpioid                 ? 1 : 0) +
+        (raw.nonAdherent                       ? 1 : 0)
+      );
+      const sdoh = Math.min(4,
+        (raw.housingInsecurity ? 2 : 0) +
+        (raw.foodInsecurity    ? 1 : 0) +
+        (raw.socialIsolation   ? 1 : 0)
+      );
+      return symptom + functional + medical + sdoh;
+    }
+
+    function getTier(score) {
+      if (score >= 17) return 'high';
+      if (score >= 9)  return 'medium';
+      return 'low';
+    }
+
     const PATIENTS = [
       {
         id: 1, name: "Sarah Mitchell", age: 52, gender: "Female",
-        diagnoses: ["Major Depressive Disorder", "Hypertension"],
-        tier: "high", score: 87, isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9 of 14 with no referral in 22 months; active antidepressant with no BH provider on file.",
+        diagnoses: ["Major Depressive Disorder", "DM", "HTN"],
+        isNew: true, status: "pending", eligible: true, referOut: false,
+        reasoning: "PHQ-9: 14 with active suicidal ideation (C-SSRS: 2); 2 ED visits in past 12 months; housing insecure with no BH provider on file.",
+        raw: { phq9: 14, gad7: null, pcl5: null, cssrs: 2, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Sertraline 100mg", status: "Active", duration: "18 mo" },
           { name: "Lisinopril 10mg",  status: "Active", duration: "4 yr" }
         ],
-        signals: { phq9: 14, gad7: null, erVisits: 0, missedVisits: 2 },
         history: { mhDiagnosis: "MDD (2019)", familyHistory: "Maternal depression", lastBHContact: "22 months ago" }
       },
       {
         id: 2, name: "James Rodriguez", age: 45, gender: "Male",
         diagnoses: ["Generalized Anxiety Disorder", "Type 2 Diabetes"],
         tier: "high", score: 82, isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "GAD-7 of 12 and PHQ-9 of 16 both within 6 months; no BH contact in 18 months; 1 ER visit.",
+        reasoning: "PHQ-9: 16 and GAD-7: 12 both elevated within 6 months; 2 ED visits; medication non-adherent with no BH contact in 18 months.",
+        raw: { phq9: 16, gad7: 12, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Escitalopram 20mg", status: "Active", duration: "8 mo" },
           { name: "Clonazepam 0.5mg",  status: "Active", duration: "14 mo" },
-          { name: "Metformin 1000mg",   status: "Active", duration: "3 yr" }
+          { name: "Metformin 1000mg",  status: "Active", duration: "3 yr" }
         ],
-        signals: { phq9: 16, gad7: 12, erVisits: 1, missedVisits: 3 },
         history: { mhDiagnosis: "GAD (2021)", familyHistory: "None documented", lastBHContact: "18 months ago" }
       },
       {
         id: 3, name: "Patricia Chen", age: 68, gender: "Female",
-        diagnoses: ["PTSD", "Chronic Pain Syndrome"],
-        tier: "high", score: 91, isNew: false, status: "pending", eligible: true, referOut: true,
-        reasoning: "Long-term opioid (18 mo) with escalating dosage; 2 ER visits in 90 days; PTSD with no BH contact in 24 months.",
+        diagnoses: ["PTSD", "Chronic Pain", "HTN"],
+        isNew: false, status: "pending", eligible: true, referOut: true,
+        reasoning: "Active suicidal ideation (C-SSRS: 4); long-term opioid escalation; 2 ER visits in 90 days; no BH contact in 24 months.",
+        raw: { phq9: 12, gad7: null, pcl5: 40, cssrs: 4, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
-          { name: "Oxycodone 15mg",       status: "Active", duration: "18 mo" },
-          { name: "Gabapentin 600mg",      status: "Active", duration: "2 yr" },
-          { name: "Cyclobenzaprine 10mg",  status: "Active", duration: "6 mo" }
+          { name: "Oxycodone 15mg",      status: "Active", duration: "18 mo" },
+          { name: "Gabapentin 600mg",    status: "Active", duration: "2 yr" },
+          { name: "Cyclobenzaprine 10mg",status: "Active", duration: "6 mo" }
         ],
-        signals: { phq9: 12, gad7: 9, erVisits: 2, missedVisits: 1 },
         history: { mhDiagnosis: "PTSD (2018)", familyHistory: "N/A", lastBHContact: "24 months ago" }
       },
       {
         id: 4, name: "Michael Thompson", age: 39, gender: "Male",
-        diagnoses: ["Bipolar II Disorder", "Obesity"],
-        tier: "high", score: 78, isNew: false, status: "pending", eligible: true, referOut: true,
-        reasoning: "Bipolar II with mood stabilizer but no BH provider; 4 missed visits; last BH contact 14 months ago.",
+        diagnoses: ["Bipolar II Disorder", "Obesity", "HTN"],
+        isNew: false, status: "pending", eligible: true, referOut: true,
+        reasoning: "Bipolar II with prior psychiatric hospitalization; no BH provider on file despite active mood stabilizer; 4 missed visits.",
+        raw: { phq9: 11, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Lamotrigine 150mg", status: "Active", duration: "3 yr" },
           { name: "Quetiapine 50mg",   status: "Active", duration: "2 yr" },
           { name: "Metoprolol 25mg",   status: "Active", duration: "1 yr" }
         ],
-        signals: { phq9: 11, gad7: 7, erVisits: 0, missedVisits: 4 },
         history: { mhDiagnosis: "Bipolar II (2017)", familyHistory: "Paternal bipolar I", lastBHContact: "14 months ago" }
       },
       {
         id: 5, name: "Linda Park", age: 61, gender: "Female",
-        diagnoses: ["Major Depressive Disorder", "COPD"],
-        tier: "medium", score: 58, isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Patient presented with mild depressive symptoms (PHQ-9: 8) managed with antidepressant — symptom burden does not yet meet CoCM threshold.",
+        diagnoses: ["Major Depressive Disorder", "COPD", "DM"],
+        isNew: true, status: "pending", eligible: true, referOut: false,
+        reasoning: "PHQ-9: 10 with marked functional impairment; COPD and DM comorbidities; medication non-adherent.",
+        raw: { phq9: 10, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Bupropion 150mg",    status: "Active", duration: "15 mo" },
           { name: "Tiotropium inhaler", status: "Active", duration: "6 yr" }
         ],
-        signals: { phq9: 8, gad7: null, erVisits: 1, missedVisits: 1 },
         history: { mhDiagnosis: "MDD (2020)", familyHistory: "None documented", lastBHContact: "15 months ago" }
       },
       {
         id: 6, name: "Robert Kim", age: 47, gender: "Male",
         diagnoses: ["Generalized Anxiety Disorder", "Insomnia"],
-        tier: "medium", score: 64, isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Patient reports anxiety and sleep difficulties but GAD-7 of 9 falls below the clinical threshold for CoCM referral at this time.",
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "GAD-7: 11 and PHQ-9: 10 with persistent sleep dysfunction; prior benzodiazepine treatment failure.",
+        raw: { phq9: 10, gad7: 11, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Lorazepam 1mg", status: "Active", duration: "14 mo" },
           { name: "Zolpidem 10mg", status: "Active", duration: "8 mo" }
         ],
-        signals: { phq9: null, gad7: 9, erVisits: 0, missedVisits: 2 },
         history: { mhDiagnosis: "GAD (2022)", familyHistory: "N/A", lastBHContact: "Never" }
       },
       {
         id: 7, name: "Nancy Walker", age: 55, gender: "Female",
-        diagnoses: ["Major Depressive Disorder", "Fibromyalgia"],
-        tier: "medium", score: 51, isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Patient has a history of MDD but current PHQ-9 of 7 and GAD-7 of 5 suggest mild, stable symptoms not requiring CoCM level of care.",
+        diagnoses: ["Major Depressive Disorder", "Fibromyalgia", "HTN"],
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "PHQ-9: 10 with marked functional impairment (SDS: 7); prior treatment failure; socially isolated.",
+        raw: { phq9: 10, gad7: 5, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
-          { name: "Duloxetine 60mg",  status: "Active", duration: "2 yr" },
-          { name: "Pregabalin 75mg",  status: "Active", duration: "1 yr" }
+          { name: "Duloxetine 60mg", status: "Active", duration: "2 yr" },
+          { name: "Pregabalin 75mg", status: "Active", duration: "1 yr" }
         ],
-        signals: { phq9: 7, gad7: 5, erVisits: 1, missedVisits: 0 },
         history: { mhDiagnosis: "MDD (2021)", familyHistory: "Sibling anxiety", lastBHContact: "15 months ago" }
       },
       {
         id: 8, name: "David Lee", age: 33, gender: "Male",
         diagnoses: ["PTSD", "Alcohol Use Disorder"],
-        tier: "medium", score: 47, isNew: true, status: "pending", eligible: true, referOut: true,
-        reasoning: "Patient managing PTSD with medication and reports mild symptoms — currently stable and does not meet CoCM criteria.",
+        isNew: true, status: "pending", eligible: true, referOut: true,
+        reasoning: "PTSD (PCL-5: 36) with active alcohol use disorder; detox required before CoCM enrollment.",
+        raw: { phq9: 10, gad7: null, pcl5: 36, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Sertraline 50mg",  status: "Active", duration: "5 mo" },
           { name: "Naltrexone 50mg",  status: "Active", duration: "3 mo" }
         ],
-        signals: { phq9: 7, gad7: 6, erVisits: 0, missedVisits: 1 },
         history: { mhDiagnosis: "PTSD (2023), AUD (2023)", familyHistory: "N/A", lastBHContact: "Never" }
       },
       {
         id: 9, name: "Carol Martinez", age: 71, gender: "Female",
-        diagnoses: ["Generalized Anxiety", "Congestive Heart Failure"],
-        tier: "low", score: 28, isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Patient presented with mild anxiety (GAD-7: 6) — symptoms are subclinical and being monitored; does not meet CoCM threshold.",
+        diagnoses: ["Generalized Anxiety", "CHF"],
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Mild anxiety (GAD-7: 6); subclinical presentation — watchful waiting and re-screen in 6 months.",
+        raw: { phq9: 6, gad7: 6, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
-          { name: "Furosemide 40mg",  status: "Active", duration: "3 yr" },
-          { name: "Carvedilol 12.5mg",status: "Active", duration: "3 yr" }
+          { name: "Furosemide 40mg",   status: "Active", duration: "3 yr" },
+          { name: "Carvedilol 12.5mg", status: "Active", duration: "3 yr" }
         ],
-        signals: { phq9: null, gad7: 6, erVisits: 0, missedVisits: 0 },
         history: { mhDiagnosis: "GAD (2024)", familyHistory: "None documented", lastBHContact: "Never" }
       },
       {
         id: 10, name: "Thomas Brown", age: 42, gender: "Male",
         diagnoses: ["Dysthymia"],
-        tier: "low", score: 22, isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Patient has dysthymia but reports low symptom burden (PHQ-9: 5) — mild presentation does not meet CoCM eligibility at this time.",
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Mild dysthymia (PHQ-9: 5); socially isolated but stable — watchful waiting and re-screen in 6 months.",
+        raw: { phq9: 5, gad7: null, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Atorvastatin 20mg", status: "Active", duration: "2 yr" }
         ],
-        signals: { phq9: 5, gad7: null, erVisits: 0, missedVisits: 0 },
         history: { mhDiagnosis: "Dysthymia (2022)", familyHistory: "N/A", lastBHContact: "13 months ago" }
       },
       {
         id: 11, name: "Jennifer Davis", age: 29, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "ADHD"],
-        tier: "low", score: 35, isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Patient flagged for mild depressive symptoms (PHQ-9: 6) — first-time presentation with no acute need; continue monitoring.",
+        isNew: true, status: "pending", eligible: true, referOut: false,
+        reasoning: "Mild depressive symptoms (PHQ-9: 6); first-time presentation with no acute need — monitor and re-screen in 6 months.",
+        raw: { phq9: 6, gad7: null, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Amphetamine salts 20mg", status: "Active", duration: "2 yr" }
         ],
-        signals: { phq9: 6, gad7: null, erVisits: 0, missedVisits: 1 },
         history: { mhDiagnosis: "MDD (2023), ADHD (2015)", familyHistory: "Maternal ADHD", lastBHContact: "Never" }
       },
       {
         id: 12, name: "William Garcia", age: 58, gender: "Male",
-        diagnoses: ["Major Depressive Disorder", "Hypertension"],
-        tier: "medium", score: 74, isNew: false, status: "referred", eligible: true, referOut: false,
-        reasoning: "Referred after PHQ-9 of 11 and 18-month gap in BH care; active antidepressant with no BH provider.",
+        diagnoses: ["Major Depressive Disorder", "DM", "HTN"],
+        isNew: false, status: "referred", eligible: true, referOut: false,
+        reasoning: "PHQ-9: 11 with 18-month gap in BH care; active antidepressant with no BH provider — enrolled in standard CoCM.",
+        raw: { phq9: 11, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Venlafaxine 150mg", status: "Active", duration: "2 yr" },
           { name: "Amlodipine 10mg",   status: "Active", duration: "5 yr" }
         ],
-        signals: { phq9: 11, gad7: null, erVisits: 0, missedVisits: 2 },
         history: { mhDiagnosis: "MDD (2018)", familyHistory: "None documented", lastBHContact: "18 months ago" }
       },
       {
         id: 13, name: "Margaret Wilson", age: 64, gender: "Female",
-        diagnoses: ["Bipolar I Disorder", "Type 2 Diabetes"],
-        tier: "medium", score: 88, isNew: false, status: "referred", eligible: true, referOut: true,
-        reasoning: "Referred after Bipolar I with no BH contact in 20 months and escalating mood stabilizer dosage.",
+        diagnoses: ["Bipolar I Disorder", "DM", "Obesity"],
+        isNew: false, status: "referred", eligible: true, referOut: true,
+        reasoning: "Bipolar I with escalating mood stabilizer dosage; no BH contact in 20 months — already enrolled in specialty program.",
+        raw: { phq9: 9, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
-          { name: "Valproic Acid 1000mg",   status: "Active", duration: "5 yr" },
+          { name: "Valproic Acid 1000mg",    status: "Active", duration: "5 yr" },
           { name: "Lithium Carbonate 600mg", status: "Active", duration: "8 yr" },
           { name: "Metformin 500mg",         status: "Active", duration: "3 yr" }
         ],
-        signals: { phq9: 9, gad7: null, erVisits: 1, missedVisits: 3 },
         history: { mhDiagnosis: "Bipolar I (2012)", familyHistory: "Sibling bipolar I", lastBHContact: "20 months ago" }
       }
     ];
 
-    let patients = PATIENTS.map(p => ({ ...p }));
+    let patients = PATIENTS.map(p => {
+      const stored = localStorage.getItem('status_' + p.id);
+      const score  = computeScore(p.raw);
+      const tier   = getTier(score);
+      return { ...p, score, tier, status: stored || p.status };
+    });
     let currentFilter = 'all';
     let searchQuery = '';
     let expandedId = null;
@@ -628,6 +660,8 @@
       if (searchQuery) list = list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
       if (sortField === 'name') {
         list.sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+      } else if (sortField === 'score') {
+        list.sort((a, b) => sortAsc ? b.score - a.score : a.score - b.score);
       } else if (sortField === 'eligible') {
         list.sort((a, b) => sortAsc ? (b.eligible ? 1 : 0) - (a.eligible ? 1 : 0) : (a.eligible ? 1 : 0) - (b.eligible ? 1 : 0));
       } else if (sortField === 'tier') {
@@ -669,6 +703,9 @@
       if (p.status === 'archived') {
         return `<button class="btn-dismiss" data-id="${p.id}" data-action="unarchive">Unarchive</button>`;
       }
+      if (p.status === 'enrolled') {
+        return `<span style="font-size:12px;font-weight:600;color:#166534;background:#dcfce7;padding:4px 12px;border-radius:9999px;">Enrolled ✓</span>`;
+      }
       if (p.referOut) {
         return `<button class="btn-dismiss" data-id="${p.id}" data-action="archive">Archive</button>`;
       }
@@ -687,10 +724,10 @@
         </div>
         <div class="detail-col">
           <div class="detail-col-title">Clinical Signals</div>
-          <div class="detail-row-item"><span class="detail-key">PHQ-9 score</span><span class="detail-val">${signalBadge(p.signals.phq9, 5, 10)}</span></div>
-          <div class="detail-row-item"><span class="detail-key">GAD-7 score</span><span class="detail-val">${signalBadge(p.signals.gad7, 5, 10)}</span></div>
-          <div class="detail-row-item"><span class="detail-key">ER visits (90d)</span><span class="detail-val">${signalBadge(p.signals.erVisits, 1, 2)}</span></div>
-          <div class="detail-row-item"><span class="detail-key">Missed visits</span><span class="detail-val">${signalBadge(p.signals.missedVisits, 1, 3)}</span></div>
+          <div class="detail-row-item"><span class="detail-key">PHQ-9 score</span><span class="detail-val">${signalBadge(p.raw.phq9, 5, 10)}</span></div>
+          <div class="detail-row-item"><span class="detail-key">GAD-7 score</span><span class="detail-val">${signalBadge(p.raw.gad7, 5, 10)}</span></div>
+          <div class="detail-row-item"><span class="detail-key">PCL-5 score</span><span class="detail-val">${signalBadge(p.raw.pcl5, 20, 33)}</span></div>
+          <div class="detail-row-item"><span class="detail-key">ED visits (12mo)</span><span class="detail-val">${signalBadge(p.raw.edVisits, 1, 2)}</span></div>
         </div>
         <div class="detail-col">
           <div class="detail-col-title">History</div>
@@ -720,19 +757,22 @@
       const list = getFiltered();
 
       if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">
           <i class="ti ti-circle-off"></i>No patients match this filter.
-        </div></td></tr>`.replace('colspan="5"', 'colspan="5"');
+        </div></td></tr>`;
         return;
       }
 
       tbody.innerHTML = list.map(p => `
-        <tr class="patient-row" data-id="${p.id}">
+        <tr class="patient-row${p.status === 'enrolled' ? ' is-enrolled' : ''}" data-id="${p.id}">
           <td>
             <div class="pname">${p.name}${p.isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
           <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
+          <td style="text-align:center;">
+            <div style="font-size:18px;font-weight:700;color:#111827;line-height:1;">${p.score}<span style="font-size:12px;font-weight:500;color:#9CA3AF;">/25</span></div>
+          </td>
           <td><div style="display:flex; justify-content:center;">
             ${p.referOut ? `<span class="refer-badge">Refer out</span>` : `<span style="color:var(--text-muted);font-size:13px;">—</span>`}
           </div></td>
@@ -740,7 +780,7 @@
           <td onclick="event.stopPropagation()">${renderActions(p)}</td>
         </tr>
         <tr class="detail-row" id="detail-${p.id}" style="display:none;">
-          <td colspan="5">${renderDetail(p)}</td>
+          <td colspan="6">${renderDetail(p)}</td>
         </tr>
       `).join('');
 
@@ -785,7 +825,7 @@
     }
 
     function updateMetrics() {
-      const eligible  = patients.filter(p => p.eligible && !p.referOut && p.status !== 'archived').length;
+      const eligible  = patients.filter(p => p.eligible && !p.referOut && p.status !== 'archived' && p.status !== 'enrolled').length;
       const referOut  = patients.filter(p => p.referOut  && p.status !== 'archived').length;
       const archived  = patients.filter(p => p.status === 'archived').length;
       const all       = patients.filter(p => p.status !== 'archived').length;
@@ -854,13 +894,26 @@
 
     function closeModal() {
       pendingEnrollId = null;
-      document.getElementById('enroll-modal').style.display = 'none';
+      var m = document.getElementById('enroll-modal');
+      if (m) m.style.display = 'none';
     }
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' || e.key === 'Esc') closeModal();
+    });
+
+    window.addEventListener('mousedown', function(e) {
+      var m = document.getElementById('enroll-modal');
+      if (m && m.style.display !== 'none' && e.target === m) closeModal();
+    });
 
     function confirmEnroll() {
       if (pendingEnrollId) {
         const patient = patients.find(p => p.id === pendingEnrollId);
-        if (patient) patient.status = 'enrolled';
+        if (patient) {
+          patient.status = 'enrolled';
+          localStorage.setItem('status_' + pendingEnrollId, 'enrolled');
+        }
       }
       closeModal();
       renderTable();
