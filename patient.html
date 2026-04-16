@@ -76,9 +76,9 @@
 
     /* ── PATIENT HEADER ── */
     .patient-header {
-      background: var(--card); border: 0.5px solid var(--border);
-      border-radius: var(--radius); padding: 20px 24px; margin-bottom: 14px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      background: var(--card);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 0 0 0.5px var(--border);
+      border-radius: var(--radius); padding: 24px 28px; margin-bottom: 16px;
     }
     .header-left {}
     .header-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
@@ -117,13 +117,13 @@
 
     /* ── SECTION CARD ── */
     .card {
-      background: var(--card); border: 0.5px solid var(--border);
-      border-radius: var(--radius); padding: 20px 24px; margin-bottom: 14px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      background: var(--card);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 0 0 0.5px var(--border);
+      border-radius: var(--radius); padding: 24px 28px; margin-bottom: 16px;
     }
     .card-title {
-      font-size: 12px; font-weight: 700; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 16px;
+      font-size: 11px; font-weight: 700; color: #9CA3AF;
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px;
     }
 
     /* ── REASONING ── */
@@ -138,12 +138,12 @@
     .sdoh-flag-yes { font-size: 12px; font-weight: 600; color: #B91C1C; background: #FEF2F2; padding: 2px 8px; border-radius: 4px; }
     .sdoh-flag-no  { font-size: 12px; color: var(--text-muted); }
     .score-box { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-    .score-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
-    .score-num   { font-size: 36px; font-weight: 700; color: #111827; line-height: 1; letter-spacing: -1px; }
+    .score-label { font-size: 11px; font-weight: 600; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+    .score-num   { font-size: 38px; font-weight: 700; color: #111827; line-height: 1; letter-spacing: -1.5px; }
     .score-interp { font-size: 12px; font-weight: 600; margin-top: 3px; }
-    .score-bar-track { height: 3px; background: var(--border); border-radius: 2px; margin: 10px 0 8px; overflow: hidden; }
+    .score-bar-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin: 10px 0 8px; }
     .score-bar-fill  { height: 100%; width: 0; border-radius: 2px; transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
-    .score-date  { font-size: 12px; color: var(--text-muted); }
+    .score-date  { font-size: 11.5px; color: var(--text-muted); }
     .score-na    { font-size: 13px; color: var(--text-muted); font-style: italic; margin: 8px 0 4px; }
 
     /* ── REFERRAL ── */
@@ -179,9 +179,9 @@
     /* ── ELIGIBILITY CARD ── */
     .elig-header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px; }
     .elig-score-block { flex-shrink: 0; }
-    .elig-score-num { font-size: 48px; font-weight: 800; color: #111827; line-height: 1; letter-spacing: -2px; }
-    .elig-score-max { font-size: 20px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
-    .elig-score-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .elig-score-num { font-size: 56px; font-weight: 800; color: #111827; line-height: 1; letter-spacing: -3px; }
+    .elig-score-max { font-size: 22px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
+    .elig-score-label { font-size: 11px; font-weight: 600; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 6px; }
     .elig-tier-block { flex: 1; padding-top: 8px; }
     .elig-tier-action { font-size: 14px; color: var(--text-mid); margin-top: 8px; line-height: 1.5; }
 
@@ -197,10 +197,9 @@
 
     /* ── REFER-OUT ── */
     .card-refer-out { border-left: 3px solid #8B5CF6; }
-    .refer-out-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-    .refer-out-eyebrow { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #7C3AED; }
+    .refer-out-badge { display: inline-block; font-size: 11px; font-weight: 600; color: #6D28D9; background: #F5F3FF; border: 0.5px solid #DDD6FE; padding: 3px 10px; border-radius: 9999px; white-space: nowrap; margin-bottom: 20px; }
+    .refer-out-eyebrow { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #7C3AED; margin-bottom: 10px; }
     .refer-out-eyebrow i { font-size: 13px; }
-    .refer-out-badge { font-size: 11px; font-weight: 600; color: #6D28D9; background: #F5F3FF; border: 0.5px solid #DDD6FE; padding: 3px 10px; border-radius: 9999px; white-space: nowrap; }
     .refer-out-dest { font-size: 22px; font-weight: 700; color: #111827; line-height: 1.2; margin-bottom: 14px; }
     .refer-out-reason-box { background: #F9FAFB; border: 0.5px solid var(--border); border-radius: 8px; padding: 14px 16px; font-size: 13px; color: #374151; line-height: 1.7; margin-bottom: 14px; }
     .refer-out-footer { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-muted); font-style: italic; }
@@ -753,11 +752,7 @@
       if (isReferOut) {
         var dest = d.referral && d.referral.to ? d.referral.to : 'Specialist';
         return '<div class="card animate-in card-refer-out" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
-          '<div class="card-title">CoCM Eligibility</div>' +
-          '<div class="refer-out-top">' +
-            '<div class="refer-out-eyebrow"><i class="ti ti-corner-up-right"></i> Refer out to</div>' +
-            '<span class="refer-out-badge">Not eligible for CoCM</span>' +
-          '</div>' +
+          '<span class="refer-out-badge">Not eligible for CoCM</span>' +
           '<div class="refer-out-dest">' + dest + '</div>' +
           '<div class="refer-out-reason-box">' + (d.referral.reason || 'Exclusion criteria met.') + '</div>' +
           '<div class="refer-out-footer"><i class="ti ti-info-circle"></i>Exclusion criteria met \u2014 scoring bypassed for this patient.</div>' +
