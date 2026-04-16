@@ -177,7 +177,7 @@
 
 
     /* ── ELIGIBILITY CARD ── */
-    .elig-header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px; }
+    .elig-header { margin-bottom: 20px; }
     .elig-score-block { flex-shrink: 0; }
     .elig-score-num { font-size: 56px; font-weight: 800; color: #111827; line-height: 1; letter-spacing: -3px; }
     .elig-score-max { font-size: 22px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
@@ -761,14 +761,8 @@
       return '<div class="card animate-in" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
         '<div class="card-title">CoCM Eligibility</div>' +
         '<div class="elig-header">' +
-        '<div class="elig-score-block">' +
         '<div class="elig-score-num">' + domains.total + '<span class="elig-score-max"> / 25</span></div>' +
         '<div class="elig-score-label">Composite risk score</div>' +
-        '</div>' +
-        '<div class="elig-tier-block">' +
-        '<span class="risk-badge risk-' + tier + '">' + tierLabels[tier] + '</span>' +
-        '<div class="elig-tier-action">' + tierActions[tier] + '</div>' +
-        '</div>' +
         '</div>' +
         '<div class="domain-list">' +
         domainBar('Symptom Severity',      domains.symptom,    10, 'var(--primary)', sigs.syms)  +
