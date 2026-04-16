@@ -20,9 +20,9 @@
       --text-muted:    #6B7280;
       --radius:        10px;
 
-      --high-text: #B91C1C; --high-bg: #FEF2F2;
-      --med-text:  #B45309; --med-bg:  #FFFBEB;
-      --low-text:  #166534; --low-bg:  #F0FDF4;
+      --high-text: #dc2626; --high-bg: #FEF2F2;
+      --med-text:  #d97706; --med-bg:  #FFFBEB;
+      --low-text:  #16a34a; --low-bg:  #F0FDF4;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -85,7 +85,7 @@
     .header-name { font-size: 22px; font-weight: 700; color: #111827; }
     .header-meta { font-size: 13px; color: var(--text-muted); }
     .elig-badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
-    .elig-yes { background: #dcfce7; color: #166534; }
+    .elig-yes { background: #dcfce7; color: #16a34a; }
     .elig-no  { background: #f3f4f6; color: #6b7280; }
     .risk-badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; border: none; }
     .risk-high   { background: var(--high-bg); color: var(--high-text); }
@@ -135,7 +135,7 @@
     .sdoh-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
     .sdoh-row:last-child { border-bottom: none; }
     .sdoh-label { font-size: 14px; color: var(--text); font-weight: 500; }
-    .sdoh-flag-yes { font-size: 12px; font-weight: 600; color: #B91C1C; background: #FEF2F2; padding: 2px 8px; border-radius: 4px; }
+    .sdoh-flag-yes { font-size: 12px; font-weight: 600; color: #dc2626; background: #FEF2F2; padding: 2px 8px; border-radius: 4px; }
     .sdoh-flag-no  { font-size: 12px; color: var(--text-muted); }
     .score-box { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
     .score-label { font-size: 11px; font-weight: 600; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
@@ -172,8 +172,8 @@
     .key-signals { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
     .key-signal { font-size: 14px; color: var(--text-mid); line-height: 1.55; padding-left: 18px; position: relative; }
     .key-signal::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
-    .key-signal-alert { color: #B91C1C; }
-    .key-signal-alert::before { background: #EF4444; }
+    .key-signal-alert { color: #dc2626; }
+    .key-signal-alert::before { background: #dc2626; }
 
 
     /* ── ELIGIBILITY CARD ── */
@@ -771,13 +771,13 @@
         '</div>' +
         '</div>' +
         '<div class="domain-list">' +
-        domainBar('Symptom Severity',      domains.symptom,    10, '#8B5CF6', sigs.syms)  +
+        domainBar('Symptom Severity',      domains.symptom,    10, 'var(--primary)', sigs.syms)  +
         '<div class="domain-sep"></div>' +
-        domainBar('Functional Impairment', domains.functional,  5, '#F59E0B', sigs.funcs) +
+        domainBar('Functional Impairment', domains.functional,  5, 'var(--primary)', sigs.funcs) +
         '<div class="domain-sep"></div>' +
-        domainBar('Medical Complexity',    domains.medical,     6, '#EF4444', sigs.meds)  +
+        domainBar('Medical Complexity',    domains.medical,     6, 'var(--primary)', sigs.meds)  +
         '<div class="domain-sep"></div>' +
-        domainBar('SDOH Burden',           domains.sdoh,        4, '#3B82F6', sigs.sdohs) +
+        domainBar('SDOH Burden',           domains.sdoh,        4, 'var(--primary)', sigs.sdohs) +
         '</div>' +
         '</div>';
     }
@@ -795,14 +795,15 @@
       if (s <= 14) return 'Moderate';
       return 'Severe';
     }
+    const C_LOW = '#16a34a', C_MED = '#d97706', C_HIGH = '#dc2626';
     function scoreColor(s, type) {
-      if (type === 'phq9')    return s<=4?'#22c55e':s<=9?'#84cc16':s<=14?'#f59e0b':s<=19?'#f97316':'#ef4444';
-      if (type === 'gad7')    return s<=4?'#22c55e':s<=9?'#84cc16':s<=14?'#f59e0b':'#ef4444';
-      if (type === 'pcl5')    return s>=33?'#ef4444':'#22c55e';
-      if (type === 'cssrs')   return s===0?'#22c55e':s<=2?'#f97316':'#ef4444';
-      if (type === 'sds')     return s>=7?'#ef4444':s>=4?'#f59e0b':'#22c55e';
-      if (type === 'mdq')     return s>=7?'#ef4444':'#22c55e';
-      if (type === 'audit10') return s<=7?'#22c55e':s<=15?'#f59e0b':s<=19?'#f97316':'#ef4444';
+      if (type === 'phq9')    return s<=4?C_LOW:s<=9?C_MED:C_HIGH;
+      if (type === 'gad7')    return s<=4?C_LOW:s<=9?C_MED:C_HIGH;
+      if (type === 'pcl5')    return s>=33?C_HIGH:C_LOW;
+      if (type === 'cssrs')   return s===0?C_LOW:s<=2?C_MED:C_HIGH;
+      if (type === 'sds')     return s>=7?C_HIGH:s>=4?C_MED:C_LOW;
+      if (type === 'mdq')     return s>=7?C_HIGH:C_LOW;
+      if (type === 'audit10') return s<=7?C_LOW:s<=15?C_MED:C_HIGH;
       return '#6b7280';
     }
     function scoreInterp(s, type) {

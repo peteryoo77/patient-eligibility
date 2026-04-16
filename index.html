@@ -20,9 +20,9 @@
       --text-muted:    #6B7280;
       --radius:        10px;
 
-      --high-text:   #B91C1C; --high-bg: #FEF2F2; --high-border: #FECACA; --high-bar: #EF4444;
-      --med-text:    #B45309; --med-bg:  #FFFBEB; --med-border:  #FDE68A; --med-bar: #F59E0B;
-      --low-text:    #166534; --low-bg:  #F0FDF4; --low-border:  #BBF7D0; --low-bar: #22C55E;
+      --high-text:   #dc2626; --high-bg: #FEF2F2; --high-border: #FECACA; --high-bar: #dc2626;
+      --med-text:    #d97706; --med-bg:  #FFFBEB; --med-border:  #FDE68A; --med-bar: #d97706;
+      --low-text:    #16a34a; --low-bg:  #F0FDF4; --low-border:  #BBF7D0; --low-bar: #16a34a;
       --ref-text:    #6D28D9; --ref-bg:  #F5F3FF; --ref-border:  #DDD6FE; --ref-bar: #8B5CF6;
     }
 
@@ -113,15 +113,20 @@
       gap: 12px; margin: 20px 0;
     }
     .metric-card {
-      background: var(--card); border: 0.5px solid var(--border);
-      border-radius: var(--radius); padding: 18px 20px;
+      background: var(--card);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px var(--border);
+      border-radius: var(--radius); padding: 22px 24px;
+      border-top: 3px solid var(--border);
     }
+    .metric-card.mc-total   { border-top-color: hsl(199,89%,48%); }
+    .metric-card.mc-eligible { border-top-color: #16a34a; }
+    .metric-card.mc-referout { border-top-color: #8B5CF6; }
     .metric-label {
       font-size: 11px; font-weight: 600; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px;
     }
-    .metric-value { font-size: 28px; font-weight: 700; color: #111827; line-height: 1; }
-    .metric-sub   { font-size: 11.5px; color: var(--text-muted); margin-top: 5px; }
+    .metric-value { font-size: 32px; font-weight: 700; color: #111827; line-height: 1; }
+    .metric-sub   { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
 
     /* ── FILTER BAR ── */
     .filter-bar {
@@ -170,7 +175,8 @@
 
     /* ── TABLE CARD ── */
     .table-card {
-      background: var(--card); border: 0.5px solid var(--border);
+      background: var(--card);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px var(--border);
       border-radius: var(--radius); overflow: hidden;
     }
     .table-wrap { overflow-x: auto; }
@@ -201,21 +207,21 @@
     .patient-row.expanded td { background: #F9FAFB; }
 
     tbody td {
-      padding: 14px 14px; vertical-align: middle;
+      padding: 18px 14px; vertical-align: middle;
       border-bottom: 0.5px solid var(--border); color: var(--text-mid);
     }
     .patient-row:last-of-type td { border-bottom: none; }
 
     /* Patient name cell */
-    .pname { font-size: 13px; font-weight: 600; color: #111827; }
-    .page  { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+    .pname { font-size: 14px; font-weight: 600; color: #111827; }
+    .page  { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
 
     /* Diagnoses */
     .diag-list { display: flex; flex-direction: column; gap: 2px; }
     .diag-item { font-size: 12px; color: var(--text-mid); }
 
     /* Refer out badge */
-    .refer-badge { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; white-space: nowrap; background: #fff7ed; color: #c2410c; }
+    .refer-badge { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; white-space: nowrap; background: var(--ref-bg); color: var(--ref-text); }
 
     /* Risk badge */
     .risk-badge {
@@ -229,7 +235,7 @@
     .risk-referred { color: var(--ref-text);  background: var(--ref-bg);  border-color: var(--ref-border); }
 
     /* Reasoning */
-    .reasoning { font-size: 12px; color: var(--text-muted); line-height: 1.5; max-width: 340px; }
+    .reasoning { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; max-width: 380px; }
 
     /* Actions */
     .action-group { display: flex; align-items: center; gap: 6px; }
@@ -279,19 +285,17 @@
     }
     .detail-row-item {
       display: flex; align-items: flex-start; justify-content: space-between;
-      gap: 8px; padding: 5px 0; border-bottom: 0.5px solid #F3F4F6;
-      font-size: 12px;
+      gap: 8px; padding: 7px 0; font-size: 12px;
     }
-    .detail-row-item:last-child { border-bottom: none; }
-    .detail-key   { color: var(--text-muted); flex-shrink: 0; }
-    .detail-val   { color: #111827; font-weight: 500; text-align: right; }
+    .detail-key   { color: #9CA3AF; font-size: 11.5px; flex-shrink: 0; }
+    .detail-val   { color: #111827; font-weight: 600; text-align: right; }
     .med-active   { color: #16A34A; font-size: 10.5px; font-weight: 600; }
     .badge-signal {
       font-size: 11px; font-weight: 700; padding: 1px 6px;
       border-radius: 4px;
     }
-    .signal-elevated { background: #FEF3C7; color: #B45309; }
-    .signal-high     { background: #FEF2F2; color: #B91C1C; }
+    .signal-elevated { background: #FEF3C7; color: #d97706; }
+    .signal-high     { background: #FEF2F2; color: #dc2626; }
     .signal-normal   { background: #F3F4F6; color: #6B7280; }
 
     /* Empty state */
@@ -300,6 +304,11 @@
       font-size: 13px;
     }
     .empty-state i { font-size: 28px; color: #D1D5DB; display: block; margin-bottom: 10px; }
+
+    /* Score cell tier colors */
+    .score-high   { color: var(--high-bar); }
+    .score-medium { color: var(--med-bar); }
+    .score-low    { color: var(--low-bar); }
 
     /* New badge */
     .new-badge {
@@ -379,17 +388,17 @@
 
     <!-- Metrics -->
     <div class="metrics-row">
-      <div class="metric-card animate-in" style="animation-delay:0ms">
+      <div class="metric-card mc-total animate-in" style="animation-delay:0ms">
         <div class="metric-label">Total Panel</div>
         <div class="metric-value" id="metric-total">0</div>
         <div class="metric-sub">Active patients</div>
       </div>
-      <div class="metric-card animate-in" style="animation-delay:60ms">
+      <div class="metric-card mc-eligible animate-in" style="animation-delay:60ms">
         <div class="metric-label">Eligible</div>
         <div class="metric-value" id="metric-eligible">0</div>
         <div class="metric-sub">Ready to enroll</div>
       </div>
-      <div class="metric-card animate-in" style="animation-delay:120ms">
+      <div class="metric-card mc-referout animate-in" style="animation-delay:120ms">
         <div class="metric-label">Refer Out</div>
         <div class="metric-value" id="metric-referout">0</div>
         <div class="metric-sub">Needs specialty care</div>
@@ -417,8 +426,8 @@
           <thead>
             <tr>
               <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:8%; cursor:pointer; text-align:center;" onclick="sortBy('score')">Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
+              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:10%; cursor:pointer; text-align:center;" onclick="sortBy('referOut')">Refer Out <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:40%">Description</th>
               <th style="width:12%">Actions</th>
@@ -704,7 +713,7 @@
         return `<button class="btn-dismiss" data-id="${p.id}" data-action="unarchive">Unarchive</button>`;
       }
       if (p.status === 'enrolled') {
-        return `<span style="font-size:12px;font-weight:600;color:#166534;background:#dcfce7;padding:4px 12px;border-radius:9999px;">Enrolled ✓</span>`;
+        return `<span style="font-size:12px;font-weight:600;color:#16a34a;background:#dcfce7;padding:4px 12px;border-radius:9999px;">Enrolled ✓</span>`;
       }
       if (p.referOut) {
         return `<button class="btn-dismiss" data-id="${p.id}" data-action="archive">Archive</button>`;
@@ -769,10 +778,10 @@
             <div class="pname">${p.name}${p.isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
-          <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
           <td style="text-align:center;">
-            <div style="font-size:18px;font-weight:700;color:#111827;line-height:1;">${p.score}<span style="font-size:12px;font-weight:500;color:#9CA3AF;">/25</span></div>
+            <div class="score-${p.tier}" style="font-size:20px;font-weight:700;line-height:1;">${p.score}<span style="font-size:12px;font-weight:500;color:#9CA3AF;">/25</span></div>
           </td>
+          <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
           <td><div style="display:flex; justify-content:center;">
             ${p.referOut ? `<span class="refer-badge">Refer out</span>` : `<span style="color:var(--text-muted);font-size:13px;">—</span>`}
           </div></td>
