@@ -854,33 +854,7 @@
     function sdsBox(obj) {
       if (!obj) return '';
       const maxItem = Math.max(obj.work, obj.social, obj.family);
-      const col = scoreColor(maxItem, 'sds');
-      const interp = scoreInterp(maxItem, 'sds');
-      function itemRow(label, val) {
-        const pct = (val / 10 * 100).toFixed(1);
-        const iCol = scoreColor(val, 'sds');
-        return `<div style="margin-bottom:9px">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">
-            <span style="font-size:10.5px;color:#9CA3AF">${label}</span>
-            <span style="font-size:11px;font-weight:600;color:#374151">${val}<span style="font-weight:400;color:#9CA3AF">/10</span></span>
-          </div>
-          <div class="score-bar-track" style="margin:0">
-            <div class="score-bar-fill" data-pct="${pct}" style="background:${iCol}"></div>
-          </div>
-        </div>`;
-      }
-      return `
-        <div class="score-box">
-          <div class="score-label">SDS</div>
-          <div class="score-num">${maxItem}</div>
-          <div class="score-interp" style="color:${col}">${interp}</div>
-          <div style="margin-top:12px">
-            ${itemRow('Work / school', obj.work)}
-            ${itemRow('Social life', obj.social)}
-            ${itemRow('Family / home', obj.family)}
-          </div>
-          <div class="score-date">${obj.date}</div>
-        </div>`;
+      return scoreBox('SDS', { score: maxItem, date: obj.date }, 10, 'sds');
     }
 
     function scoreBox(label, obj, max, type) {
