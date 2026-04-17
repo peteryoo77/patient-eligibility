@@ -79,8 +79,8 @@
     }
     .action-btn-enroll { background: var(--primary); color: #fff; }
     .action-btn-enroll:hover { background: var(--primary-hover); }
-    .action-btn-refer  { background: var(--primary); color: #fff; }
-    .action-btn-refer:hover  { background: var(--primary-hover); }
+    .action-btn-refer  { background: #fff; color: var(--primary); border: 1.5px solid var(--primary); }
+    .action-btn-refer:hover  { background: var(--primary-light); }
     .action-btn-done   { background: #F3F4F6; color: #6B7280; cursor: default; pointer-events: none; }
 
     /* ── MAIN ── */
@@ -1114,7 +1114,7 @@
       </div>
       <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
         <button onclick="closePtReferModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
-        <button onclick="confirmPtRefer()" style="padding:9px 20px;border:none;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'">Refer out</button>
+        <button onclick="confirmPtRefer()" style="padding:9px 20px;border:1.5px solid var(--primary);border-radius:8px;background:white;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='white'">Refer out</button>
       </div>
     </div>
   </div>

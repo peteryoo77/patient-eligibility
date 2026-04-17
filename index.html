@@ -247,12 +247,12 @@
     }
     .btn-enroll:hover { background: var(--primary-hover); }
     .btn-refer {
-      padding: 8px 20px; background: var(--primary); color: white;
-      border: none; border-radius: 6px; font-size: 13px; font-weight: 600;
+      padding: 8px 20px; background: white; color: var(--primary);
+      border: 1.5px solid var(--primary); border-radius: 6px; font-size: 13px; font-weight: 600;
       cursor: pointer; font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
-      transition: background 0.12s;
+      transition: background 0.12s, color 0.12s;
     }
-    .btn-refer:hover { background: var(--primary-hover); }
+    .btn-refer:hover { background: var(--primary-light); }
     .btn-dismiss {
       padding: 8px 20px; background: none; border: 0.5px solid var(--border);
       color: var(--text-mid); font-size: 13px; font-weight: 600; cursor: pointer;
@@ -457,7 +457,7 @@
       </div>
       <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
         <button onclick="closeReferModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
-        <button onclick="confirmRefer()" style="padding:9px 20px;border:none;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'">Refer out</button>
+        <button onclick="confirmRefer()" style="padding:9px 20px;border:1.5px solid var(--primary);border-radius:8px;background:white;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='white'">Refer out</button>
       </div>
     </div>
   </div>
