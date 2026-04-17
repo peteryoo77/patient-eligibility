@@ -124,7 +124,9 @@
     .card-title {
       font-size: 11px; font-weight: 700; color: #9CA3AF;
       text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px;
+      display: flex; align-items: center; gap: 6px;
     }
+    .elig-info-icon { display:inline-flex; align-items:center; cursor:default; }
 
     /* ── REASONING ── */
     .reasoning-text { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
@@ -752,14 +754,13 @@
       if (isReferOut) {
         var dest = d.referral && d.referral.to ? d.referral.to : 'Specialist';
         return '<div class="card animate-in card-refer-out" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
-          '<span class="refer-out-badge">Not eligible for CoCM</span>' +
+          '<div class="card-title">Refer Out</div>' +
           '<div class="refer-out-dest">' + dest + '</div>' +
-          '<div class="refer-out-reason-box">' + (d.referral.reason || 'Exclusion criteria met.') + '</div>' +
-          '<div class="refer-out-footer"><i class="ti ti-info-circle"></i>Exclusion criteria met \u2014 scoring bypassed for this patient.</div>' +
+          '<p style="margin:12px 0 0;font-size:13px;color:#374151;line-height:1.6;">' + (d.referral.reason || 'Exclusion criteria met.') + '</p>' +
           '</div>';
       }
       return '<div class="card animate-in" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
-        '<div class="card-title">CoCM Eligibility</div>' +
+        '<div class="card-title"><span id="elig-info-icon" class="elig-info-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>CoCM Eligibility</div>' +
         '<div class="elig-header">' +
         '<div class="elig-score-num">' + domains.total + '<span class="elig-score-max"> / 25</span></div>' +
         '<div class="elig-score-label">Composite risk score</div>' +
@@ -901,15 +902,15 @@
         '<div class="header-name-row">' +
         '<span class="header-name">' + p.name + '</span>' +
         '<span class="risk-badge risk-' + cTier + '">' + RISK_LABELS[cTier] + '</span>' +
-        (isReferOut ? '<span class="risk-badge" style="background:#F5F3FF;color:#6D28D9;margin-left:4px">Refer Out</span>' : '') +
         '</div>' +
         '<div class="header-meta" style="margin-top:5px">' + p.age + ' yo \xB7 ' + p.gender + ' \xB7 Last visit ' + p.lastVisit + '</div>' +
         '</div>' +
+        (isReferOut ? buildEligibilityCard(p, (delay += 60)) : '') +
         '<div class="card animate-in" id="sec-summary" style="animation-delay:' + (delay += 60) + 'ms">' +
         '<div class="card-title">Why this patient</div>' +
         '<ul class="key-signals">' + signalsHtml + '</ul>' +
         '</div>' +
-        buildEligibilityCard(p, (delay += 60)) +
+        (isReferOut ? '' : buildEligibilityCard(p, (delay += 60))) +
         '<div class="card animate-in" id="sec-scores" style="animation-delay:' + (delay += 60) + 'ms">' +
         '<div class="card-title">Assessments</div>' +
         '<div class="scores-grid">' +
@@ -954,5 +955,44 @@
     render();
   </script>
 
+  <div id="elig-tooltip" style="display:none; position:fixed; z-index:9999; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.10); pointer-events:none; overflow:hidden; font-family:'Geist','Inter',sans-serif; min-width:480px;">
+    <div style="display:grid; grid-template-columns:110px 120px 1fr; padding:10px 16px 9px; background:#F9FAFB; border-bottom:1px solid #E5E7EB;">
+      <span style="font-size:10px;font-weight:600;color:#9CA3AF;letter-spacing:0.07em;text-transform:uppercase;">Tier</span>
+      <span style="font-size:10px;font-weight:600;color:#9CA3AF;letter-spacing:0.07em;text-transform:uppercase;">Eligibility</span>
+      <span style="font-size:10px;font-weight:600;color:#9CA3AF;letter-spacing:0.07em;text-transform:uppercase;">Action</span>
+    </div>
+    <div style="display:grid; grid-template-columns:110px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
+      <span style="font-size:11px;font-weight:600;color:#16a34a;background:#F0FDF4;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Low</span>
+      <span style="font-size:12px;color:#6B7280;">Not Enrolled</span>
+      <span style="font-size:12px;color:#374151;">Watchful waiting, psycho-education, re-screen in 6 months</span>
+    </div>
+    <div style="display:grid; grid-template-columns:110px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
+      <span style="font-size:11px;font-weight:600;color:#d97706;background:#FFFBEB;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Moderate</span>
+      <span style="font-size:12px;color:#6B7280;">CoCM Eligible</span>
+      <span style="font-size:12px;color:#374151;">Enroll in standard CoCM Track</span>
+    </div>
+    <div style="display:grid; grid-template-columns:110px 120px 1fr; align-items:center; padding:11px 16px;">
+      <span style="font-size:11px;font-weight:600;color:#dc2626;background:#FEF2F2;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">High</span>
+      <span style="font-size:12px;color:#6B7280;">CoCM Eligible</span>
+      <span style="font-size:12px;color:#374151;">Enroll in Intensive CoCM + Psychiatric Consultation</span>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var icon = document.getElementById('elig-info-icon');
+      var tip  = document.getElementById('elig-tooltip');
+      if (!icon || !tip) return;
+      icon.addEventListener('mouseenter', function() {
+        tip.style.display = 'block';
+        var r  = icon.getBoundingClientRect();
+        var tw = tip.offsetWidth;
+        var left = r.left;
+        if (left + tw + 12 > window.innerWidth) left = window.innerWidth - tw - 12;
+        tip.style.top  = (r.bottom + 6) + 'px';
+        tip.style.left = left + 'px';
+      });
+      icon.addEventListener('mouseleave', function() { tip.style.display = 'none'; });
+    })();
+  </script>
 </body>
 </html>
