@@ -764,7 +764,7 @@
       if (p.referOut) {
         return `<button class="btn-refer" data-id="${p.id}" data-action="archive">Refer</button>`;
       }
-      if (p.tier === 'low') return `<button class="btn-dismiss" disabled style="cursor:default;filter:blur(2px);">Enroll</button>`;
+      if (p.tier === 'low') return `<button class="btn-dismiss" disabled style="cursor:default;background:#F3F4F6;color:#6B7280;border:none;">Enroll</button>`;
       return `<button class="btn-enroll" data-id="${p.id}" data-action="enroll">Enroll</button>`;
     }
 
