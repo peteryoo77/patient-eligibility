@@ -416,6 +416,7 @@
         <div class="filter-pills">
           <button class="filter-pill active" data-filter="all">All <span class="filter-count" id="count-all"></span></button>
           <button class="filter-pill" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
+          <button class="filter-pill" data-filter="notenrolled">Not Enrolled <span class="filter-count" id="count-notenrolled"></span></button>
           <button class="filter-pill" data-filter="referout">Refer Out <span class="filter-count" id="count-referout"></span></button>
           <button class="filter-pill" data-filter="archived">Referred <span class="filter-count" id="count-archived"></span></button>
         </div>
@@ -697,8 +698,9 @@
       else if (currentFilter === 'high')    list = list.filter(p => p.tier === 'high');
       else if (currentFilter === 'medium')  list = list.filter(p => p.tier === 'medium');
       else if (currentFilter === 'low')     list = list.filter(p => p.tier === 'low');
-      else if (currentFilter === 'eligible') list = list.filter(p => !p.referOut && p.tier !== 'low');
-      else if (currentFilter === 'referout') list = list.filter(p => p.referOut);
+      else if (currentFilter === 'eligible')    list = list.filter(p => !p.referOut && p.tier !== 'low');
+      else if (currentFilter === 'notenrolled') list = list.filter(p => !p.referOut && p.tier === 'low');
+      else if (currentFilter === 'referout')    list = list.filter(p => p.referOut);
       if (searchQuery) list = list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
       if (sortField === 'name') {
         list.sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
@@ -907,11 +909,13 @@
         document.getElementById('metric-referout').textContent = referOut;
       }
 
-      const eligible2 = patients.filter(p => !p.referOut && p.tier !== 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
-      document.getElementById('count-all').textContent      = all;
-      document.getElementById('count-eligible').textContent = eligible2;
-      document.getElementById('count-referout').textContent = referOut;
-      document.getElementById('count-archived').textContent = archived;
+      const eligible2    = patients.filter(p => !p.referOut && p.tier !== 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
+      const notEnrolled  = patients.filter(p => !p.referOut && p.tier === 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
+      document.getElementById('count-all').textContent         = all;
+      document.getElementById('count-eligible').textContent    = eligible2;
+      document.getElementById('count-notenrolled').textContent = notEnrolled;
+      document.getElementById('count-referout').textContent    = referOut;
+      document.getElementById('count-archived').textContent    = archived;
     }
 
     // Filter pills
