@@ -924,6 +924,14 @@
         scoreBox('AUDIT-10', d.audit10, 40, 'audit10') +
         '</div>' +
         '</div>' +
+        '<div class="card animate-in" id="sec-sdoh" style="animation-delay:' + (delay += 60) + 'ms">' +
+        '<div class="card-title">Social Determinants of Health</div>' +
+        '<div class="sdoh-grid">' +
+        sdohRow('Housing insecurity', d.sdoh && d.sdoh.housingInsecurity) +
+        sdohRow('Food insecurity',    d.sdoh && d.sdoh.foodInsecurity) +
+        sdohRow('Social isolation',   d.sdoh && d.sdoh.socialIsolation) +
+        '</div>' +
+        '</div>' +
         '<div class="card animate-in" id="sec-clinical" style="animation-delay:' + (delay += 60) + 'ms">' +
         '<div class="card-title">Clinical picture</div>' +
         '<div class="clinical-grid">' +
@@ -940,14 +948,6 @@
         clRow('Surgical history',       d.surgicalHistory) +
         clRow('Vitals',                 d.vitals) +
         clRow('Insurance',              d.insurance) +
-        '</div>' +
-        '</div>' +
-        '<div class="card animate-in" id="sec-sdoh" style="animation-delay:' + (delay += 60) + 'ms">' +
-        '<div class="card-title">Social Determinants of Health</div>' +
-        '<div class="sdoh-grid">' +
-        sdohRow('Housing insecurity', d.sdoh && d.sdoh.housingInsecurity) +
-        sdohRow('Food insecurity',    d.sdoh && d.sdoh.foodInsecurity) +
-        sdohRow('Social isolation',   d.sdoh && d.sdoh.socialIsolation) +
         '</div>' +
         '</div>';
 
