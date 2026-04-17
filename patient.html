@@ -215,6 +215,14 @@
     .refer-out-badge { display: inline-block; font-size: 11px; font-weight: 600; color: var(--primary); background: var(--primary-light); border: 0.5px solid hsl(199,89%,82%); padding: 3px 10px; border-radius: 9999px; white-space: nowrap; margin-bottom: 20px; }
     .refer-out-eyebrow { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
     .refer-out-eyebrow i { font-size: 13px; }
+    .refer-out-section-label { font-size: 11px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .refer-out-criterion { display: flex; align-items: center; gap: 8px; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; }
+    .refer-out-criterion-text { font-size: 14px; font-weight: 600; color: #dc2626; }
+    .refer-out-dest-row { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+    .refer-out-dest-label { font-size: 11px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; min-width: 80px; }
+    .refer-out-dest-value { font-size: 14px; font-weight: 600; color: var(--text); }
+    .refer-out-reason-label { font-size: 11px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .refer-out-reason-text { font-size: 14px; color: var(--text-mid); line-height: 1.65; }
     .refer-out-dest { font-size: 22px; font-weight: 700; color: #111827; line-height: 1.2; margin-bottom: 14px; }
     .refer-out-reason-box { background: #F9FAFB; border: 0.5px solid var(--border); border-radius: 8px; padding: 14px 16px; font-size: 13px; color: #374151; line-height: 1.7; margin-bottom: 14px; }
     .refer-out-footer { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-muted); font-style: italic; }
@@ -358,7 +366,7 @@
           immunization:    "Up to date (influenza, COVID-19, pneumococcal, shingles)",
           vitals:          "BP 128/78, HR 68, BMI 24.1",
           insurance:       "Medicare Part B",
-          referral:        { recommended: true, to: "Trauma-Specialized BH", reason: "Complex intersection of PTSD, chronic pain, and long-term opioid escalation with 2 ER visits in 90 days. Requires a trauma-specialized provider — beyond the scope of CoCM." },
+          referral:        { recommended: true, to: "ED / Crisis Stabilization Unit", exclusionCriteria: "Active suicidal crisis with imminent risk", reason: "C-SSRS score of 4 indicates active suicidal ideation with some intent to act. Combined with long-term opioid escalation and 2 ER visits in 90 days, this patient requires immediate crisis evaluation before any CoCM enrollment can be considered." },
           phq9: { score: 12, date: "Feb 20, 2026" },
           gad7: { score: 9,  date: "Feb 20, 2026" },
           pcl5: { score: 40, date: "Feb 20, 2026" },
@@ -390,7 +398,7 @@
           immunization:    "Up to date (influenza, COVID-19, Tdap)",
           vitals:          "BP 124/80, HR 78, BMI 34.5",
           insurance:       "United Healthcare PPO",
-          referral:        { recommended: true, to: "Psychiatry", reason: "Bipolar II on Lamotrigine and Quetiapine requires psychiatrist-level prescribing and monitoring. Mood stabilizer management is outside CoCM scope." },
+          referral:        { recommended: true, to: "Outpatient Psychiatry", exclusionCriteria: "Active psychosis or acute mania", reason: "Bipolar II with active mood stabilizer regimen (Lamotrigine + Quetiapine) requires psychiatrist-level prescribing and monitoring. Mood stabilizer titration and psychiatric hospitalization history place this patient outside CoCM scope." },
           phq9: { score: 11, date: "Mar 10, 2026" },
           gad7: { score: 7,  date: "Mar 10, 2026" },
           pcl5: null,
@@ -514,7 +522,7 @@
           immunization:    "Up to date (influenza, COVID-19, Tdap)",
           vitals:          "BP 116/74, HR 62, BMI 23.8",
           insurance:       "Medicaid",
-          referral:        { recommended: true, to: "Addiction Medicine", reason: "Alcohol use disorder, even in remission, warrants management through a specialized SUD program. Naltrexone should be overseen by addiction medicine alongside ongoing BH support." },
+          referral:        { recommended: true, to: "Specialized SUD Program", exclusionCriteria: "Severe, untreated SUD required detox", reason: "Active alcohol use disorder with AUDIT-10 of 14 warrants management through a specialized SUD program. Naltrexone requires addiction medicine oversight, and co-occurring PTSD should be addressed in an integrated dual-diagnosis setting before CoCM enrollment." },
           phq9: { score: 7, date: "Mar 25, 2026" },
           gad7: { score: 6, date: "Mar 25, 2026" },
           pcl5: { score: 36, date: "Mar 25, 2026" },
@@ -669,7 +677,7 @@
           immunization:    "Up to date (influenza, COVID-19, pneumococcal, shingles)",
           vitals:          "BP 134/86, HR 78, BMI 29.8",
           insurance:       "Medicare Advantage (Aetna)",
-          referral:        { recommended: true, to: "Psychiatry", reason: "Bipolar I on dual mood stabilizers (Valproic Acid + Lithium) requires psychiatrist oversight for lab monitoring (lithium levels, LFTs) and medication adjustments. Exceeds CoCM scope." },
+          referral:        { recommended: true, to: "Outpatient Psychiatry", exclusionCriteria: "Active psychosis or acute mania", reason: "Bipolar I with dual mood stabilizer regimen (Valproic Acid + Lithium) requires psychiatrist oversight for lithium level monitoring, LFTs, and medication adjustments. Risk of manic episode with complex med management exceeds CoCM scope." },
           phq9: { score: 9, date: "Feb 5, 2026" },
           gad7: null,
           pcl5: null,
@@ -768,11 +776,22 @@
         low:    'Watchful waiting \u2014 re-screen in 6 months'
       };
       if (isReferOut) {
-        var dest = d.referral && d.referral.to ? d.referral.to : 'Specialist';
+        var criterion = d.referral.exclusionCriteria || 'Exclusion criteria met';
+        var dest      = d.referral.to || 'Specialist';
+        var reason    = d.referral.reason || '';
         return '<div class="card animate-in card-refer-out" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
           '<div class="card-title">Refer Out</div>' +
-          '<div class="refer-out-dest">' + dest + '</div>' +
-          '<p style="margin:12px 0 0;font-size:13px;color:#374151;line-height:1.6;">' + (d.referral.reason || 'Exclusion criteria met.') + '</p>' +
+          '<div class="refer-out-section-label">Exclusion Criterion Met</div>' +
+          '<div class="refer-out-criterion">' +
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg>' +
+            '<span class="refer-out-criterion-text">' + criterion + '</span>' +
+          '</div>' +
+          '<div class="refer-out-dest-row">' +
+            '<span class="refer-out-dest-label">Refer to</span>' +
+            '<span class="refer-out-dest-value">' + dest + '</span>' +
+          '</div>' +
+          '<div class="refer-out-reason-label">Clinical Reasoning</div>' +
+          '<div class="refer-out-reason-text">' + reason + '</div>' +
           '</div>';
       }
       return '<div class="card animate-in" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
