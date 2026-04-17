@@ -223,21 +223,21 @@
     .risk-info-wrap { position: static; display: inline-flex; align-items: center; }
     .risk-info-wrap .risk-tip {
       display: none; position: fixed;
-      background: #fff; color: var(--text); border-radius: 10px; padding: 14px 16px;
-      font-size: 12px; font-weight: 400; z-index: 9999; width: 460px;
+      background: #fff; color: var(--text); border-radius: 10px; padding: 16px 20px;
+      font-size: 12px; font-weight: 400; z-index: 9999; width: 620px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.14); border: 1px solid var(--border);
-      text-transform: none; letter-spacing: normal; pointer-events: none;
+      text-transform: none; letter-spacing: normal; pointer-events: none; overflow: hidden;
     }
     .risk-info-wrap:hover .risk-tip { display: block; }
-    .risk-tip .tip-title { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
-    .risk-tip table { border-collapse: collapse; width: 100%; table-layout: fixed; }
-    .risk-tip thead th { font-size: 11px; font-weight: 600; color: var(--text-muted); padding: 0 8px 6px 0; text-align: left; border-bottom: 1px solid var(--border); }
-    .risk-tip thead th:nth-child(1) { width: 90px; }
-    .risk-tip thead th:nth-child(2) { width: 60px; }
-    .risk-tip thead th:nth-child(3) { width: 100px; }
-    .risk-tip thead th:nth-child(4) { width: auto; }
-    .risk-tip tbody td { font-size: 12px; color: var(--text-mid); padding: 7px 8px 0 0; vertical-align: top; line-height: 1.4; word-break: break-word; }
-    .risk-tip tbody tr:first-child td { padding-top: 8px; }
+    .risk-tip .tip-title { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; text-align: center; }
+    .risk-tip table { border-collapse: collapse; width: 580px; table-layout: fixed; }
+    .risk-tip thead th { font-size: 11px; font-weight: 600; color: var(--text-muted); padding: 0 0 8px 0; text-align: left; border-bottom: 1px solid var(--border); }
+    .risk-tip thead th:nth-child(1) { width: 100px; }
+    .risk-tip thead th:nth-child(2) { width: 70px; }
+    .risk-tip thead th:nth-child(3) { width: 110px; }
+    .risk-tip thead th:nth-child(4) { width: 300px; }
+    .risk-tip tbody td { font-size: 12px; color: var(--text-mid); padding: 8px 0 0 0; vertical-align: top; line-height: 1.5; word-wrap: break-word; overflow-wrap: break-word; }
+    .risk-tip tbody tr:first-child td { padding-top: 10px; }
 
     /* Risk badge */
     .risk-badge {
