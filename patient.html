@@ -74,7 +74,7 @@
     .topbar-action { margin-left: 16px; }
     .action-btn {
       display: inline-flex; align-items: center;
-      padding: 7px 16px; border: none; border-radius: 6px;
+      padding: 10px 18px; border: none; border-radius: 6px;
       font-family: inherit; font-size: 13px; font-weight: 600;
       cursor: pointer; transition: background 0.15s, opacity 0.15s;
     }
@@ -937,7 +937,7 @@
 
       main.innerHTML =
         '<div class="patient-header animate-in" style="animation-delay:' + (delay=0) + 'ms">' +
-        '<div class="header-name-row" style="justify-content:space-between;">' +
+        '<div class="header-name-row" style="justify-content:space-between;align-items:center;">' +
         '<div style="display:flex;align-items:center;gap:10px;">' +
         '<span class="header-name">' + p.name + '</span>' +
         '<span class="risk-badge risk-' + cTier + '">' + RISK_LABELS[cTier] + '</span>' +
