@@ -436,7 +436,7 @@
             <tr>
               <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:8%; cursor:pointer; text-align:center;" onclick="sortBy('score')">Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
+              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i><i class="ti ti-info-circle" onclick="event.stopPropagation()" title="Low: 0–8 · Moderate: 9–16 · High: 17–25" style="font-size:14px; vertical-align:middle; margin-left:4px; color:#9CA3AF; cursor:default;"></i></th>
               <th style="width:10%; cursor:pointer; text-align:center;" onclick="sortBy('referOut')">Refer Out <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:40%">Description</th>
               <th style="width:12%">Actions</th>
@@ -805,7 +805,7 @@
           <td style="text-align:center;">
             <div class="score-${p.tier}" style="font-size:20px;font-weight:700;line-height:1;">${p.score}<span style="font-size:12px;font-weight:500;color:#9CA3AF;">/25</span></div>
           </td>
-          <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}<i class="ti ti-info-circle info-icon"></i>${scoreTooltip(p)}</span></div></td>
+          <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
           <td><div style="display:flex; justify-content:center;">
             ${p.referOut ? `<span class="refer-badge">Refer out</span>` : `<span style="color:var(--text-muted);font-size:13px;">—</span>`}
           </div></td>
