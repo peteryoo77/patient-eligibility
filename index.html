@@ -497,7 +497,7 @@
         id: 1, name: "Sarah Mitchell", age: 52, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "DM", "HTN"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 14, C-SSRS: 2, SDS: 9; 2 ED visits in past 12 months; DM and HTN with persistent medication non-adherence on Sertraline; housing insecure and socially isolated; no BH provider documented in over 22 months.",
+        reasoning: "Active MDD with suicidal ideation (PHQ-9: 14, C-SSRS: 2) and severe functional decline (SDS: 9); 2 ED visits in past 12 months; non-adherent to Sertraline with comorbid DM and HTN; housing insecure and socially isolated; no BH provider in 22 months.",
         raw: { phq9: 14, gad7: null, pcl5: null, cssrs: 2, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Sertraline 100mg", status: "Active", duration: "18 mo" },
@@ -509,7 +509,7 @@
         id: 2, name: "James Rodriguez", age: 45, gender: "Male",
         diagnoses: ["Generalized Anxiety Disorder", "Type 2 Diabetes"],
         tier: "high", score: 82, isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 16, GAD-7: 12, SDS: 8; 2 ED visits in 12 months; Type 2 Diabetes; medication non-adherent on Escitalopram with prior treatment failure; food insecure and socially isolated; no BH contact in 18 months.",
+        reasoning: "Severe co-occurring depression and anxiety (PHQ-9: 16, GAD-7: 12, SDS: 8); 2 ED visits in 12 months; non-adherent to Escitalopram with prior treatment failure; Type 2 Diabetes; food insecure and socially isolated; no BH contact in 18 months.",
         raw: { phq9: 16, gad7: 12, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Escitalopram 20mg", status: "Active", duration: "8 mo" },
@@ -522,7 +522,7 @@
         id: 3, name: "Patricia Chen", age: 68, gender: "Female",
         diagnoses: ["PTSD", "Chronic Pain", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: true,
-        reasoning: "C-SSRS: 4, PCL-5: 40, SDS: 9; active suicidal ideation with severe PTSD; Oxycodone 15mg escalating over 18 months; 2 ER visits in 90 days; chronic pain and HTN; no BH contact in 24 months — refer to outpatient psychiatry.",
+        reasoning: "Active suicidal ideation with severe PTSD (C-SSRS: 4, PCL-5: 40, SDS: 9); Oxycodone 15mg escalating over 18 months with 2 ER visits in 90 days; chronic pain and HTN; no BH contact in 24 months — refer to outpatient psychiatry.",
         raw: { phq9: 12, gad7: null, pcl5: 40, cssrs: 4, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Oxycodone 15mg",      status: "Active", duration: "18 mo" },
@@ -535,7 +535,7 @@
         id: 4, name: "Michael Thompson", age: 39, gender: "Male",
         diagnoses: ["Bipolar II Disorder", "Obesity", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: true,
-        reasoning: "PHQ-9: 11, GAD-7: 10, SDS: 8; Bipolar II on Lamotrigine and Quetiapine with prior psychiatric hospitalization; no BH provider on file; 4 missed appointments; housing insecure and socially isolated — refer to outpatient psychiatry.",
+        reasoning: "Bipolar II on Lamotrigine and Quetiapine with prior psychiatric hospitalization and no BH provider on file (PHQ-9: 11, GAD-7: 10, SDS: 8); 4 missed appointments; housing insecure and socially isolated — refer to outpatient psychiatry.",
         raw: { phq9: 11, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Lamotrigine 150mg", status: "Active", duration: "3 yr" },
@@ -548,7 +548,7 @@
         id: 5, name: "Linda Park", age: 61, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "COPD", "DM"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 10, SDS: 7; COPD and Type 2 Diabetes complicating adherence; medication non-adherent on Bupropion with prior antidepressant failure; food insecure and socially isolated; no BH contact in 15 months.",
+        reasoning: "MDD with clinically significant functional impairment (PHQ-9: 10, SDS: 7); non-adherent to Bupropion with prior antidepressant failure; comorbid COPD and Type 2 Diabetes; food insecure and socially isolated; no BH contact in 15 months.",
         raw: { phq9: 10, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Bupropion 150mg",    status: "Active", duration: "15 mo" },
@@ -560,7 +560,7 @@
         id: 6, name: "Robert Kim", age: 47, gender: "Male",
         diagnoses: ["Generalized Anxiety Disorder", "Insomnia"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "GAD-7: 11, PHQ-9: 10; persistent sleep dysfunction; prior benzodiazepine failure — currently on Lorazepam 1mg and Zolpidem 10mg; no active BH provider or therapy on record; no SDOH burden.",
+        reasoning: "Co-occurring anxiety and depression at clinical threshold (GAD-7: 11, PHQ-9: 10) with persistent sleep dysfunction; prior benzodiazepine failure — currently on Lorazepam and Zolpidem; no active BH provider or therapy on record.",
         raw: { phq9: 10, gad7: 11, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Lorazepam 1mg", status: "Active", duration: "14 mo" },
@@ -572,7 +572,7 @@
         id: 8, name: "David Lee", age: 33, gender: "Male",
         diagnoses: ["PTSD", "Alcohol Use Disorder"],
         isNew: true, status: "pending", eligible: true, referOut: true,
-        reasoning: "PCL-5: 36, SDS: 7; active alcohol use disorder (AUDIT-10: 14) requiring detox before CoCM; food insecure; Naltrexone requires addiction medicine oversight — refer to specialized SUD program.",
+        reasoning: "Severe PTSD with active alcohol use disorder (PCL-5: 36, AUDIT-10: 14, SDS: 7); detox required before CoCM enrollment; food insecure; Naltrexone requires addiction medicine oversight — refer to specialized SUD program.",
         raw: { phq9: 10, gad7: null, pcl5: 36, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Sertraline 50mg",  status: "Active", duration: "5 mo" },
@@ -584,7 +584,7 @@
         id: 11, name: "Jennifer Davis", age: 29, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "ADHD"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 6; first-time MDD presentation with ADHD on Amphetamine salts; no functional impairment or ED visits; food insecure; no prior BH contact — re-screen in 6 months.",
+        reasoning: "Mild first-onset MDD (PHQ-9: 6) with ADHD managed on Amphetamine salts; no functional impairment, ED visits, or prior BH contact; food insecure — re-screen in 6 months.",
         raw: { phq9: 6, gad7: null, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Amphetamine salts 20mg", status: "Active", duration: "2 yr" }
@@ -595,7 +595,7 @@
         id: 13, name: "Margaret Wilson", age: 64, gender: "Female",
         diagnoses: ["Bipolar I Disorder", "DM", "Obesity"],
         isNew: false, status: "referred", eligible: true, referOut: true,
-        reasoning: "PHQ-9: 9, GAD-7: 11, SDS: 8; Bipolar I on Valproic Acid and Lithium with prior psychiatric hospitalization; 1 ED visit; escalating mood stabilizer dosage; socially isolated; already enrolled in specialty program — coordinate with existing provider.",
+        reasoning: "Bipolar I on Valproic Acid and Lithium with escalating dosage and prior psychiatric hospitalization (PHQ-9: 9, GAD-7: 11, SDS: 8); 1 ED visit; socially isolated; already enrolled in specialty program — coordinate with existing provider.",
         raw: { phq9: 9, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Valproic Acid 1000mg",    status: "Active", duration: "5 yr" },
@@ -608,7 +608,7 @@
         id: 14, name: "Angela Foster", age: 48, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "HTN", "Obesity"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 12, SDS: 8; HTN and obesity; medication non-adherent on Fluoxetine 40mg for 6 months with no dose adjustment; prior SSRI failure; food insecure; no BH contact in 14 months.",
+        reasoning: "Moderate MDD with persistent anhedonia (PHQ-9: 12, SDS: 8); non-adherent to Fluoxetine 40mg for 6 months with no dose adjustment; prior SSRI failure; comorbid HTN and obesity; food insecure; no BH contact in 14 months.",
         raw: { phq9: 12, gad7: null, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Fluoxetine 40mg",  status: "Active", duration: "8 mo" },
@@ -620,7 +620,7 @@
         id: 15, name: "Kevin Okafor", age: 36, gender: "Male",
         diagnoses: ["PTSD", "Generalized Anxiety Disorder", "Type 2 Diabetes"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 13, GAD-7: 11, SDS: 8; active PTSD with prior Sertraline failure; 2 ED visits in 12 months; Type 2 Diabetes; housing insecure and socially isolated; no BH provider on file.",
+        reasoning: "Elevated depression and anxiety with active PTSD (PHQ-9: 13, GAD-7: 11, SDS: 8); prior Sertraline failure; 2 ED visits in 12 months; Type 2 Diabetes; housing insecure and socially isolated; no BH provider on file.",
         raw: { phq9: 13, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Sertraline 100mg",   status: "Active", duration: "4 mo" },
@@ -633,7 +633,7 @@
         id: 17, name: "Marcus Bell", age: 41, gender: "Male",
         diagnoses: ["Bipolar II Disorder", "Chronic Pain", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 14, GAD-7: 10, SDS: 8; prior psychiatric hospitalization (2020); Bipolar II on Lamotrigine without psychiatric oversight; chronic pain on Oxycodone 10mg (14 months); HTN; housing insecure; no BH follow-up in 11 months.",
+        reasoning: "Active Bipolar II with depression and anxiety (PHQ-9: 14, GAD-7: 10, SDS: 8); prior psychiatric hospitalization (2020) with no BH follow-up in 11 months; chronic pain on Oxycodone 10mg (14 months); comorbid HTN; housing insecure.",
         raw: { phq9: 14, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Lamotrigine 200mg", status: "Active", duration: "3 yr" },
@@ -646,7 +646,7 @@
         id: 18, name: "Priya Sharma", age: 33, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "ADHD", "Hypothyroidism"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 11, SDS: 7; ADHD on stimulant complicating antidepressant response; prior Escitalopram failure requiring dose escalation; hypothyroidism on Levothyroxine; socially isolated; no BH contact in 8 months.",
+        reasoning: "MDD with significant work impairment (PHQ-9: 11, SDS: 7); ADHD on stimulant complicating antidepressant response; prior Escitalopram failure requiring dose escalation; comorbid hypothyroidism; socially isolated; no BH contact in 8 months.",
         raw: { phq9: 11, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Escitalopram 10mg",      status: "Active", duration: "6 mo" },
@@ -659,7 +659,7 @@
         id: 19, name: "Raymond Torres", age: 67, gender: "Male",
         diagnoses: ["Major Depressive Disorder", "CHF", "Type 2 Diabetes", "Chronic Pain"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 15, SDS: 9; CHF (EF 40%), Type 2 Diabetes, and chronic pain on Oxycodone (2 years); 2 ED visits in 12 months; non-adherent across cardiac, diabetes, and psychiatric regimens; housing insecure and socially isolated; Sertraline by PCP with no psychiatric oversight.",
+        reasoning: "Severe MDD with functional decline (PHQ-9: 15, SDS: 9); CHF (EF 40%), Type 2 Diabetes, and chronic pain on Oxycodone creating compounding adherence barriers; 2 ED visits in 12 months; non-adherent across all regimens; housing insecure and socially isolated; Sertraline by PCP with no psychiatric oversight.",
         raw: { phq9: 15, gad7: null, pcl5: null, cssrs: 0, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Sertraline 50mg",   status: "Active", duration: "3 mo" },
@@ -673,7 +673,7 @@
         id: 21, name: "Harold Jensen", age: 72, gender: "Male",
         diagnoses: ["Major Depressive Disorder", "COPD", "HTN", "Obesity"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 16, GAD-7: 11, SDS: 9; COPD (O2 Sat 94%), HTN, and obesity with medication non-adherence across multiple regimens; 2 ED visits in 12 months; food insecure and socially isolated; Venlafaxine 225mg by PCP with no psychiatric oversight in 24 months.",
+        reasoning: "Severe co-occurring depression and anxiety (PHQ-9: 16, GAD-7: 11, SDS: 9); COPD (O2 Sat 94%), HTN, and obesity with medication non-adherence across multiple regimens; 2 ED visits in 12 months; food insecure and socially isolated; Venlafaxine 225mg by PCP with no psychiatric oversight in 24 months.",
         raw: { phq9: 16, gad7: 11, pcl5: null, cssrs: 0, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Venlafaxine 225mg", status: "Active", duration: "4 yr" },
@@ -686,7 +686,7 @@
         id: 23, name: "Samuel Osei", age: 55, gender: "Male",
         diagnoses: ["Major Depressive Disorder", "Type 2 Diabetes", "HTN", "Obesity"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 14, GAD-7: 11, SDS: 8; prior psychiatric hospitalization (2022); DM, HTN, and obesity with persistent medication non-adherence; housing insecure and socially isolated; no BH contact in 12 months.",
+        reasoning: "Moderate-severe depression and anxiety (PHQ-9: 14, GAD-7: 11, SDS: 8); prior psychiatric hospitalization (2022) with no BH follow-up in 12 months; DM, HTN, and obesity with persistent medication non-adherence; housing insecure and socially isolated.",
         raw: { phq9: 14, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Duloxetine 60mg",  status: "Active", duration: "7 mo" },
@@ -699,7 +699,7 @@
         id: 25, name: "Brian Cho", age: 45, gender: "Male",
         diagnoses: ["Dysthymia", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 9; persistent low-grade mood with prior SSRI partial response; HTN with medication non-adherence on Lisinopril; food insecure and socially isolated; no BH contact in 18 months — re-screen in 6 months.",
+        reasoning: "Subclinical dysthymia (PHQ-9: 9) with prior SSRI partial response; HTN with medication non-adherence; food insecure and socially isolated; no BH contact in 18 months — re-screen in 6 months.",
         raw: { phq9: 9, gad7: null, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Lisinopril 10mg", status: "Active", duration: "3 yr" }
@@ -710,7 +710,7 @@
         id: 26, name: "Teresa Nguyen", age: 53, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "Obesity", "Type 2 Diabetes"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 8; MDD on Fluoxetine with inconsistent adherence; Type 2 Diabetes and obesity with stable chronic condition management; no functional impairment, no SDOH burden — re-screen in 6 months.",
+        reasoning: "Subclinical MDD (PHQ-9: 8) on Fluoxetine with inconsistent adherence; comorbid Type 2 Diabetes and obesity; no functional impairment or SDOH burden — re-screen in 6 months.",
         raw: { phq9: 8, gad7: null, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Fluoxetine 20mg",  status: "Active", duration: "6 mo" },
@@ -722,7 +722,7 @@
         id: 28, name: "Olivia Park", age: 25, gender: "Female",
         diagnoses: ["Major Depressive Disorder"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PHQ-9: 6; first-episode mild depression with no prior treatment history or medications; food insecure and socially isolated; no functional impairment or ED visits — psychoeducation and re-screen in 6 months.",
+        reasoning: "Mild first-episode depression (PHQ-9: 6) with no prior treatment history or medications; food insecure and socially isolated; no functional impairment or ED visits — psychoeducation and re-screen in 6 months.",
         raw: { phq9: 6, gad7: 5, pcl5: null, cssrs: 0, sds: 4, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [],
         history: { mhDiagnosis: "MDD (2025)", familyHistory: "Paternal depression", lastBHContact: "Never" }
