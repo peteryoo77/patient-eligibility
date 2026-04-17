@@ -811,6 +811,9 @@
         '<div class="domain-sep"></div>' +
         domainBar('SDOH Burden',           domains.sdoh,        4, 'var(--primary)', sigs.sdohs) +
         '</div>' +
+        '<div style="margin-top:20px;">' +
+          '<button id="enroll-card-btn" class="action-btn action-btn-enroll" onclick="handleTopbarAction()">Enroll in CoCM</button>' +
+        '</div>' +
         '</div>';
     }
 
@@ -1004,6 +1007,7 @@
           btn.className = 'action-btn action-btn-refer';
           btn.innerHTML = 'Refer out';
         } else {
+          btn.style.display = 'none';
           btn.className = 'action-btn action-btn-enroll';
           btn.innerHTML = 'Enroll in CoCM';
         }
@@ -1039,9 +1043,12 @@
 
     function confirmPtEnroll() {
       closePtEnrollModal();
-      var btn = document.getElementById('topbar-action-btn');
-      btn.className = 'action-btn action-btn-done';
-      btn.innerHTML = '<i class="ti ti-check"></i> Enrolled';
+      var cardBtn = document.getElementById('enroll-card-btn');
+      if (cardBtn) {
+        cardBtn.className = 'action-btn action-btn-done';
+        cardBtn.innerHTML = '<i class="ti ti-check"></i> Enrolled';
+        cardBtn.onclick = null;
+      }
     }
 
     function confirmPtRefer() {
