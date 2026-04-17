@@ -133,8 +133,8 @@
     }
     .filter-pills { display: flex; gap: 0; }
     .filter-pill {
-      padding: 16px 16px; border: none; border-bottom: 2px solid transparent;
-      font-size: 13px; font-weight: 500; color: var(--text-muted);
+      padding: 16px 24px; border: none; border-bottom: 2px solid transparent;
+      font-size: 14px; font-weight: 500; color: var(--text-muted);
       background: none; cursor: pointer; white-space: nowrap;
       font-family: 'Geist','Inter',sans-serif; transition: all 0.12s;
       margin-bottom: -1px;
@@ -145,9 +145,9 @@
       border-bottom-color: var(--primary);
     }
     .filter-count {
-      font-size: 12px; font-weight: 600; margin-left: 5px;
+      font-size: 12px; font-weight: 600; margin-left: 7px;
       background: #F3F4F6; color: #6B7280;
-      padding: 1px 6px; border-radius: 999px; display: inline-block;
+      padding: 2px 8px; border-radius: 999px; display: inline-block;
     }
     .filter-pill.active .filter-count {
       background: var(--primary-light); color: var(--primary);
@@ -411,9 +411,8 @@
           <thead>
             <tr>
               <th style="width:22%; cursor:pointer;" onclick="sortBy('name')">Patient <span style="display:inline-flex;flex-direction:column;gap:1px;vertical-align:middle;margin-left:3px;"><svg width="8" height="5" viewBox="0 0 8 5" fill="#9CA3AF"><path d="M4 0L8 5H0z"/></svg><svg width="8" height="5" viewBox="0 0 8 5" fill="#9CA3AF"><path d="M4 5L0 0H8z"/></svg></span></th>
-              <th style="width:14%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:4px;cursor:default;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Risk <span style="display:inline-flex;flex-direction:column;gap:1px;vertical-align:middle;margin-left:3px;"><svg width="8" height="5" viewBox="0 0 8 5" fill="#9CA3AF"><path d="M4 0L8 5H0z"/></svg><svg width="8" height="5" viewBox="0 0 8 5" fill="#9CA3AF"><path d="M4 5L0 0H8z"/></svg></span></th>
-              <th style="width:8%; cursor:pointer; text-align:center;" onclick="sortBy('score')">Score <span style="display:inline-flex;flex-direction:column;gap:1px;vertical-align:middle;margin-left:3px;"><svg width="8" height="5" viewBox="0 0 8 5" fill="#9CA3AF"><path d="M4 0L8 5H0z"/></svg><svg width="8" height="5" viewBox="0 0 8 5" fill="#9CA3AF"><path d="M4 5L0 0H8z"/></svg></span></th>
-              <th style="width:42%">Description</th>
+              <th style="width:16%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:4px;cursor:default;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Risk <span style="display:inline-flex;flex-direction:column;gap:1px;vertical-align:middle;margin-left:3px;"><svg width="8" height="5" viewBox="0 0 8 5" fill="#9CA3AF"><path d="M4 0L8 5H0z"/></svg><svg width="8" height="5" viewBox="0 0 8 5" fill="#9CA3AF"><path d="M4 5L0 0H8z"/></svg></span></th>
+              <th style="width:48%">Description</th>
               <th style="width:14%">Actions</th>
             </tr>
           </thead>
@@ -873,7 +872,7 @@
       const list = getFiltered();
 
       if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state">
           <i class="ti ti-circle-off"></i>No patients match this filter.
         </div></td></tr>`;
         return;
@@ -885,13 +884,15 @@
             <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span></div>
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
-          <td style="text-align:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></td>
-          <td style="text-align:center; font-size:13px; font-weight:600; color:#374151;">${p.score}<span style="font-size:11px;font-weight:400;color:#9CA3AF;">/25</span></td>
+          <td style="text-align:center;">
+            <span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span>
+            <div style="margin-top:6px; font-size:18px; font-weight:700; color:#111827; line-height:1;">${p.score}<span style="font-size:13px; font-weight:400; color:#9CA3AF;">/25</span></div>
+          </td>
           <td><span class="reasoning">${p.reasoning}</span></td>
           <td onclick="event.stopPropagation()">${renderActions(p)}</td>
         </tr>
         <tr class="detail-row" id="detail-${p.id}" style="display:none;">
-          <td colspan="5">${renderDetail(p)}</td>
+          <td colspan="4">${renderDetail(p)}</td>
         </tr>
       `).join('');
 
@@ -946,8 +947,6 @@
       isFirstRender = false;
       document.getElementById('count-eligible').textContent    = eligible;
       document.getElementById('count-notenrolled').textContent = monitoring;
-      document.getElementById('count-high').textContent        = high;
-      document.getElementById('count-medium').textContent      = medium;
     }
 
     // Filter pills
