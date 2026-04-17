@@ -23,7 +23,7 @@
       --high-text:   #dc2626; --high-bg: #FEF2F2; --high-border: #FECACA; --high-bar: #dc2626;
       --med-text:    #d97706; --med-bg:  #FFFBEB; --med-border:  #FDE68A; --med-bar: #d97706;
       --low-text:    #16a34a; --low-bg:  #F0FDF4; --low-border:  #BBF7D0; --low-bar: #16a34a;
-      --ref-text:    #6D28D9; --ref-bg:  #F5F3FF; --ref-border:  #DDD6FE; --ref-bar: #8B5CF6;
+      --ref-text:    #6B7280; --ref-bg:  #F3F4F6; --ref-border:  #E5E7EB; --ref-bar: #9CA3AF;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -240,12 +240,12 @@
     /* Actions */
     .action-group { display: flex; align-items: center; gap: 6px; }
     .btn-enroll {
-      padding: 8px 20px; background: #16a34a; color: white;
+      padding: 8px 20px; background: var(--primary); color: white;
       border: none; border-radius: 6px; font-size: 13px; font-weight: 600;
       cursor: pointer; font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
       transition: background 0.12s;
     }
-    .btn-enroll:hover { background: #15803d; }
+    .btn-enroll:hover { background: var(--primary-hover); }
     .btn-refer {
       padding: 8px 20px; background: var(--primary); color: white;
       border: none; border-radius: 6px; font-size: 13px; font-weight: 600;
@@ -466,15 +466,15 @@
   <div id="enroll-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
     <div style="background:#fff; border-radius:16px; width:400px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
       <div style="padding:28px 28px 24px;">
-        <div style="width:40px;height:40px;border-radius:10px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <div style="width:40px;height:40px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
         <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:4px;">Enroll in CoCM</div>
         <div id="modal-patient-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
       </div>
       <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
         <button onclick="closeModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
-        <button onclick="confirmEnroll()" style="padding:9px 20px;border:none;border-radius:8px;background:#16a34a;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#15803d'" onmouseout="this.style.background='#16a34a'">Enroll</button>
+        <button onclick="confirmEnroll()" style="padding:9px 20px;border:none;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'">Enroll</button>
       </div>
     </div>
   </div>
