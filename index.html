@@ -1041,33 +1041,11 @@
     }
 
     function updateMetrics() {
-      const eligible  = patients.filter(p => p.eligible && !p.referOut && p.status !== 'archived' && p.status !== 'enrolled').length;
-      const referOut  = patients.filter(p => p.referOut  && p.status !== 'archived').length;
-      const archived  = patients.filter(p => p.status === 'archived').length;
-      const all       = patients.filter(p => p.status !== 'archived' && p.status !== 'enrolled').length;
-      const newCount  = patients.filter(p => p.isNew && p.status !== 'archived').length;
-      const high      = patients.filter(p => p.tier === 'high'   && p.status !== 'archived').length;
-      const medium    = patients.filter(p => p.tier === 'medium' && p.status !== 'archived').length;
-      const low       = patients.filter(p => p.tier === 'low'    && p.status !== 'archived').length;
-
-      if (isFirstRender) {
-        animateCount(document.getElementById('metric-total'),    all);
-        animateCount(document.getElementById('metric-eligible'), eligible);
-        animateCount(document.getElementById('metric-referout'), referOut);
-        isFirstRender = false;
-      } else {
-        document.getElementById('metric-total').textContent    = all;
-        document.getElementById('metric-eligible').textContent = eligible;
-        document.getElementById('metric-referout').textContent = referOut;
-      }
-
-      const eligible2    = patients.filter(p => !p.referOut && p.tier !== 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
-      const notEnrolled  = patients.filter(p => !p.referOut && p.tier === 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
-      document.getElementById('count-all').textContent         = all;
-      document.getElementById('count-eligible').textContent    = eligible2;
-      document.getElementById('count-notenrolled').textContent = notEnrolled;
-      document.getElementById('count-referout').textContent    = referOut;
-      document.getElementById('count-archived').textContent    = referOut;
+      const eligible   = patients.filter(p => !p.referOut && p.tier !== 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
+      const monitoring = patients.filter(p => !p.referOut && p.tier === 'low'  && p.status !== 'archived' && p.status !== 'enrolled').length;
+      isFirstRender = false;
+      document.getElementById('count-eligible').textContent    = eligible;
+      document.getElementById('count-notenrolled').textContent = monitoring;
     }
 
     // Filter pills
