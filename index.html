@@ -401,8 +401,8 @@
       <!-- Tabs row -->
       <div class="filter-bar">
         <div class="filter-pills">
-          <button class="filter-pill active" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span><span class="pill-sub">Score 9–25 &nbsp;·&nbsp; High <span id="count-high"></span> &nbsp;·&nbsp; Moderate <span id="count-medium"></span></span></button>
-          <button class="filter-pill" data-filter="notenrolled">Monitoring <span class="filter-count" id="count-notenrolled"></span><span class="pill-sub">Score 0–8</span></button>
+          <button class="filter-pill active" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
+          <button class="filter-pill" data-filter="notenrolled">Monitoring <span class="filter-count" id="count-notenrolled"></span></button>
         </div>
         <div class="search-wrap">
           <i class="ti ti-search"></i>
@@ -889,7 +889,7 @@
             <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span></div>
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
-          <td style="text-align:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></td>
+          <td style="text-align:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span><div style="font-size:11px;color:#9CA3AF;margin-top:4px;font-weight:500;">${p.score}</div></td>
           <td><span class="reasoning">${p.reasoning}</span></td>
           <td onclick="event.stopPropagation()">${renderActions(p)}</td>
         </tr>
