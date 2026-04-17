@@ -20,9 +20,9 @@
       --text-muted:    #6B7280;
       --radius:        10px;
 
-      --high-text: #dc2626; --high-bg: #FEF2F2;
-      --med-text:  #d97706; --med-bg:  #FFFBEB;
-      --low-text:  #16a34a; --low-bg:  #F0FDF4;
+      --high-text: #C0392B; --high-bg: #FDF0EF;
+      --med-text:  #D4802A; --med-bg:  #FDF5E6;
+      --low-text:  #2D9E5C; --low-bg:  #EEF9F2;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -149,7 +149,7 @@
     .sdoh-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
     .sdoh-row:last-child { border-bottom: none; }
     .sdoh-label { font-size: 14px; color: var(--text); font-weight: 500; }
-    .sdoh-flag-yes { font-size: 14px; font-weight: 600; color: #dc2626; background: #FEF2F2; padding: 2px 8px; border-radius: 4px; }
+    .sdoh-flag-yes { font-size: 14px; font-weight: 600; color: #C0392B; background: #FDF0EF; padding: 2px 8px; border-radius: 4px; }
     .sdoh-flag-no  { font-size: 14px; color: var(--text-muted); }
     .score-box { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
     .score-label { font-size: 11px; font-weight: 600; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
@@ -186,8 +186,8 @@
     .key-signals { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
     .key-signal { font-size: 14px; color: var(--text-mid); line-height: 1.55; padding-left: 18px; position: relative; }
     .key-signal::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
-    .key-signal-alert { color: #dc2626; }
-    .key-signal-alert::before { background: #dc2626; }
+    .key-signal-alert { color: #C0392B; }
+    .key-signal-alert::before { background: #C0392B; }
 
 
     /* ── ELIGIBILITY CARD ── */
@@ -218,7 +218,7 @@
     .refer-out-meta { display: flex; gap: 24px; margin-bottom: 18px; flex-wrap: wrap; }
     .refer-out-col { display: flex; flex-direction: column; gap: 5px; }
     .refer-out-col-label { font-size: 11px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; }
-    .refer-out-criterion-tag { display: inline-block; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: #dc2626; }
+    .refer-out-criterion-tag { display: inline-block; background: #FDF0EF; border: 1px solid #F5C2BE; border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: #C0392B; }
     .refer-out-dest-tag { display: inline-block; background: var(--primary-light); border: 1px solid hsl(199,89%,82%); border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: var(--primary); }
     .refer-out-divider { height: 1px; background: var(--border); margin-bottom: 14px; }
     .refer-out-reason-text { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
@@ -825,7 +825,7 @@
       if (s <= 14) return 'Moderate';
       return 'Severe';
     }
-    const C_LOW = '#16a34a', C_MED = '#d97706', C_HIGH = '#dc2626';
+    const C_LOW = '#16a34a', C_MED = '#d97706', C_HIGH = '#C0392B';
     function scoreColor(s, type) {
       if (type === 'phq9')    return s<=4?C_LOW:s<=9?C_MED:C_HIGH;
       if (type === 'gad7')    return s<=4?C_LOW:s<=9?C_MED:C_HIGH;
@@ -1082,7 +1082,7 @@
       <span style="font-size:12px;color:#374151;">Enroll in standard CoCM Track</span>
     </div>
     <div style="display:grid; grid-template-columns:110px 120px 1fr; align-items:center; padding:11px 16px;">
-      <span style="font-size:11px;font-weight:600;color:#dc2626;background:#FEF2F2;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">High</span>
+      <span style="font-size:11px;font-weight:600;color:#C0392B;background:#FDF0EF;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">High</span>
       <span style="font-size:12px;color:#6B7280;">CoCM Eligible</span>
       <span style="font-size:12px;color:#374151;">Enroll in Intensive CoCM + Psychiatric Consultation</span>
     </div>
