@@ -56,10 +56,10 @@
     }
     .logo-text { display: flex; flex-direction: column; }
     .logo-name { font-size: 13px; font-weight: 700; color: #111827; line-height: 1.3; }
-    .logo-sub  { font-size: 9.5px; font-weight: 600; color: #9CA3AF; letter-spacing: 0.07em; text-transform: uppercase; }
+    .logo-sub  { font-size: 12px; font-weight: 600; color: #9CA3AF; letter-spacing: 0.07em; text-transform: uppercase; }
     .sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0 8px; }
     .nav-section-label {
-      font-size: 10.5px; font-weight: 600; color: #9CA3AF;
+      font-size: 12px; font-weight: 600; color: #9CA3AF;
       letter-spacing: 0.07em; text-transform: uppercase; padding: 14px 16px 4px;
     }
     .nav-item {
@@ -80,11 +80,11 @@
     .user-avatar {
       width: 30px; height: 30px; border-radius: 50%; background: var(--primary);
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; color: white; flex-shrink: 0;
+      font-size: 12px; font-weight: 700; color: white; flex-shrink: 0;
     }
     .user-info { flex: 1; min-width: 0; }
     .user-name  { font-size: 12.5px; font-weight: 600; color: #111827; }
-    .user-email { font-size: 11px; color: #9CA3AF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-email { font-size: 12px; color: #9CA3AF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* ── MAIN ── */
     .main { margin-left: 216px; flex: 1; padding: 28px 28px 48px; min-height: 100vh; }
@@ -118,7 +118,7 @@
       border-radius: var(--radius); padding: 22px 24px;
     }
     .metric-label {
-      font-size: 11px; font-weight: 600; color: var(--text-muted);
+      font-size: 12px; font-weight: 600; color: var(--text-muted);
       text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px;
     }
     .metric-value { font-size: 32px; font-weight: 700; color: #111827; line-height: 1; }
@@ -144,8 +144,12 @@
       border-bottom-color: var(--primary);
     }
     .filter-count {
-      font-size: 11px; font-weight: 600; margin-left: 6px;
-      color: inherit; opacity: 0.7;
+      font-size: 12px; font-weight: 600; margin-left: 5px;
+      background: #F3F4F6; color: #6B7280;
+      padding: 1px 6px; border-radius: 999px; display: inline-block;
+    }
+    .filter-pill.active .filter-count {
+      background: var(--primary-light); color: var(--primary);
     }
     .search-wrap {
       position: relative; flex-shrink: 0;
@@ -180,7 +184,7 @@
 
     thead th {
       padding: 14px 14px; text-align: left;
-      font-size: 10.5px; font-weight: 600; color: #9CA3AF;
+      font-size: 12px; font-weight: 600; color: #9CA3AF;
       letter-spacing: 0.06em; text-transform: uppercase;
       border-bottom: 0.5px solid var(--border); background: #F9FAFB;
       white-space: nowrap;
@@ -219,67 +223,38 @@
     /* Refer out badge */
     .refer-badge { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; white-space: nowrap; background: #F3F4F6; color: #6B7280; }
 
-    /* Risk header tooltip */
-    .risk-info-wrap { position: static; display: inline-flex; align-items: center; }
-    .risk-info-wrap .risk-tip {
-      display: none; position: fixed;
-      background: #fff; color: var(--text); border-radius: 10px; padding: 16px 20px;
-      font-size: 12px; font-weight: 400; z-index: 9999; width: 620px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.14); border: 1px solid var(--border);
-      text-transform: none; letter-spacing: normal; pointer-events: none; overflow: hidden;
-    }
-    .risk-info-wrap:hover .risk-tip { display: block; }
-    .risk-tip .tip-title { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; text-align: center; }
-    .risk-tip table { border-collapse: collapse; width: 580px; table-layout: fixed; }
-    .risk-tip thead th { font-size: 11px; font-weight: 600; color: var(--text-muted); padding: 0 0 8px 0; text-align: left; border-bottom: 1px solid var(--border); }
-    .risk-tip thead th:nth-child(1) { width: 100px; }
-    .risk-tip thead th:nth-child(2) { width: 70px; }
-    .risk-tip thead th:nth-child(3) { width: 110px; }
-    .risk-tip thead th:nth-child(4) { width: 300px; }
-    .risk-tip tbody td { font-size: 12px; color: var(--text-mid); padding: 8px 0 0 0; vertical-align: top; line-height: 1.5; word-wrap: break-word; overflow-wrap: break-word; }
-    .risk-tip tbody tr:first-child td { padding-top: 10px; }
-
     /* Risk badge */
     .risk-badge {
-      display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 12px;
+      display: inline-flex; align-items: center; padding: 4px 12px;
       border-radius: 9999px; font-size: 12px; font-weight: 600;
-      border: none; white-space: nowrap; position: relative;
+      border: none; white-space: nowrap;
     }
-    .risk-badge .info-icon {
-      font-size: 13px; opacity: 0.65; cursor: default; line-height: 1;
-      display: inline-flex; align-items: center;
-    }
-    .risk-badge .score-tooltip {
-      display: none; position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%);
-      background: #1f2937; color: #f9fafb; border-radius: 8px; padding: 10px 12px;
-      font-size: 11.5px; font-weight: 400; white-space: nowrap; z-index: 999;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.18); min-width: 180px; line-height: 1.8;
-      pointer-events: none;
-    }
-    .risk-badge .score-tooltip::before {
-      content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
-      border: 5px solid transparent; border-bottom-color: #1f2937;
-    }
-    .risk-badge:hover .score-tooltip { display: block; }
     .risk-high     { color: var(--high-text); background: var(--high-bg); border-color: var(--high-border); }
     .risk-medium   { color: var(--med-text);  background: var(--med-bg);  border-color: var(--med-border); }
     .risk-low      { color: var(--low-text);  background: var(--low-bg);  border-color: var(--low-border); }
     .risk-referred { color: var(--ref-text);  background: var(--ref-bg);  border-color: var(--ref-border); }
 
     /* Reasoning */
-    .reasoning { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; max-width: 380px; }
+    .reasoning { font-size: 12.5px; color: var(--text-mid); line-height: 1.6; }
 
     /* Actions */
     .action-group { display: flex; align-items: center; gap: 6px; }
+    .btn-enroll {
+      padding: 8px 20px; background: #16a34a; color: white;
+      border: none; border-radius: 6px; font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
+      transition: background 0.12s;
+    }
+    .btn-enroll:hover { background: #15803d; }
     .btn-refer {
-      padding: 8px 0; width: 90px; text-align: center; background: var(--primary); color: white;
+      padding: 8px 20px; background: var(--primary); color: white;
       border: none; border-radius: 6px; font-size: 13px; font-weight: 600;
       cursor: pointer; font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
       transition: background 0.12s;
     }
     .btn-refer:hover { background: var(--primary-hover); }
     .btn-dismiss {
-      padding: 8px 0; width: 90px; text-align: center; background: none; border: 0.5px solid var(--border);
+      padding: 8px 20px; background: none; border: 0.5px solid var(--border);
       color: var(--text-mid); font-size: 13px; font-weight: 600; cursor: pointer;
       font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
       border-radius: 6px; transition: border-color 0.12s, color 0.12s;
@@ -287,14 +262,14 @@
     .btn-dismiss:hover { border-color: #9CA3AF; color: var(--text); }
     .btn-screen {
       padding: 5px 12px; background: none; border: 0.5px solid var(--border);
-      color: var(--text-mid); border-radius: 6px; font-size: 11.5px; font-weight: 500;
+      color: var(--text-mid); border-radius: 6px; font-size: 12px; font-weight: 500;
       cursor: pointer; font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
       transition: border-color 0.12s, color 0.12s;
     }
     .btn-screen:hover { border-color: var(--primary); color: var(--primary); }
     .btn-view-status {
       padding: 5px 12px; background: none; border: 0.5px solid var(--ref-border);
-      color: var(--ref-text); border-radius: 6px; font-size: 11.5px; font-weight: 500;
+      color: var(--ref-text); border-radius: 6px; font-size: 12px; font-weight: 500;
       cursor: pointer; font-family: 'Geist','Inter',sans-serif; white-space: nowrap;
     }
 
@@ -312,18 +287,18 @@
     }
     .detail-col:last-child { border-right: none; }
     .detail-col-title {
-      font-size: 10.5px; font-weight: 700; color: #9CA3AF;
+      font-size: 12px; font-weight: 700; color: #9CA3AF;
       text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px;
     }
     .detail-row-item {
       display: flex; align-items: flex-start; justify-content: space-between;
       gap: 8px; padding: 7px 0; font-size: 12px;
     }
-    .detail-key   { color: #9CA3AF; font-size: 11.5px; flex-shrink: 0; }
+    .detail-key   { color: #9CA3AF; font-size: 12px; flex-shrink: 0; }
     .detail-val   { color: #111827; font-weight: 600; text-align: right; }
-    .med-active   { color: #16a34a; font-size: 10.5px; font-weight: 600; }
+    .med-active   { color: #16a34a; font-size: 12px; font-weight: 600; }
     .badge-signal {
-      font-size: 11px; font-weight: 700; padding: 1px 6px;
+      font-size: 12px; font-weight: 700; padding: 1px 6px;
       border-radius: 4px;
     }
     .signal-elevated { background: #FEF3C7; color: #d97706; }
@@ -341,7 +316,7 @@
 
     /* New badge */
     .new-badge {
-      display: inline-block; font-size: 9px; font-weight: 700;
+      display: inline-block; font-size: 12px; font-weight: 700;
       background: var(--primary-light); color: var(--primary);
       padding: 1px 5px; border-radius: 4px; margin-left: 6px;
       vertical-align: middle; letter-spacing: 0.04em;
@@ -441,7 +416,7 @@
         <div class="filter-pills">
           <button class="filter-pill active" data-filter="all">All <span class="filter-count" id="count-all"></span></button>
           <button class="filter-pill" data-filter="referout">Refer Out <span class="filter-count" id="count-referout"></span></button>
-          <button class="filter-pill" data-filter="archived">Archived <span class="filter-count" id="count-archived"></span></button>
+          <button class="filter-pill" data-filter="archived">Referred <span class="filter-count" id="count-archived"></span></button>
         </div>
         <div class="search-wrap">
           <i class="ti ti-search"></i>
@@ -456,7 +431,7 @@
             <tr>
               <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:8%; cursor:pointer; text-align:center;" onclick="sortBy('score')">Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span class="risk-info-wrap" onclick="event.stopPropagation()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;cursor:default;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg><div class="risk-tip"><div class="tip-title">Step 3: Risk Tier Assignment</div><table><thead><tr><th>Tier</th><th>Score</th><th>Eligibility</th><th>Action</th></tr></thead><tbody><tr><td><span class="risk-badge risk-low" style="font-size:11px;padding:2px 8px;">Low</span></td><td>0 – 8</td><td>Not Enrolled</td><td>Watchful waiting, psycho-education, re-screen in 6 months</td></tr><tr><td><span class="risk-badge risk-medium" style="font-size:11px;padding:2px 8px;">Moderate</span></td><td>9 – 16</td><td>CoCM Eligible</td><td>Enroll in standard CoCM Track</td></tr><tr><td><span class="risk-badge risk-high" style="font-size:11px;padding:2px 8px;">High</span></td><td>17 – 25</td><td>CoCM Eligible</td><td>Enroll in Intensive CoCM + Psychiatric Consultation</td></tr></tbody></table></div></span>Risk <i class="ti ti-selector" style="font-size:16px;"></i></div></th>
+              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;cursor:default;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Risk <i class="ti ti-selector" style="font-size:16px;"></i></div></th>
               <th style="width:10%; cursor:pointer; text-align:center;" onclick="sortBy('referOut')">Refer Out <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:40%">Description</th>
               <th style="width:12%">Actions</th>
@@ -470,13 +445,36 @@
   </main>
 
   <!-- Enroll Modal -->
-  <div id="enroll-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
-    <div style="background:#fff; border-radius:12px; padding:28px; width:360px; box-shadow:0 8px 32px rgba(0,0,0,0.12);">
-      <div style="font-size:16px; font-weight:700; color:#111827; margin-bottom:8px;">Enroll patient</div>
-      <div id="modal-patient-name" style="font-size:14px; color:#6B7280; margin-bottom:24px;"></div>
-      <div style="display:flex; gap:10px; justify-content:flex-end;">
-        <button onclick="closeModal()" style="padding:8px 16px; border:1px solid var(--border); border-radius:8px; background:none; font-size:13px; cursor:pointer; font-family:inherit;">Cancel</button>
-        <button onclick="confirmEnroll()" style="padding:8px 16px; border:none; border-radius:8px; background:var(--primary); color:white; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit;">Enroll</button>
+  <!-- Refer Modal -->
+  <div id="refer-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
+    <div style="background:#fff; border-radius:16px; width:400px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
+      <div style="padding:28px 28px 24px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </div>
+        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:4px;">Refer patient out</div>
+        <div id="refer-modal-patient-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
+      </div>
+      <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
+        <button onclick="closeReferModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
+        <button onclick="confirmRefer()" style="padding:9px 20px;border:none;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'">Refer out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enroll Modal -->
+  <div id="enroll-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
+    <div style="background:#fff; border-radius:16px; width:400px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
+      <div style="padding:28px 28px 24px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:4px;">Enroll in CoCM</div>
+        <div id="modal-patient-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
+      </div>
+      <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
+        <button onclick="closeModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
+        <button onclick="confirmEnroll()" style="padding:9px 20px;border:none;border-radius:8px;background:#16a34a;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#15803d'" onmouseout="this.style.background='#16a34a'">Enroll</button>
       </div>
     </div>
   </div>
@@ -682,6 +680,11 @@
       const tier   = getTier(score);
       return { ...p, score, tier, status: stored || p.status };
     });
+    // Clear seen state on hard refresh, keep it on back-navigation
+    if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
+      sessionStorage.removeItem('seenPatients');
+    }
+    const seenThisSession = new Set(JSON.parse(sessionStorage.getItem('seenPatients') || '[]'));
     let currentFilter = 'all';
     let searchQuery = '';
     let expandedId = null;
@@ -754,15 +757,15 @@
 
     function renderActions(p) {
       if (p.status === 'archived') {
-        return `<button class="btn-dismiss" data-id="${p.id}" data-action="unarchive">Unarchive</button>`;
+        return `<span data-id="${p.id}" data-action="unarchive" style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;">Referred</span>`;
       }
       if (p.status === 'enrolled') {
         return `<span style="font-size:12px;font-weight:600;color:#16a34a;background:#dcfce7;padding:4px 12px;border-radius:9999px;">Enrolled ✓</span>`;
       }
       if (p.referOut) {
-        return `<button class="btn-dismiss" data-id="${p.id}" data-action="archive">Archive</button>`;
+        return `<button class="btn-refer" data-id="${p.id}" data-action="archive">Refer</button>`;
       }
-      return `<button class="btn-refer" data-id="${p.id}" data-action="enroll">Enroll</button>`;
+      return `<button class="btn-enroll" data-id="${p.id}" data-action="enroll">Enroll</button>`;
     }
 
     function renderDetail(p) {
@@ -819,7 +822,7 @@
       tbody.innerHTML = list.map(p => `
         <tr class="patient-row${p.status === 'enrolled' ? ' is-enrolled' : ''}" data-id="${p.id}">
           <td>
-            <div class="pname">${p.name}${p.isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
+            <div class="pname">${p.name}${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge">NEW</span>' : ''}</div>
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
           <td style="text-align:center;">
@@ -827,7 +830,7 @@
           </td>
           <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
           <td><div style="display:flex; justify-content:center;">
-            ${p.referOut ? `<span class="refer-badge">Refer out</span>` : `<span style="color:var(--text-muted);font-size:13px;">—</span>`}
+            ${p.referOut && p.status !== 'archived' ? `<span class="refer-badge">Refer out</span>` : `<span style="color:var(--text-muted);font-size:13px;">—</span>`}
           </div></td>
           <td><span class="reasoning">${p.reasoning}</span></td>
           <td onclick="event.stopPropagation()">${renderActions(p)}</td>
@@ -842,10 +845,12 @@
         row.style.animationDelay = isFirstRender ? `${i * 30}ms` : '0ms';
       });
 
-      // Row click → navigate to patient detail page
+      // Row click → mark as seen (in-memory only, resets on refresh), then navigate
       tbody.querySelectorAll('.patient-row').forEach(row => {
         row.addEventListener('click', () => {
           const id = parseInt(row.dataset.id);
+          seenThisSession.add(id);
+          sessionStorage.setItem('seenPatients', JSON.stringify([...seenThisSession]));
           window.location.href = `patient.html?id=${id}`;
         });
       });
@@ -859,10 +864,10 @@
           const patient = patients.find(p => p.id === id);
           if (!patient) return;
           if (action === 'enroll') { showEnrollModal(patient); return; }
+          if (action === 'archive') { showReferModal(patient); return; }
           const row = document.querySelector(`.patient-row[data-id="${id}"]`);
-          if (action === 'archive' || action === 'unarchive') {
-            if (action === 'archive') patient.status = 'archived';
-            if (action === 'unarchive') patient.status = 'pending';
+          if (action === 'unarchive') {
+            patient.status = 'pending';
             if (row) {
               row.style.transition = 'opacity 0.2s, transform 0.2s';
               row.style.opacity = '0';
@@ -930,16 +935,20 @@
     let sortField = null;
     let sortAsc = true;
 
-    // Position the fixed risk tooltip below the icon on hover
     document.addEventListener('DOMContentLoaded', () => {
-      const wrap = document.querySelector('.risk-info-wrap');
-      const tip  = wrap && wrap.querySelector('.risk-tip');
-      if (!wrap || !tip) return;
-      wrap.addEventListener('mouseenter', () => {
-        const r = wrap.getBoundingClientRect();
+      const icon = document.getElementById('risk-info-icon');
+      const tip  = document.getElementById('risk-tooltip');
+      if (!icon || !tip) return;
+      icon.addEventListener('mouseenter', () => {
+        tip.style.display = 'block';
+        const r  = icon.getBoundingClientRect();
+        let left = r.left;
+        const tw = tip.offsetWidth;
+        if (left + tw + 12 > window.innerWidth) left = window.innerWidth - tw - 12;
         tip.style.top  = (r.bottom + 6) + 'px';
-        tip.style.left = r.left + 'px';
+        tip.style.left = left + 'px';
       });
+      icon.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
     });
 
     function sortBy(field) {
@@ -950,9 +959,32 @@
 
     let pendingEnrollId = null;
 
+    let pendingReferId = null;
+
+    function showReferModal(patient) {
+      pendingReferId = patient.id;
+      document.getElementById('refer-modal-patient-name').textContent = `${patient.name} will be moved to the Referred list and flagged for specialty care.`;
+      document.getElementById('refer-modal').style.display = 'flex';
+    }
+
+    function closeReferModal() {
+      pendingReferId = null;
+      document.getElementById('refer-modal').style.display = 'none';
+    }
+
+    function confirmRefer() {
+      if (pendingReferId) {
+        const patient = patients.find(p => p.id === pendingReferId);
+        if (patient) { patient.status = 'archived'; }
+      }
+      closeReferModal();
+      renderTable();
+      updateMetrics();
+    }
+
     function showEnrollModal(patient) {
       pendingEnrollId = patient.id;
-      document.getElementById('modal-patient-name').textContent = `Would you like to enroll ${patient.name} in CoCM?`;
+      document.getElementById('modal-patient-name').textContent = `${patient.name} will be enrolled in the Collaborative Care Model program.`;
       const modal = document.getElementById('enroll-modal');
       modal.style.display = 'flex';
     }
@@ -964,12 +996,14 @@
     }
 
     window.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' || e.key === 'Esc') closeModal();
+      if (e.key === 'Escape' || e.key === 'Esc') { closeModal(); closeReferModal(); }
     });
 
     window.addEventListener('mousedown', function(e) {
       var m = document.getElementById('enroll-modal');
       if (m && m.style.display !== 'none' && e.target === m) closeModal();
+      var r = document.getElementById('refer-modal');
+      if (r && r.style.display !== 'none' && e.target === r) closeReferModal();
     });
 
     function confirmEnroll() {
@@ -988,5 +1022,31 @@
     renderTable();
     updateMetrics();
   </script>
+  <div id="risk-tooltip" style="display:none; position:fixed; z-index:9999; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.10); pointer-events:none; overflow:hidden; font-family:'Geist','Inter',sans-serif; min-width:560px;">
+    <!-- Column headers -->
+    <div style="display:grid; grid-template-columns:110px 120px 1fr; padding:10px 16px 9px; background:#F9FAFB; border-bottom:1px solid #E5E7EB;">
+      <span style="font-size:12px;font-weight:600;color:#9CA3AF;letter-spacing:0.07em;text-transform:uppercase;">Tier</span>
+      <span style="font-size:12px;font-weight:600;color:#9CA3AF;letter-spacing:0.07em;text-transform:uppercase;">Eligibility</span>
+      <span style="font-size:12px;font-weight:600;color:#9CA3AF;letter-spacing:0.07em;text-transform:uppercase;">Action</span>
+    </div>
+    <!-- Low -->
+    <div style="display:grid; grid-template-columns:110px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
+      <span style="font-size:12px;font-weight:600;color:#16a34a;background:#F0FDF4;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Low</span>
+      <span style="font-size:12px;color:#6B7280;">Not Enrolled</span>
+      <span style="font-size:12px;color:#374151;">Watchful waiting, psycho-education, re-screen in 6 months</span>
+    </div>
+    <!-- Moderate -->
+    <div style="display:grid; grid-template-columns:110px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
+      <span style="font-size:12px;font-weight:600;color:#d97706;background:#FFFBEB;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Moderate</span>
+      <span style="font-size:12px;color:#6B7280;">CoCM Eligible</span>
+      <span style="font-size:12px;color:#374151;">Enroll in standard CoCM Track</span>
+    </div>
+    <!-- High -->
+    <div style="display:grid; grid-template-columns:110px 120px 1fr; align-items:center; padding:11px 16px; ">
+      <span style="font-size:12px;font-weight:600;color:#dc2626;background:#FEF2F2;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">High</span>
+      <span style="font-size:12px;color:#6B7280;">CoCM Eligible</span>
+      <span style="font-size:12px;color:#374151;">Enroll in Intensive CoCM + Psychiatric Consultation</span>
+    </div>
+  </div>
 </body>
 </html>
