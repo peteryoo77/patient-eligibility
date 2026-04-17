@@ -885,7 +885,7 @@
       const eligible  = patients.filter(p => p.eligible && !p.referOut && p.status !== 'archived' && p.status !== 'enrolled').length;
       const referOut  = patients.filter(p => p.referOut  && p.status !== 'archived').length;
       const archived  = patients.filter(p => p.status === 'archived').length;
-      const all       = patients.filter(p => p.status !== 'archived').length;
+      const all       = patients.filter(p => p.status !== 'archived' && p.status !== 'enrolled').length;
       const newCount  = patients.filter(p => p.isNew && p.status !== 'archived').length;
       const high      = patients.filter(p => p.tier === 'high'   && p.status !== 'archived').length;
       const medium    = patients.filter(p => p.tier === 'medium' && p.status !== 'archived').length;
