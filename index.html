@@ -989,8 +989,7 @@
             <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span></div>
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
-          <td style="text-align:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></td>
-
+          <td><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></td>
           <td><span class="reasoning">${p.reasoning}</span></td>
           <td onclick="event.stopPropagation()">${renderActions(p)}</td>
         </tr>
