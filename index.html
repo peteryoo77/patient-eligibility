@@ -1021,6 +1021,11 @@
 
     renderTable();
     updateMetrics();
+
+    // Re-render when restored from bfcache (back navigation) so NEW badges update
+    window.addEventListener('pageshow', function(e) {
+      if (e.persisted) { renderTable(); updateMetrics(); }
+    });
   </script>
   <div id="risk-tooltip" style="display:none; position:fixed; z-index:9999; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.10); pointer-events:none; overflow:hidden; font-family:'Geist','Inter',sans-serif; min-width:560px;">
     <!-- Column headers -->
