@@ -396,8 +396,7 @@
       <!-- Tabs row -->
       <div class="filter-bar">
         <div class="filter-pills">
-          <button class="filter-pill active" data-filter="all">All <span class="filter-count" id="count-all"></span></button>
-          <button class="filter-pill" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
+          <button class="filter-pill active" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
           <button class="filter-pill" data-filter="notenrolled">Monitoring <span class="filter-count" id="count-notenrolled"></span></button>
         </div>
         <div class="search-wrap">
@@ -846,7 +845,7 @@
       sessionStorage.removeItem('seenPatients');
     }
     const seenThisSession = new Set(JSON.parse(sessionStorage.getItem('seenPatients') || '[]'));
-    let currentFilter = 'all';
+    let currentFilter = 'eligible';
     let searchQuery = '';
     let expandedId = null;
 
