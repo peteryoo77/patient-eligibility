@@ -19,6 +19,7 @@
       --text-mid:      #374151;
       --text-muted:    #6B7280;
       --radius:        10px;
+      --text-subtle:   #9CA3AF;
 
       --high-text: #C0392B; --high-bg: #FDF0EF;
       --med-text:  #D4802A; --med-bg:  #FDF5E6;
@@ -46,19 +47,19 @@
     }
     .sidebar-logo-left { display: flex; align-items: center; gap: 10px; }
     .logo-icon { width: 34px; height: 34px; background: #111827; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .logo-name { font-size: 13px; font-weight: 700; color: #111827; line-height: 1.3; }
-    .logo-sub  { font-size: 12px; font-weight: 600; color: #9CA3AF; letter-spacing: 0.07em; text-transform: uppercase; }
+    .logo-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .logo-sub  { font-size: 12px; font-weight: 600; color: var(--text-subtle); letter-spacing: 0.07em; text-transform: uppercase; }
     .sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0 8px; }
-    .nav-section-label { font-size: 12px; font-weight: 600; color: #9CA3AF; letter-spacing: 0.07em; text-transform: uppercase; padding: 14px 16px 4px; }
-    .nav-item { display: flex; align-items: center; gap: 9px; padding: 7px 10px; margin: 1px 8px; font-size: 13px; font-weight: 500; color: #374151; border-radius: calc(var(--radius) - 2px); cursor: pointer; text-decoration: none; transition: background 0.12s, color 0.12s; }
-    .nav-item i { font-size: 17px; color: #9CA3AF; flex-shrink: 0; }
+    .nav-section-label { font-size: 12px; font-weight: 600; color: var(--text-subtle); letter-spacing: 0.07em; text-transform: uppercase; padding: 14px 16px 4px; }
+    .nav-item { display: flex; align-items: center; gap: 9px; padding: 7px 10px; margin: 1px 8px; font-size: 13px; font-weight: 500; color: var(--text-mid); border-radius: calc(var(--radius) - 2px); cursor: pointer; text-decoration: none; transition: background 0.12s, color 0.12s; }
+    .nav-item i { font-size: 17px; color: var(--text-subtle); flex-shrink: 0; }
     .nav-item:hover { background: #F9FAFB; }
     .nav-item.active { background: var(--primary-light); color: var(--primary); }
     .nav-item.active i { color: var(--primary); }
     .sidebar-user { border-top: 1px solid var(--border); padding: 10px 12px; display: flex; align-items: center; gap: 9px; }
     .user-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; flex-shrink: 0; }
-    .user-name  { font-size: 13px; font-weight: 600; color: #111827; }
-    .user-email { font-size: 12px; color: #9CA3AF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-name  { font-size: 13px; font-weight: 600; color: var(--text); }
+    .user-email { font-size: 12px; color: var(--text-subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* ── TOPBAR ── */
     .topbar {
@@ -73,7 +74,7 @@
     .topbar-action { margin-left: 16px; }
     .action-btn {
       display: inline-flex; align-items: center; gap: 7px;
-      padding: 8px 18px; border: none; border-radius: 8px;
+      padding: 8px 20px; border: none; border-radius: 8px;
       font-family: inherit; font-size: 13px; font-weight: 600;
       cursor: pointer; transition: background 0.15s, opacity 0.15s;
     }
@@ -94,7 +95,7 @@
     }
     .header-left {}
     .header-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-    .header-name { font-size: 22px; font-weight: 700; color: #111827; }
+    .header-name { font-size: 22px; font-weight: 700; color: var(--text); }
     .header-meta { font-size: 14px; color: var(--text-muted); }
     .elig-badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
     .elig-yes { background: #dcfce7; color: #16a34a; }
@@ -134,8 +135,8 @@
       border-radius: var(--radius); padding: 24px 28px; margin-bottom: 16px;
     }
     .card-title {
-      font-size: 11px; font-weight: 700; color: #9CA3AF;
-      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px;
+      font-size: 12px; font-weight: 700; color: var(--text-subtle);
+      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 18px;
       display: flex; align-items: center; gap: 6px;
     }
     .elig-info-icon { display:inline-flex; align-items:center; cursor:default; }
@@ -152,12 +153,12 @@
     .sdoh-flag-yes { font-size: 13px; font-weight: 600; color: #C0392B; background: #FDF0EF; padding: 2px 8px; border-radius: 4px; }
     .sdoh-flag-no  { font-size: 13px; color: var(--text-muted); }
     .score-box { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-    .score-label { font-size: 11px; font-weight: 600; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
-    .score-num   { font-size: 38px; font-weight: 700; color: #111827; line-height: 1; letter-spacing: -1.5px; }
-    .score-interp { font-size: 12px; font-weight: 600; margin-top: 3px; color: #374151; }
+    .score-label { font-size: 12px; font-weight: 600; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+    .score-num   { font-size: 38px; font-weight: 700; color: var(--text); line-height: 1; letter-spacing: -1.5px; }
+    .score-interp { font-size: 12px; font-weight: 600; margin-top: 3px; color: var(--text-mid); }
     .score-bar-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin: 10px 0 8px; }
     .score-bar-fill  { height: 100%; width: 0; border-radius: 2px; transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
-    .score-date  { font-size: 11.5px; color: var(--text-muted); }
+    .score-date  { font-size: 12px; color: var(--text-muted); }
     .score-na    { font-size: 13px; color: var(--text-muted); font-style: italic; margin: 8px 0 4px; }
 
     /* ── REFERRAL ── */
@@ -193,9 +194,9 @@
     /* ── ELIGIBILITY CARD ── */
     .elig-header { margin-bottom: 20px; }
     .elig-score-block { flex-shrink: 0; }
-    .elig-score-num { font-size: 56px; font-weight: 800; color: #111827; line-height: 1; letter-spacing: -3px; }
+    .elig-score-num { font-size: 56px; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -3px; }
     .elig-score-max { font-size: 22px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
-    .elig-score-label { font-size: 11px; font-weight: 600; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 6px; }
+    .elig-score-label { font-size: 12px; font-weight: 600; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 6px; }
     .elig-tier-block { flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; }
     .elig-tier-action { font-size: 14px; color: var(--text-mid); line-height: 1.5; }
 
@@ -217,7 +218,7 @@
     .refer-out-eyebrow i { font-size: 13px; }
     .refer-out-meta { display: flex; gap: 24px; margin-bottom: 18px; flex-wrap: wrap; }
     .refer-out-col { display: flex; flex-direction: column; gap: 5px; }
-    .refer-out-col-label { font-size: 11px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; }
+    .refer-out-col-label { font-size: 12px; font-weight: 700; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.07em; }
     .refer-out-criterion-tag { display: inline-block; background: #FDF0EF; border: 1px solid #F5C2BE; border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: #C0392B; }
     .refer-out-dest-tag { display: inline-block; background: var(--primary-light); border: 1px solid hsl(199,89%,82%); border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: var(--primary); }
     .refer-out-divider { height: 1px; background: var(--border); margin-bottom: 14px; }
@@ -1067,24 +1068,24 @@
 
   <div id="elig-tooltip" style="display:none; position:fixed; z-index:9999; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.10); pointer-events:none; overflow:hidden; font-family:'Geist','Inter',sans-serif; min-width:480px;">
     <div style="display:grid; grid-template-columns:110px 120px 1fr; padding:10px 16px 9px; background:#F9FAFB; border-bottom:1px solid #E5E7EB;">
-      <span style="font-size:10px;font-weight:600;color:#9CA3AF;letter-spacing:0.07em;text-transform:uppercase;">Tier</span>
-      <span style="font-size:10px;font-weight:600;color:#9CA3AF;letter-spacing:0.07em;text-transform:uppercase;">Eligibility</span>
-      <span style="font-size:10px;font-weight:600;color:#9CA3AF;letter-spacing:0.07em;text-transform:uppercase;">Action</span>
+      <span style="font-size:11px;font-weight:600;color:var(--text-subtle);letter-spacing:0.07em;text-transform:uppercase;">Tier</span>
+      <span style="font-size:11px;font-weight:600;color:var(--text-subtle);letter-spacing:0.07em;text-transform:uppercase;">Eligibility</span>
+      <span style="font-size:11px;font-weight:600;color:var(--text-subtle);letter-spacing:0.07em;text-transform:uppercase;">Action</span>
     </div>
     <div style="display:grid; grid-template-columns:110px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
-      <span style="font-size:11px;font-weight:600;color:#16a34a;background:#F0FDF4;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Low</span>
-      <span style="font-size:12px;color:#6B7280;">Not Enrolled</span>
-      <span style="font-size:12px;color:#374151;">Watchful waiting, psycho-education, re-screen in 6 months</span>
+      <span style="font-size:12px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Low</span>
+      <span style="font-size:12px;color:var(--text-muted);">Not Enrolled</span>
+      <span style="font-size:12px;color:var(--text-mid);">Watchful waiting, psycho-education, re-screen in 6 months</span>
     </div>
     <div style="display:grid; grid-template-columns:110px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
-      <span style="font-size:11px;font-weight:600;color:#d97706;background:#FFFBEB;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Moderate</span>
-      <span style="font-size:12px;color:#6B7280;">CoCM Eligible</span>
-      <span style="font-size:12px;color:#374151;">Enroll in standard CoCM Track</span>
+      <span style="font-size:12px;font-weight:600;color:var(--med-text);background:var(--med-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Moderate</span>
+      <span style="font-size:12px;color:var(--text-muted);">CoCM Eligible</span>
+      <span style="font-size:12px;color:var(--text-mid);">Enroll in standard CoCM Track</span>
     </div>
     <div style="display:grid; grid-template-columns:110px 120px 1fr; align-items:center; padding:11px 16px;">
-      <span style="font-size:11px;font-weight:600;color:#C0392B;background:#FDF0EF;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">High</span>
-      <span style="font-size:12px;color:#6B7280;">CoCM Eligible</span>
-      <span style="font-size:12px;color:#374151;">Enroll in Intensive CoCM + Psychiatric Consultation</span>
+      <span style="font-size:12px;font-weight:600;color:var(--high-text);background:var(--high-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">High</span>
+      <span style="font-size:12px;color:var(--text-muted);">CoCM Eligible</span>
+      <span style="font-size:12px;color:var(--text-mid);">Enroll in Intensive CoCM + Psychiatric Consultation</span>
     </div>
   </div>
   <script>
