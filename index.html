@@ -213,7 +213,7 @@
     .patient-row:last-of-type td { border-bottom: none; }
 
     /* Patient name cell */
-    .pname { font-size: 14px; font-weight: 600; color: #111827; }
+    .pname { font-size: 14px; font-weight: 600; color: #111827; display: flex; align-items: center; }
     .page  { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
 
     /* Diagnoses */
@@ -316,10 +316,9 @@
 
     /* New badge */
     .new-badge {
-      display: inline-block; font-size: 12px; font-weight: 700;
-      background: var(--primary-light); color: var(--primary);
-      padding: 1px 5px; border-radius: 4px; margin-left: 6px;
-      vertical-align: middle; letter-spacing: 0.04em;
+      display: inline-block; width: 7px; height: 7px;
+      background: var(--primary); border-radius: 50%;
+      margin-right: 8px; flex-shrink: 0; vertical-align: middle;
     }
   </style>
 </head>
@@ -822,7 +821,7 @@
       tbody.innerHTML = list.map(p => `
         <tr class="patient-row${p.status === 'enrolled' ? ' is-enrolled' : ''}" data-id="${p.id}">
           <td>
-            <div class="pname">${p.name}${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge">NEW</span>' : ''}</div>
+            <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span></div>
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
           <td style="text-align:center;">
