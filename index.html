@@ -675,10 +675,9 @@
     ];
 
     let patients = PATIENTS.map(p => {
-      const stored = localStorage.getItem('status_' + p.id);
-      const score  = computeScore(p.raw);
-      const tier   = getTier(score);
-      return { ...p, score, tier, status: stored || p.status };
+      const score = computeScore(p.raw);
+      const tier  = getTier(score);
+      return { ...p, score, tier };
     });
     // Clear seen state on hard refresh, keep it on back-navigation
     if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
@@ -692,7 +691,7 @@
     function getFiltered() {
       let list = currentFilter === 'archived'
         ? patients.filter(p => p.status === 'archived')
-        : patients.filter(p => p.status !== 'archived');
+        : patients.filter(p => p.status !== 'archived' && p.status !== 'enrolled');
       if      (currentFilter === 'new')     list = list.filter(p => p.isNew);
       else if (currentFilter === 'high')    list = list.filter(p => p.tier === 'high');
       else if (currentFilter === 'medium')  list = list.filter(p => p.tier === 'medium');
@@ -1009,10 +1008,7 @@
     function confirmEnroll() {
       if (pendingEnrollId) {
         const patient = patients.find(p => p.id === pendingEnrollId);
-        if (patient) {
-          patient.status = 'enrolled';
-          localStorage.setItem('status_' + pendingEnrollId, 'enrolled');
-        }
+        if (patient) { patient.status = 'enrolled'; }
       }
       closeModal();
       renderTable();
@@ -1023,16 +1019,8 @@
     updateMetrics();
 
     // Re-render when restored from bfcache (back navigation) so NEW badges update
-    // Also re-sync status from localStorage in case enrollment happened on patient.html
     window.addEventListener('pageshow', function(e) {
-      if (e.persisted) {
-        patients.forEach(p => {
-          const stored = localStorage.getItem('status_' + p.id);
-          if (stored) p.status = stored;
-        });
-        renderTable();
-        updateMetrics();
-      }
+      if (e.persisted) { renderTable(); updateMetrics(); }
     });
   </script>
   <div id="risk-tooltip" style="display:none; position:fixed; z-index:9999; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.10); pointer-events:none; overflow:hidden; font-family:'Geist','Inter',sans-serif; min-width:560px;">

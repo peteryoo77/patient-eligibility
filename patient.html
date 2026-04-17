@@ -922,7 +922,7 @@
       document.title = p.name + ' \u2014 Patient Detail';
       document.getElementById('topbar-name').textContent = p.name;
 
-      var status     = localStorage.getItem('status_' + p.id) || (p.eligible ? 'eligible' : 'ineligible');
+      var status     = p.eligible ? 'eligible' : 'ineligible';
       var d          = p.details;
       var isReferOut = d.referral && d.referral.recommended === true;
       var domains    = p.raw ? computeScore(p.raw) : null;
@@ -1036,10 +1036,8 @@
     function closePtReferModal()  { document.getElementById('pt-refer-modal').style.display  = 'none'; }
 
     function confirmPtEnroll() {
-      var btn = document.getElementById('topbar-action-btn');
-      var id  = parseInt(btn.dataset.patientId, 10);
-      localStorage.setItem('status_' + id, 'enrolled');
       closePtEnrollModal();
+      var btn = document.getElementById('topbar-action-btn');
       btn.className = 'action-btn action-btn-done';
       btn.innerHTML = '<i class="ti ti-check"></i> Enrolled';
     }
