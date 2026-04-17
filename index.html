@@ -829,9 +829,11 @@
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
           <td style="text-align:center;">
-            ${(p.referOut || p.tier === 'low')
-              ? '<span style="font-size:12px;font-weight:600;color:var(--ref-text);background:var(--ref-bg);padding:4px 10px;border-radius:999px;white-space:nowrap;">Not Enrolled</span>'
-              : '<span style="font-size:12px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:4px 10px;border-radius:999px;white-space:nowrap;">CoCM Eligible</span>'}
+            ${p.referOut
+              ? '<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 10px;border-radius:999px;white-space:nowrap;">Refer Out</span>'
+              : p.tier === 'low'
+                ? '<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 10px;border-radius:999px;white-space:nowrap;">Not Enrolled</span>'
+                : '<span style="font-size:12px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:4px 10px;border-radius:999px;white-space:nowrap;">CoCM Eligible</span>'}
           </td>
           <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
           <td><div style="display:flex; justify-content:center;">
