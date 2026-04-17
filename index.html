@@ -863,7 +863,11 @@
       if (sortField === 'name') {
         list.sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
       } else if (sortField === 'score') {
-        list.sort((a, b) => sortAsc ? b.score - a.score : a.score - b.score);
+        list.sort((a, b) => {
+          const diff = sortAsc ? b.score - a.score : a.score - b.score;
+          if (diff !== 0) return diff;
+          return (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0);
+        });
       } else if (sortField === 'eligible') {
         list.sort((a, b) => sortAsc ? (b.eligible ? 1 : 0) - (a.eligible ? 1 : 0) : (a.eligible ? 1 : 0) - (b.eligible ? 1 : 0));
       } else if (sortField === 'tier') {
@@ -871,8 +875,6 @@
         list.sort((a, b) => sortAsc ? ORDER[a.tier] - ORDER[b.tier] : ORDER[b.tier] - ORDER[a.tier]);
       } else if (sortField === 'referOut') {
         list.sort((a, b) => sortAsc ? (b.referOut ? 1 : 0) - (a.referOut ? 1 : 0) : (a.referOut ? 1 : 0) - (b.referOut ? 1 : 0));
-      } else {
-        list.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
       }
       return list;
     }
@@ -1092,7 +1094,7 @@
       renderTable();
     });
 
-    let sortField = null;
+    let sortField = 'score';
     let sortAsc = true;
 
     document.addEventListener('DOMContentLoaded', () => {
