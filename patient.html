@@ -940,7 +940,7 @@
       var headerBtn = isReferOut
         ? '<button id="header-action-btn" class="action-btn action-btn-refer" onclick="handleTopbarAction()">Refer out</button>'
         : cTier === 'low'
-          ? '<button id="header-action-btn" class="action-btn action-btn-done" disabled>Enroll</button>'
+          ? '<button id="header-action-btn" class="action-btn action-btn-done" disabled style="filter:blur(2px);">Enroll</button>'
           : '<button id="header-action-btn" class="action-btn action-btn-enroll" onclick="handleTopbarAction()">Enroll</button>';
 
       main.innerHTML =
