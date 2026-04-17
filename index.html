@@ -221,10 +221,26 @@
 
     /* Risk badge */
     .risk-badge {
-      display: inline-flex; align-items: center; padding: 4px 12px;
+      display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 12px;
       border-radius: 9999px; font-size: 12px; font-weight: 600;
-      border: none; white-space: nowrap;
+      border: none; white-space: nowrap; position: relative;
     }
+    .risk-badge .info-icon {
+      font-size: 13px; opacity: 0.65; cursor: default; line-height: 1;
+      display: inline-flex; align-items: center;
+    }
+    .risk-badge .score-tooltip {
+      display: none; position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+      background: #1f2937; color: #f9fafb; border-radius: 8px; padding: 10px 12px;
+      font-size: 11.5px; font-weight: 400; white-space: nowrap; z-index: 999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18); min-width: 180px; line-height: 1.8;
+      pointer-events: none;
+    }
+    .risk-badge .score-tooltip::before {
+      content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+      border: 5px solid transparent; border-bottom-color: #1f2937;
+    }
+    .risk-badge:hover .score-tooltip { display: block; }
     .risk-high     { color: var(--high-text); background: var(--high-bg); border-color: var(--high-border); }
     .risk-medium   { color: var(--med-text);  background: var(--med-bg);  border-color: var(--med-border); }
     .risk-low      { color: var(--low-text);  background: var(--low-bg);  border-color: var(--low-border); }
@@ -694,6 +710,21 @@
       return p.tier.charAt(0).toUpperCase() + p.tier.slice(1);
     }
 
+    function scoreTooltip(p) {
+      const r = p.raw;
+      const symptom    = Math.min(10, (r.phq9>=10?3:0)+(r.gad7>=10?3:0)+(r.pcl5>=33?2:0)+(r.cssrs>=2?2:0));
+      const functional = Math.min(5,  (r.sds>=7?2:0)+(r.functionalImpairment?2:0)+(r.priorTreatmentFailure?1:0));
+      const medical    = Math.min(6,  (r.chronicConditions>=2?2:0)+((r.edVisits>=2||r.hospitalized)?2:0)+(r.chronicPainOpioid?1:0)+(r.nonAdherent?1:0));
+      const sdoh       = Math.min(4,  (r.housingInsecurity?2:0)+(r.foodInsecurity?1:0)+(r.socialIsolation?1:0));
+      return `<div class="score-tooltip">
+        <div style="font-weight:600;margin-bottom:4px;font-size:12px;">Score: ${p.score}/25</div>
+        <div>Symptom Severity &nbsp;<b>${symptom}/10</b></div>
+        <div>Functional Impairment &nbsp;<b>${functional}/5</b></div>
+        <div>Medical Complexity &nbsp;<b>${medical}/6</b></div>
+        <div>SDOH Burden &nbsp;<b>${sdoh}/4</b></div>
+      </div>`;
+    }
+
     function signalBadge(val, low, high) {
       if (val === null || val === undefined) return '<span style="color:#9CA3AF;">—</span>';
       if (val >= high) return `<span class="badge-signal signal-high">${val}</span>`;
@@ -774,7 +805,7 @@
           <td style="text-align:center;">
             <div class="score-${p.tier}" style="font-size:20px;font-weight:700;line-height:1;">${p.score}<span style="font-size:12px;font-weight:500;color:#9CA3AF;">/25</span></div>
           </td>
-          <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
+          <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}<i class="ti ti-info-circle info-icon"></i>${scoreTooltip(p)}</span></div></td>
           <td><div style="display:flex; justify-content:center;">
             ${p.referOut ? `<span class="refer-badge">Refer out</span>` : `<span style="color:var(--text-muted);font-size:13px;">—</span>`}
           </div></td>
