@@ -215,10 +215,11 @@
     .refer-out-badge { display: inline-block; font-size: 11px; font-weight: 600; color: var(--primary); background: var(--primary-light); border: 0.5px solid hsl(199,89%,82%); padding: 3px 10px; border-radius: 9999px; white-space: nowrap; margin-bottom: 20px; }
     .refer-out-eyebrow { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
     .refer-out-eyebrow i { font-size: 13px; }
-    .refer-out-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-    .refer-out-criterion-tag { display: inline-flex; align-items: center; gap: 6px; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 6px; padding: 6px 12px; font-size: 13px; font-weight: 600; color: #dc2626; white-space: nowrap; }
-    .refer-out-arrow { color: #D1D5DB; font-size: 14px; flex-shrink: 0; }
-    .refer-out-dest-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--primary-light); border: 1px solid hsl(199,89%,82%); border-radius: 6px; padding: 6px 12px; font-size: 13px; font-weight: 600; color: var(--primary); white-space: nowrap; }
+    .refer-out-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+    .refer-out-col { display: flex; flex-direction: column; gap: 5px; }
+    .refer-out-col-label { font-size: 11px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.08em; }
+    .refer-out-criterion-tag { display: inline-block; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: #dc2626; }
+    .refer-out-dest-tag { display: inline-block; background: var(--primary-light); border: 1px solid hsl(199,89%,82%); border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: var(--primary); }
     .refer-out-divider { height: 1px; background: var(--border); margin-bottom: 14px; }
     .refer-out-reason-text { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
     .refer-out-dest { font-size: 22px; font-weight: 700; color: #111827; line-height: 1.2; margin-bottom: 14px; }
@@ -780,9 +781,14 @@
         return '<div class="card animate-in card-refer-out" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
           '<div class="card-title">Refer Out</div>' +
           '<div class="refer-out-meta">' +
-            '<span class="refer-out-criterion-tag">' + criterion + '</span>' +
-            '<i class="ti ti-chevron-right refer-out-arrow"></i>' +
-            '<span class="refer-out-dest-tag">' + dest + '</span>' +
+            '<div class="refer-out-col">' +
+              '<span class="refer-out-col-label">Exclusion Criterion</span>' +
+              '<span class="refer-out-criterion-tag">' + criterion + '</span>' +
+            '</div>' +
+            '<div class="refer-out-col">' +
+              '<span class="refer-out-col-label">Recommended Referral</span>' +
+              '<span class="refer-out-dest-tag">' + dest + '</span>' +
+            '</div>' +
           '</div>' +
           '<div class="refer-out-divider"></div>' +
           '<div class="refer-out-reason-text">' + reason + '</div>' +
