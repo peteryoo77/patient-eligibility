@@ -194,7 +194,8 @@
     .domain-score-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
     .domain-track { height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 5px; }
     .domain-fill { height: 100%; border-radius: 4px; width: 0; transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
-    .domain-signals { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .domain-signals { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+    .domain-signal-tag { font-size: 12px; color: var(--text-mid); background: #F3F4F6; border-radius: 4px; padding: 1px 7px; line-height: 1.6; }
     .domain-sep { height: 0.5px; background: var(--border); }
 
     /* ── REFER-OUT ── */
@@ -725,8 +726,8 @@
     function domainBar(name, score, max, color, signals) {
       var pct = max > 0 ? (score / max * 100).toFixed(1) : 0;
       var sigText = signals.length
-        ? signals.join(' &middot; ')
-        : '<em style="color:#9CA3AF">No criteria met</em>';
+        ? signals.map(function(s) { return '<span class="domain-signal-tag">' + s + '</span>'; }).join('')
+        : '<span class="domain-signal-tag" style="color:#9CA3AF;background:none;padding-left:0">No criteria met</span>';
       return '<div class="domain-row">' +
         '<div class="domain-header">' +
         '<span class="domain-name">' + name + '</span>' +
