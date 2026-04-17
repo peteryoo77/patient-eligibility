@@ -70,6 +70,18 @@
     .back-btn:hover { background: var(--bg); color: var(--text); }
     .topbar-divider { width: 1px; height: 18px; background: var(--border); }
     .topbar-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .topbar-action { margin-left: auto; }
+    .action-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 18px; border: none; border-radius: 8px;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s, opacity 0.15s;
+    }
+    .action-btn-enroll { background: #16a34a; color: #fff; }
+    .action-btn-enroll:hover { background: #15803d; }
+    .action-btn-refer  { background: var(--primary); color: #fff; }
+    .action-btn-refer:hover  { background: var(--primary-hover); }
+    .action-btn-done   { background: #F3F4F6; color: #6B7280; cursor: default; pointer-events: none; }
 
     /* ── MAIN ── */
     .main { margin-left: 216px; flex: 1; padding: 28px 28px 48px; max-width: 780px; }
@@ -254,6 +266,9 @@
       <a class="back-btn" href="index.html"><i class="ti ti-arrow-left"></i> Eligibility</a>
       <div class="topbar-divider"></div>
       <span class="topbar-name" id="topbar-name">Patient detail</span>
+      <div class="topbar-action">
+        <button id="topbar-action-btn" class="action-btn" onclick="handleTopbarAction()" style="display:none"></button>
+      </div>
     </header>
 
     <main class="main" id="main-content">
@@ -952,15 +967,80 @@
         '</div>';
 
 
+      // Topbar action button
+      var btn = document.getElementById('topbar-action-btn');
+      if (btn) {
+        btn.style.display = '';
+        if (status === 'enrolled') {
+          btn.className = 'action-btn action-btn-done';
+          btn.innerHTML = '<i class="ti ti-check"></i> Enrolled';
+        } else if (status === 'archived') {
+          btn.className = 'action-btn action-btn-done';
+          btn.innerHTML = '<i class="ti ti-check"></i> Referred';
+        } else if (isReferOut) {
+          btn.className = 'action-btn action-btn-refer';
+          btn.innerHTML = '<i class="ti ti-arrow-up-right"></i> Refer out';
+        } else {
+          btn.className = 'action-btn action-btn-enroll';
+          btn.innerHTML = '<i class="ti ti-plus"></i> Enroll in CoCM';
+        }
+        btn.dataset.patientId = p.id;
+        btn.dataset.patientName = p.name;
+        btn.dataset.isReferOut = isReferOut ? '1' : '0';
+      }
+
       // Animate all bars after paint
       requestAnimationFrame(function() { requestAnimationFrame(function() {
         document.querySelectorAll('.score-bar-fill, .domain-fill').forEach(function(bar) {
           bar.style.width = bar.dataset.pct + '%';
         });
       }); });
-
     }
 
+    function handleTopbarAction() {
+      var btn = document.getElementById('topbar-action-btn');
+      var id   = parseInt(btn.dataset.patientId, 10);
+      var name = btn.dataset.patientName;
+      var isReferOut = btn.dataset.isReferOut === '1';
+      if (isReferOut) {
+        document.getElementById('pt-refer-name').textContent = name + ' will be moved to the Referred list and flagged for specialty care.';
+        document.getElementById('pt-refer-modal').style.display = 'flex';
+      } else {
+        document.getElementById('pt-enroll-name').textContent = name + ' will be enrolled in the Collaborative Care Model program.';
+        document.getElementById('pt-enroll-modal').style.display = 'flex';
+      }
+    }
+
+    function closePtEnrollModal() { document.getElementById('pt-enroll-modal').style.display = 'none'; }
+    function closePtReferModal()  { document.getElementById('pt-refer-modal').style.display  = 'none'; }
+
+    function confirmPtEnroll() {
+      var btn = document.getElementById('topbar-action-btn');
+      var id  = parseInt(btn.dataset.patientId, 10);
+      localStorage.setItem('status_' + id, 'enrolled');
+      closePtEnrollModal();
+      btn.className = 'action-btn action-btn-done';
+      btn.innerHTML = '<i class="ti ti-check"></i> Enrolled';
+    }
+
+    function confirmPtRefer() {
+      var btn = document.getElementById('topbar-action-btn');
+      var id  = parseInt(btn.dataset.patientId, 10);
+      localStorage.setItem('status_' + id, 'archived');
+      closePtReferModal();
+      btn.className = 'action-btn action-btn-done';
+      btn.innerHTML = '<i class="ti ti-check"></i> Referred';
+    }
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { closePtEnrollModal(); closePtReferModal(); }
+    });
+    window.addEventListener('mousedown', function(e) {
+      var em = document.getElementById('pt-enroll-modal');
+      if (em && em.style.display !== 'none' && e.target === em) closePtEnrollModal();
+      var rm = document.getElementById('pt-refer-modal');
+      if (rm && rm.style.display !== 'none' && e.target === rm) closePtReferModal();
+    });
 
     render();
   </script>
@@ -1004,5 +1084,40 @@
       icon.addEventListener('mouseleave', function() { tip.style.display = 'none'; });
     })();
   </script>
+
+  <!-- Enroll Modal -->
+  <div id="pt-enroll-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
+    <div style="background:#fff; border-radius:16px; width:400px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
+      <div style="padding:28px 28px 24px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Enroll in CoCM</div>
+        <div id="pt-enroll-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
+      </div>
+      <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
+        <button onclick="closePtEnrollModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
+        <button onclick="confirmPtEnroll()" style="padding:9px 20px;border:none;border-radius:8px;background:#16a34a;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='#15803d'" onmouseout="this.style.background='#16a34a'">Enroll</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Refer Modal -->
+  <div id="pt-refer-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
+    <div style="background:#fff; border-radius:16px; width:400px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
+      <div style="padding:28px 28px 24px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </div>
+        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Refer patient out</div>
+        <div id="pt-refer-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
+      </div>
+      <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
+        <button onclick="closePtReferModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
+        <button onclick="confirmPtRefer()" style="padding:9px 20px;border:none;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'">Refer out</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
