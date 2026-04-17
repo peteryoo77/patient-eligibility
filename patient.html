@@ -937,8 +937,17 @@
         clRow('Therapy history',        d.therapyHistory) +
         clRow('Substance use',          d.substanceUse) +
         clRow('Family history',         d.familyHistory) +
+        clRow('Surgical history',       d.surgicalHistory) +
         clRow('Vitals',                 d.vitals) +
         clRow('Insurance',              d.insurance) +
+        '</div>' +
+        '</div>' +
+        '<div class="card animate-in" id="sec-sdoh" style="animation-delay:' + (delay += 60) + 'ms">' +
+        '<div class="card-title">Social Determinants of Health</div>' +
+        '<div class="sdoh-grid">' +
+        sdohRow('Housing insecurity', d.sdoh && d.sdoh.housingInsecurity) +
+        sdohRow('Food insecurity',    d.sdoh && d.sdoh.foodInsecurity) +
+        sdohRow('Social isolation',   d.sdoh && d.sdoh.socialIsolation) +
         '</div>' +
         '</div>';
 
