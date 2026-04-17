@@ -92,6 +92,7 @@
       background: var(--card);
       box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 0 0 0.5px var(--border);
       border-radius: var(--radius); padding: 24px 28px; margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: space-between;
     }
     .header-left {}
     .header-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
@@ -937,14 +938,14 @@
 
       main.innerHTML =
         '<div class="patient-header animate-in" style="animation-delay:' + (delay=0) + 'ms">' +
-        '<div class="header-name-row" style="justify-content:space-between;align-items:center;">' +
-        '<div style="display:flex;align-items:center;gap:10px;">' +
+        '<div>' +
+        '<div class="header-name-row">' +
         '<span class="header-name">' + p.name + '</span>' +
         '<span class="risk-badge risk-' + cTier + '">' + RISK_LABELS[cTier] + '</span>' +
         '</div>' +
-        headerBtn +
-        '</div>' +
         '<div class="header-meta" style="margin-top:5px">' + p.age + ' yo \xB7 ' + p.gender + ' \xB7 Last visit ' + p.lastVisit + '</div>' +
+        '</div>' +
+        headerBtn +
         '</div>' +
         (isReferOut ? buildEligibilityCard(p, (delay += 60)) : '') +
         '<div class="card animate-in" id="sec-summary" style="animation-delay:' + (delay += 60) + 'ms">' +
