@@ -791,9 +791,6 @@
             '</div>' +
           '</div>' +
           '<div class="refer-out-reason-text">' + reason + '</div>' +
-          '<div style="margin-top:20px;">' +
-            '<button id="refer-out-card-btn" class="action-btn action-btn-refer" onclick="handleTopbarAction()">Refer out</button>' +
-          '</div>' +
           '</div>';
       }
       return '<div class="card animate-in" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
@@ -810,9 +807,6 @@
         domainBar('Medical Complexity',    domains.medical,     6, 'var(--primary)', sigs.meds)  +
         '<div class="domain-sep"></div>' +
         domainBar('SDOH Burden',           domains.sdoh,        4, 'var(--primary)', sigs.sdohs) +
-        '</div>' +
-        '<div style="margin-top:20px;">' +
-          '<button id="enroll-card-btn" class="action-btn action-btn-enroll" onclick="handleTopbarAction()">Enroll in CoCM</button>' +
         '</div>' +
         '</div>';
     }
@@ -937,11 +931,18 @@
         ? keySignals.map(function(s) { return '<li class="key-signal' + (s.alert ? ' key-signal-alert' : '') + '">' + s.text + '</li>'; }).join('')
         : '<li class="key-signal" style="color:var(--text-muted);font-style:italic">No key signals identified.</li>';
 
+      var headerBtn = isReferOut
+        ? '<button id="header-action-btn" class="action-btn action-btn-refer" onclick="handleTopbarAction()">Refer out</button>'
+        : '<button id="header-action-btn" class="action-btn action-btn-enroll" onclick="handleTopbarAction()">Enroll in CoCM</button>';
+
       main.innerHTML =
         '<div class="patient-header animate-in" style="animation-delay:' + (delay=0) + 'ms">' +
-        '<div class="header-name-row">' +
+        '<div class="header-name-row" style="justify-content:space-between;">' +
+        '<div style="display:flex;align-items:center;gap:10px;">' +
         '<span class="header-name">' + p.name + '</span>' +
         '<span class="risk-badge risk-' + cTier + '">' + RISK_LABELS[cTier] + '</span>' +
+        '</div>' +
+        headerBtn +
         '</div>' +
         '<div class="header-meta" style="margin-top:5px">' + p.age + ' yo \xB7 ' + p.gender + ' \xB7 Last visit ' + p.lastVisit + '</div>' +
         '</div>' +
@@ -1043,11 +1044,11 @@
 
     function confirmPtEnroll() {
       closePtEnrollModal();
-      var cardBtn = document.getElementById('enroll-card-btn');
-      if (cardBtn) {
-        cardBtn.className = 'action-btn action-btn-done';
-        cardBtn.innerHTML = '<i class="ti ti-check"></i> Enrolled';
-        cardBtn.onclick = null;
+      var headerBtn = document.getElementById('header-action-btn');
+      if (headerBtn) {
+        headerBtn.className = 'action-btn action-btn-done';
+        headerBtn.innerHTML = '<i class="ti ti-check"></i> Enrolled';
+        headerBtn.onclick = null;
       }
     }
 
@@ -1056,11 +1057,11 @@
       var id  = parseInt(btn.dataset.patientId, 10);
       localStorage.setItem('status_' + id, 'archived');
       closePtReferModal();
-      var cardBtn = document.getElementById('refer-out-card-btn');
-      if (cardBtn) {
-        cardBtn.className = 'action-btn action-btn-done';
-        cardBtn.innerHTML = '<i class="ti ti-check"></i> Referred';
-        cardBtn.onclick = null;
+      var headerBtn = document.getElementById('header-action-btn');
+      if (headerBtn) {
+        headerBtn.className = 'action-btn action-btn-done';
+        headerBtn.innerHTML = '<i class="ti ti-check"></i> Referred';
+        headerBtn.onclick = null;
       }
     }
 
