@@ -398,7 +398,7 @@
         <div class="filter-pills">
           <button class="filter-pill active" data-filter="all">All <span class="filter-count" id="count-all"></span></button>
           <button class="filter-pill" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
-          <button class="filter-pill" data-filter="notenrolled">Not Enrolled <span class="filter-count" id="count-notenrolled"></span></button>
+          <button class="filter-pill" data-filter="notenrolled">Monitoring <span class="filter-count" id="count-notenrolled"></span></button>
         </div>
         <div class="search-wrap">
           <i class="ti ti-search"></i>
@@ -991,7 +991,7 @@
           </td>
           <td style="text-align:center;">
             ${(p.referOut || p.tier === 'low')
-              ? '<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 10px;border-radius:999px;white-space:nowrap;">Not Enrolled</span>'
+              ? '<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 10px;border-radius:999px;white-space:nowrap;">Monitoring</span>'
               : '<span style="font-size:12px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:4px 10px;border-radius:999px;white-space:nowrap;">CoCM Eligible</span>'}
           </td>
           <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
@@ -1203,7 +1203,7 @@
     <div style="display:grid; grid-template-columns:110px 70px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
       <span style="font-size:13px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Low</span>
       <span style="font-size:13px;color:var(--text-muted);">0 – 8</span>
-      <span style="font-size:13px;color:var(--text-muted);">Not Enrolled</span>
+      <span style="font-size:13px;color:var(--text-muted);">Monitoring</span>
       <span style="font-size:13px;color:var(--text-mid);">Watchful waiting, psycho-education, re-screen in 6 months</span>
     </div>
     <!-- Moderate -->
