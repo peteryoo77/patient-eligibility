@@ -73,8 +73,8 @@
     .topbar-name { font-size: 14px; font-weight: 600; color: var(--text); }
     .topbar-action { margin-left: 16px; }
     .action-btn {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 8px 20px; border: none; border-radius: 8px;
+      display: inline-flex; align-items: center;
+      padding: 7px 16px; border: none; border-radius: 6px;
       font-family: inherit; font-size: 13px; font-weight: 600;
       cursor: pointer; transition: background 0.15s, opacity 0.15s;
     }
@@ -1003,7 +1003,7 @@
           btn.innerHTML = '<i class="ti ti-arrow-up-right"></i> Refer out';
         } else {
           btn.className = 'action-btn action-btn-enroll';
-          btn.innerHTML = 'Enroll in CoCM <i class="ti ti-plus"></i>';
+          btn.innerHTML = 'Enroll in CoCM';
         }
         btn.dataset.patientId = p.id;
         btn.dataset.patientName = p.name;
