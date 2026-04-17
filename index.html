@@ -152,6 +152,11 @@
     .filter-pill.active .filter-count {
       background: var(--primary-light); color: var(--primary);
     }
+    .pill-sub {
+      display: block; font-size: 11px; font-weight: 400;
+      color: var(--text-muted); margin-top: 1px; letter-spacing: 0;
+    }
+    .filter-pill.active .pill-sub { color: var(--primary); opacity: 0.75; }
     .search-wrap {
       position: relative; flex-shrink: 0;
     }
@@ -396,8 +401,8 @@
       <!-- Tabs row -->
       <div class="filter-bar">
         <div class="filter-pills">
-          <button class="filter-pill active" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
-          <button class="filter-pill" data-filter="notenrolled">Monitoring <span class="filter-count" id="count-notenrolled"></span></button>
+          <button class="filter-pill active" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span><span class="pill-sub">Score 9–25 &nbsp;·&nbsp; High <span id="count-high"></span> &nbsp;·&nbsp; Moderate <span id="count-medium"></span></span></button>
+          <button class="filter-pill" data-filter="notenrolled">Monitoring <span class="filter-count" id="count-notenrolled"></span><span class="pill-sub">Score 0–8</span></button>
         </div>
         <div class="search-wrap">
           <i class="ti ti-search"></i>
@@ -936,11 +941,16 @@
     }
 
     function updateMetrics() {
-      const eligible   = patients.filter(p => !p.referOut && p.tier !== 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
-      const monitoring = patients.filter(p => !p.referOut && p.tier === 'low'  && p.status !== 'archived' && p.status !== 'enrolled').length;
+      const active     = p => p.status !== 'archived' && p.status !== 'enrolled' && !p.referOut;
+      const eligible   = patients.filter(p => active(p) && p.tier !== 'low').length;
+      const monitoring = patients.filter(p => active(p) && p.tier === 'low').length;
+      const high       = patients.filter(p => active(p) && p.tier === 'high').length;
+      const medium     = patients.filter(p => active(p) && p.tier === 'medium').length;
       isFirstRender = false;
       document.getElementById('count-eligible').textContent    = eligible;
       document.getElementById('count-notenrolled').textContent = monitoring;
+      document.getElementById('count-high').textContent        = high;
+      document.getElementById('count-medium').textContent      = medium;
     }
 
     // Filter pills
