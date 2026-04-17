@@ -704,23 +704,23 @@
     }
     function domainSignals(raw) {
       const syms = [];
-      if (raw.phq9  >= 10) syms.push('PHQ-9 ' + raw.phq9 + ' (+3)');
-      if (raw.gad7  >= 10) syms.push('GAD-7 ' + raw.gad7 + ' (+3)');
-      if (raw.pcl5  >= 33) syms.push('PCL-5 ' + raw.pcl5 + ' (+2)');
-      if (raw.cssrs >= 2)  syms.push('C-SSRS ' + raw.cssrs + ' (+2)');
+      if (raw.phq9  >= 10) syms.push('PHQ-9 ' + raw.phq9);
+      if (raw.gad7  >= 10) syms.push('GAD-7 ' + raw.gad7);
+      if (raw.pcl5  >= 33) syms.push('PCL-5 ' + raw.pcl5);
+      if (raw.cssrs >= 2)  syms.push('C-SSRS ' + raw.cssrs);
       const funcs = [];
-      if (raw.sds >= 7)              funcs.push('SDS ' + raw.sds + '/10 (+2)');
-      if (raw.functionalImpairment)  funcs.push('Unable to maintain work/school/home (+2)');
-      if (raw.priorTreatmentFailure) funcs.push('Prior treatment failure (+1)');
+      if (raw.sds >= 7)              funcs.push('SDS ' + raw.sds + '/10');
+      if (raw.functionalImpairment)  funcs.push('Unable to maintain work/school/home');
+      if (raw.priorTreatmentFailure) funcs.push('Prior treatment failure');
       const meds = [];
-      if (raw.chronicConditions >= 2)            meds.push(raw.chronicConditions + ' chronic conditions (+2)');
-      if (raw.edVisits >= 2 || raw.hospitalized) meds.push(raw.edVisits >= 2 ? raw.edVisits + ' ED visits (+2)' : 'Prior hospitalization (+2)');
-      if (raw.chronicPainOpioid)                 meds.push('Chronic pain + opioids (+1)');
-      if (raw.nonAdherent)                       meds.push('Medication non-adherence (+1)');
+      if (raw.chronicConditions >= 2)            meds.push(raw.chronicConditions + ' chronic conditions');
+      if (raw.edVisits >= 2 || raw.hospitalized) meds.push(raw.edVisits >= 2 ? raw.edVisits + ' ED visits' : 'Prior hospitalization');
+      if (raw.chronicPainOpioid)                 meds.push('Chronic pain + opioids');
+      if (raw.nonAdherent)                       meds.push('Medication non-adherence');
       const sdohs = [];
-      if (raw.housingInsecurity) sdohs.push('Housing insecurity (+2)');
-      if (raw.foodInsecurity)    sdohs.push('Food insecurity (+1)');
-      if (raw.socialIsolation)   sdohs.push('Social isolation (+1)');
+      if (raw.housingInsecurity) sdohs.push('Housing insecurity');
+      if (raw.foodInsecurity)    sdohs.push('Food insecurity');
+      if (raw.socialIsolation)   sdohs.push('Social isolation');
       return { syms, funcs, meds, sdohs };
     }
     function domainBar(name, score, max, color, signals) {
