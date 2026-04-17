@@ -690,7 +690,7 @@
 
     function getFiltered() {
       let list = currentFilter === 'archived'
-        ? patients.filter(p => p.referOut)
+        ? patients.filter(p => p.status === 'archived')
         : patients.filter(p => p.status !== 'archived' && p.status !== 'enrolled');
       if      (currentFilter === 'new')     list = list.filter(p => p.isNew);
       else if (currentFilter === 'high')    list = list.filter(p => p.tier === 'high');
@@ -912,7 +912,7 @@
       document.getElementById('count-eligible').textContent    = eligible2;
       document.getElementById('count-notenrolled').textContent = notEnrolled;
       document.getElementById('count-referout').textContent    = referOut;
-      document.getElementById('count-archived').textContent    = referOut;
+      document.getElementById('count-archived').textContent    = archived;
     }
 
     // Filter pills
