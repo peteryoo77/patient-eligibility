@@ -430,8 +430,8 @@
           <thead>
             <tr>
               <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Eligibility <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;cursor:default;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Risk <i class="ti ti-selector" style="font-size:16px;"></i></div></th>
+              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Eligibility <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:10%; cursor:pointer; text-align:center;" onclick="sortBy('referOut')">Refer Out <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:40%">Description</th>
               <th style="width:12%">Actions</th>
@@ -825,12 +825,12 @@
             <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span></div>
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
+          <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
           <td style="text-align:center;">
-            ${p.tier === 'low'
+            ${(p.referOut || p.tier === 'low')
               ? '<span style="font-size:12px;font-weight:600;color:var(--ref-text);background:var(--ref-bg);padding:4px 10px;border-radius:999px;white-space:nowrap;">Not Enrolled</span>'
               : '<span style="font-size:12px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:4px 10px;border-radius:999px;white-space:nowrap;">CoCM Eligible</span>'}
           </td>
-          <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
           <td><div style="display:flex; justify-content:center;">
             ${p.referOut && p.status !== 'archived' ? `<span class="refer-badge">Refer out</span>` : `<span style="color:var(--text-muted);font-size:13px;">—</span>`}
           </div></td>
