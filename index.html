@@ -552,7 +552,7 @@
         id: 1, name: "Sarah Mitchell", age: 52, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "DM", "HTN"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Active suicidal ideation (C-SSRS: 2), moderately severe depression (PHQ-9: 14), 2 ED visits in 12 months. Housing insecure with no behavioral health provider — no safety net in place.",
+        reasoning: "Active suicidal ideation (C-SSRS: 2), severe depression (PHQ-9: 14), 2 ED visits in 12 months — housing insecure, no BH provider on file.",
         raw: { phq9: 14, gad7: null, pcl5: null, cssrs: 2, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Sertraline 100mg", status: "Active", duration: "18 mo" },
@@ -564,7 +564,7 @@
         id: 2, name: "James Rodriguez", age: 45, gender: "Male",
         diagnoses: ["Generalized Anxiety Disorder", "Type 2 Diabetes"],
         tier: "high", score: 82, isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Severe depression and moderate anxiety (PHQ-9: 16, GAD-7: 12) with 2 ED visits and 18 months without BH contact. Medication non-adherence compounds an already high-risk clinical picture.",
+        reasoning: "Severe depression and anxiety (PHQ-9: 16, GAD-7: 12), 2 ED visits, medication non-adherent — 18 months without behavioral health contact.",
         raw: { phq9: 16, gad7: 12, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Escitalopram 20mg", status: "Active", duration: "8 mo" },
@@ -577,7 +577,7 @@
         id: 3, name: "Patricia Chen", age: 68, gender: "Female",
         diagnoses: ["PTSD", "Chronic Pain", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "PTSD (PCL-5: 40) with active suicidal ideation (C-SSRS: 4), chronic pain, and opioid use — 2 ER visits in 90 days. No behavioral health contact in 24 months; acute risk with no care in place.",
+        reasoning: "PTSD (PCL-5: 40) with active suicidal ideation (C-SSRS: 4), opioid use, 2 ER visits in 90 days — no behavioral health contact in 24 months.",
         raw: { phq9: 12, gad7: null, pcl5: 40, cssrs: 4, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Oxycodone 15mg",      status: "Active", duration: "18 mo" },
@@ -590,7 +590,7 @@
         id: 4, name: "Michael Thompson", age: 39, gender: "Male",
         diagnoses: ["Bipolar II Disorder", "Obesity", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Bipolar II with a prior psychiatric hospitalization, on mood stabilizers with no behavioral health provider overseeing care. Four missed visits and housing insecurity suggest growing disengagement — medication management at risk.",
+        reasoning: "Bipolar II with prior hospitalization, on mood stabilizers with no BH oversight, 4 missed visits — housing insecure and disengaging from care.",
         raw: { phq9: 11, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Lamotrigine 150mg", status: "Active", duration: "3 yr" },
@@ -603,7 +603,7 @@
         id: 5, name: "Linda Park", age: 61, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "COPD", "DM"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Moderate depression (PHQ-9: 10) with significant functional impairment (SDS: 7) alongside COPD and diabetes. Medication non-adherence across multiple conditions raises combined risk.",
+        reasoning: "Moderate depression (PHQ-9: 10) with COPD and diabetes, significant functional impairment (SDS: 7) — medication non-adherent across multiple conditions.",
         raw: { phq9: 10, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Bupropion 150mg",    status: "Active", duration: "15 mo" },
@@ -615,7 +615,7 @@
         id: 6, name: "Robert Kim", age: 47, gender: "Male",
         diagnoses: ["Generalized Anxiety Disorder", "Insomnia"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Moderate anxiety and depression (GAD-7: 11, PHQ-9: 10) with chronic insomnia and a prior benzodiazepine treatment failure. No prior behavioral health contact — standard pharmacotherapy has not been sufficient.",
+        reasoning: "Moderate anxiety and depression (GAD-7: 11, PHQ-9: 10), chronic insomnia, prior benzodiazepine failure — no behavioral health contact ever.",
         raw: { phq9: 10, gad7: 11, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Lorazepam 1mg", status: "Active", duration: "14 mo" },
@@ -627,7 +627,7 @@
         id: 7, name: "Nancy Walker", age: 55, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "Fibromyalgia", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Moderate depression (PHQ-9: 10) with significant functional impairment (SDS: 7), fibromyalgia, and a prior treatment failure. Socially isolated with no support network — limited buffer against further decline.",
+        reasoning: "Moderate depression (PHQ-9: 10) with fibromyalgia, significant functional impairment (SDS: 7), prior treatment failure — socially isolated with no support network.",
         raw: { phq9: 10, gad7: 5, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Duloxetine 60mg", status: "Active", duration: "2 yr" },
@@ -639,7 +639,7 @@
         id: 8, name: "David Lee", age: 33, gender: "Male",
         diagnoses: ["PTSD", "Alcohol Use Disorder"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PTSD (PCL-5: 36) with comorbid alcohol use disorder and no prior behavioral health contact. Dual-diagnosis presentation — integrated CoCM with substance use support is indicated.",
+        reasoning: "PTSD (PCL-5: 36) with comorbid alcohol use disorder — dual-diagnosis presentation with no prior behavioral health contact.",
         raw: { phq9: 10, gad7: null, pcl5: 36, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Sertraline 50mg",  status: "Active", duration: "5 mo" },
@@ -651,7 +651,7 @@
         id: 9, name: "Carol Martinez", age: 71, gender: "Female",
         diagnoses: ["Generalized Anxiety", "CHF"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Mild anxiety (GAD-7: 6) with no acute risk factors or functional impairment. Subclinical presentation — monitor and re-screen in 6 months.",
+        reasoning: "Mild anxiety (GAD-7: 6), no acute risk factors or functional impairment — subclinical, re-screen in 6 months.",
         raw: { phq9: 6, gad7: 6, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Furosemide 40mg",   status: "Active", duration: "3 yr" },
@@ -663,7 +663,7 @@
         id: 10, name: "Thomas Brown", age: 42, gender: "Male",
         diagnoses: ["Dysthymia"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Mild persistent depressive symptoms (PHQ-9: 5); clinically stable with no acute risk factors despite social isolation. Watchful waiting — re-screen in 6 months.",
+        reasoning: "Mild persistent depressive symptoms (PHQ-9: 5), clinically stable despite social isolation — watchful waiting, re-screen in 6 months.",
         raw: { phq9: 5, gad7: null, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Atorvastatin 20mg", status: "Active", duration: "2 yr" }
@@ -674,7 +674,7 @@
         id: 11, name: "Jennifer Davis", age: 29, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "ADHD"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "First-time presentation of mild depressive symptoms (PHQ-9: 6) with no acute risk factors. No prior treatment history — monitor and re-screen in 6 months.",
+        reasoning: "First-time presentation of mild depressive symptoms (PHQ-9: 6), no acute risk factors or prior treatment — re-screen in 6 months.",
         raw: { phq9: 6, gad7: null, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Amphetamine salts 20mg", status: "Active", duration: "2 yr" }
@@ -685,7 +685,7 @@
         id: 12, name: "William Garcia", age: 58, gender: "Male",
         diagnoses: ["Major Depressive Disorder", "DM", "HTN"],
         isNew: false, status: "referred", eligible: true, referOut: false,
-        reasoning: "Moderate depression (PHQ-9: 11) on an active antidepressant with an 18-month gap in behavioral health care. Medication without clinical oversight — enrolled in standard CoCM.",
+        reasoning: "Moderate depression (PHQ-9: 11) on antidepressant with 18-month BH gap — no clinical oversight, enrolled in standard CoCM.",
         raw: { phq9: 11, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Venlafaxine 150mg", status: "Active", duration: "2 yr" },
@@ -697,7 +697,7 @@
         id: 13, name: "Margaret Wilson", age: 64, gender: "Female",
         diagnoses: ["Bipolar I Disorder", "DM", "Obesity"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Bipolar I on dual mood stabilizers (valproic acid + lithium) with escalating dosage and 20 months without behavioral health contact. Prior hospitalization and social isolation — psychiatric consultation urgently indicated.",
+        reasoning: "Bipolar I on escalating dual mood stabilizers (valproic acid + lithium), 20 months without BH contact — prior hospitalization, psychiatric consultation urgently indicated.",
         raw: { phq9: 9, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Valproic Acid 1000mg",    status: "Active", duration: "5 yr" },
