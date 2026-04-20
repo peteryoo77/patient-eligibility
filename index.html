@@ -867,7 +867,7 @@
       tbody.innerHTML = list.map(p => `
         <tr class="patient-row${p.status === 'enrolled' ? ' is-enrolled' : ''}" data-id="${p.id}">
           <td>
-            <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span>${p.status === 'referred' ? '<span style="font-size:11px;font-weight:600;color:#92400E;background:#FEF3C7;border:1px solid #FDE68A;padding:2px 8px;border-radius:999px;margin-left:6px;white-space:nowrap;">Returning</span>' : ''}</div>
+            <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span>${p.status === 'referred' ? '<span style="font-size:11px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:2px 8px;border-radius:999px;margin-left:6px;white-space:nowrap;">Returning</span>' : ''}</div>
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
           <td style="text-align:center;">
