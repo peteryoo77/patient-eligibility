@@ -28,6 +28,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-y: scroll; }
 
     body {
       font-family: 'Geist', 'Inter', sans-serif;
@@ -89,6 +90,40 @@
 
     /* ── MAIN ── */
     .main { margin-left: 216px; flex: 1; padding: 28px 28px 48px; min-height: 100vh; }
+
+    /* ── DETAIL PANEL ── */
+    .panel-overlay {
+      position: fixed; inset: 0;
+      background: rgba(15,23,42,0.3);
+      z-index: 199;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .panel-overlay.open { opacity: 1; pointer-events: all; }
+
+    .detail-panel {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: min(600px, 45vw);
+      background: var(--card);
+      border-left: 1px solid var(--border);
+      box-shadow: -12px 0 40px rgba(0,0,0,0.12);
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      z-index: 200;
+      display: flex; flex-direction: column;
+    }
+    .detail-panel.open { transform: translateX(0); }
+    .detail-panel iframe { flex: 1; border: none; width: 100%; height: 100%; }
+    .panel-close-btn {
+      position: absolute; top: 16px; right: 20px;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10;
+      font-size: 14px; color: var(--text-muted);
+      transition: background 0.15s, color 0.15s;
+    }
+    .panel-close-btn:hover { background: var(--border); color: var(--text); }
 
     /* ── PAGE HEADER ── */
     .page-header {
@@ -191,6 +226,10 @@
       white-space: nowrap;
     }
 
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
+    }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -206,6 +245,9 @@
     }
     .patient-row:hover td { background: #F9FAFB; }
     .patient-row.expanded td { background: #F9FAFB; }
+    .patient-row td:first-child { border-left: 3px solid transparent; }
+    .patient-row.selected td { background: #EFF6FF; }
+    .patient-row.selected td:first-child { border-left-color: var(--primary); }
 
     tbody td {
       padding: 18px 14px; vertical-align: middle;
@@ -277,9 +319,9 @@
     /* Actioned row state */
     .patient-row.is-enrolled td { opacity: 0.55; }
 
-    /* ── DETAIL PANEL ── */
+    /* ── INLINE DETAIL (expanded table row) ── */
     .detail-row td { padding: 0; border-bottom: 0.5px solid var(--border); background: #F9FAFB; }
-    .detail-panel {
+    .inline-detail {
       display: grid; grid-template-columns: 1fr 1fr 1fr;
       gap: 0; border-top: 0.5px solid var(--border);
     }
@@ -390,34 +432,15 @@
       </div>
     </div>
 
-    <!-- Metrics -->
-    <div class="metrics-row">
-      <div class="metric-card mc-total animate-in" style="animation-delay:0ms">
-        <div class="metric-label">Total</div>
-        <div class="metric-value" id="metric-total">0</div>
-        <div class="metric-sub">Active patients</div>
-      </div>
-      <div class="metric-card mc-eligible animate-in" style="animation-delay:60ms">
-        <div class="metric-label">Eligible</div>
-        <div class="metric-value" id="metric-eligible">0</div>
-        <div class="metric-sub">Ready to enroll</div>
-      </div>
-      <div class="metric-card mc-total animate-in" style="animation-delay:120ms">
-        <div class="metric-label">Monitoring</div>
-        <div class="metric-value" id="metric-monitoring">0</div>
-        <div class="metric-sub">Watchful waiting</div>
-      </div>
-    </div>
-
     <!-- Table card -->
-    <div class="table-card animate-in" style="animation-delay:180ms">
+    <div class="table-card animate-in" style="animation-delay:180ms; margin-top:24px;">
       <!-- Tabs row -->
       <div class="filter-bar">
-        <div class="filter-pills">
-          <button class="filter-pill active" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
-          <button class="filter-pill" data-filter="high">High Risk <span class="filter-count" id="count-high"></span></button>
-          <button class="filter-pill" data-filter="medium">Medium Risk <span class="filter-count" id="count-medium"></span></button>
-          <button class="filter-pill" data-filter="notenrolled">Monitoring <span class="filter-count" id="count-notenrolled"></span></button>
+        <div style="display:flex;align-items:center;">
+          <div class="filter-pills">
+            <button class="filter-pill active" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
+            <button class="filter-pill" data-filter="notenrolled">Monitoring <span class="filter-count" id="count-notenrolled"></span></button>
+          </div>
         </div>
         <div class="search-wrap">
           <i class="ti ti-search"></i>
@@ -443,6 +466,15 @@
     </div>
 
   </main>
+
+  <!-- ── PANEL OVERLAY + SLIDE PANEL ── -->
+  <div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
+  <div class="detail-panel" id="detail-panel">
+    <button class="panel-close-btn" onclick="closePanel()" title="Close">
+      <i class="ti ti-x"></i>
+    </button>
+    <iframe id="detail-iframe" src=""></iframe>
+  </div>
 
   <!-- Enroll Modal -->
   <div id="enroll-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
@@ -682,17 +714,31 @@
       else if (currentFilter === 'notenrolled') list = list.filter(p => !p.referOut && p.tier === 'low');
       else if (currentFilter === 'referout')    list = list.filter(p => p.referOut);
       if (searchQuery) list = list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
-      if (sortField === 'name') {
+
+      function bhMonths(p) {
+        const s = p.history && p.history.lastBHContact || '';
+        if (s === 'Never') return 999;
+        const m = s.match(/(\d+)\s*month/);
+        return m ? parseInt(m[1]) : 0;
+      }
+
+      if (!sortField) {
+        const isUnseenNew = p => p.isNew && !seenThisSession.has(p.id);
+        list.sort((a, b) => {
+          const aNew = isUnseenNew(a) ? 1 : 0;
+          const bNew = isUnseenNew(b) ? 1 : 0;
+          if (bNew !== aNew) return bNew - aNew;
+          return b.score !== a.score ? b.score - a.score :
+                 bhMonths(b) !== bhMonths(a) ? bhMonths(b) - bhMonths(a) :
+                 a.id - b.id;
+        });
+      } else if (sortField === 'name') {
         list.sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
       } else if (sortField === 'score') {
         list.sort((a, b) => sortAsc ? b.score - a.score : a.score - b.score);
-      } else if (sortField === 'eligible') {
-        list.sort((a, b) => sortAsc ? (b.eligible ? 1 : 0) - (a.eligible ? 1 : 0) : (a.eligible ? 1 : 0) - (b.eligible ? 1 : 0));
       } else if (sortField === 'tier') {
         const ORDER = { high: 0, medium: 1, low: 2 };
         list.sort((a, b) => sortAsc ? ORDER[a.tier] - ORDER[b.tier] : ORDER[b.tier] - ORDER[a.tier]);
-      } else if (sortField === 'referOut') {
-        list.sort((a, b) => sortAsc ? (b.referOut ? 1 : 0) - (a.referOut ? 1 : 0) : (a.referOut ? 1 : 0) - (b.referOut ? 1 : 0));
       } else {
         list.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
       }
@@ -747,7 +793,7 @@
     }
 
     function renderDetail(p) {
-      return `<div class="detail-panel">
+      return `<div class="inline-detail">
         <div class="detail-col">
           <div class="detail-col-title">Medications</div>
           ${p.medications.map(m => `
@@ -826,7 +872,11 @@
           const id = parseInt(row.dataset.id);
           seenThisSession.add(id);
           sessionStorage.setItem('seenPatients', JSON.stringify([...seenThisSession]));
-          window.location.href = `patient.html?id=${id}`;
+          document.querySelectorAll('.patient-row').forEach(r => r.classList.remove('selected'));
+          row.classList.add('selected');
+          const badge = row.querySelector('.new-badge');
+          if (badge) badge.remove();
+          openPanel(id);
         });
       });
 
@@ -871,8 +921,8 @@
         document.getElementById('metric-eligible').textContent   = eligible2;
         document.getElementById('metric-monitoring').textContent = notEnrolled;
       }
-      const high   = patients.filter(p => p.tier === 'high'   && p.status !== 'archived' && p.status !== 'enrolled').length;
-      const medium = patients.filter(p => p.tier === 'medium' && p.status !== 'archived' && p.status !== 'enrolled').length;
+      const high    = patients.filter(p => p.tier === 'high'   && p.status !== 'archived' && p.status !== 'enrolled').length;
+      const medium  = patients.filter(p => p.tier === 'medium' && p.status !== 'archived' && p.status !== 'enrolled').length;
       document.getElementById('count-eligible').textContent    = eligible2;
       document.getElementById('count-high').textContent        = high;
       document.getElementById('count-medium').textContent      = medium;
@@ -943,8 +993,21 @@
       if (m) m.style.display = 'none';
     }
 
+    function openPanel(id) {
+      document.getElementById('detail-iframe').src = `patient.html?id=${id}&panel=true`;
+      document.getElementById('detail-panel').classList.add('open');
+      document.getElementById('panel-overlay').classList.add('open');
+    }
+
+    function closePanel() {
+      document.getElementById('detail-panel').classList.remove('open');
+      document.getElementById('panel-overlay').classList.remove('open');
+      document.querySelectorAll('.patient-row.selected').forEach(r => r.classList.remove('selected'));
+      setTimeout(() => { document.getElementById('detail-iframe').src = ''; }, 350);
+    }
+
     window.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' || e.key === 'Esc') { closeModal(); closeReferModal(); }
+      if (e.key === 'Escape' || e.key === 'Esc') { closeModal(); closePanel(); }
     });
 
     window.addEventListener('mousedown', function(e) {

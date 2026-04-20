@@ -228,6 +228,14 @@
     .refer-out-reason-box { background: #F9FAFB; border: 0.5px solid var(--border); border-radius: 8px; padding: 14px 16px; font-size: 13px; color: #374151; line-height: 1.7; margin-bottom: 14px; }
     .refer-out-footer { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-muted); font-style: italic; }
     .refer-out-footer i { font-size: 14px; flex-shrink: 0; }
+
+    /* ── PANEL MODE ── */
+    body.panel-mode                { overflow-x: hidden; min-height: 100vh; display: block; }
+    body.panel-mode .sidebar       { display: none; }
+    body.panel-mode .topbar        { display: none; }
+    body.panel-mode .main          { margin-left: 0; width: 100%; max-width: none; box-sizing: border-box; padding: 20px 24px 48px; }
+    body.panel-mode .patient-header { flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+    body.panel-mode > div          { width: 100%; }
   </style>
 </head>
 <body>
@@ -1346,6 +1354,9 @@
       var rm = document.getElementById('pt-refer-modal');
       if (rm && rm.style.display !== 'none' && e.target === rm) closePtReferModal();
     });
+
+    const isPanel = new URLSearchParams(location.search).get('panel') === 'true';
+    if (isPanel) document.body.classList.add('panel-mode');
 
     render();
   </script>
