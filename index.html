@@ -402,10 +402,10 @@
         <div class="metric-value" id="metric-eligible">0</div>
         <div class="metric-sub">Ready to enroll</div>
       </div>
-      <div class="metric-card mc-referout animate-in" style="animation-delay:120ms">
-        <div class="metric-label">Refer Out</div>
-        <div class="metric-value" id="metric-referout">0</div>
-        <div class="metric-sub">Needs specialty care</div>
+      <div class="metric-card mc-total animate-in" style="animation-delay:120ms">
+        <div class="metric-label">Monitoring</div>
+        <div class="metric-value" id="metric-monitoring">0</div>
+        <div class="metric-sub">Watchful waiting</div>
       </div>
     </div>
 
@@ -414,10 +414,10 @@
       <!-- Tabs row -->
       <div class="filter-bar">
         <div class="filter-pills">
-          <button class="filter-pill active" data-filter="all">All <span class="filter-count" id="count-all"></span></button>
-          <button class="filter-pill" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
-          <button class="filter-pill" data-filter="notenrolled">Not Enrolled <span class="filter-count" id="count-notenrolled"></span></button>
-          <button class="filter-pill" data-filter="archived">Referred <span class="filter-count" id="count-archived"></span></button>
+          <button class="filter-pill active" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
+          <button class="filter-pill" data-filter="high">High Risk <span class="filter-count" id="count-high"></span></button>
+          <button class="filter-pill" data-filter="medium">Medium Risk <span class="filter-count" id="count-medium"></span></button>
+          <button class="filter-pill" data-filter="notenrolled">Monitoring <span class="filter-count" id="count-notenrolled"></span></button>
         </div>
         <div class="search-wrap">
           <i class="ti ti-search"></i>
@@ -431,9 +431,8 @@
           <thead>
             <tr>
               <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;cursor:default;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Eligibility <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></div></th>
+              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;cursor:default;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></div></th>
               <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:10%; cursor:pointer; text-align:center;" onclick="sortBy('referOut')">Refer Out <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:40%">Description</th>
               <th style="width:12%">Actions</th>
             </tr>
@@ -444,24 +443,6 @@
     </div>
 
   </main>
-
-  <!-- Enroll Modal -->
-  <!-- Refer Modal -->
-  <div id="refer-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
-    <div style="background:#fff; border-radius:16px; width:400px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
-      <div style="padding:28px 28px 24px;">
-        <div style="width:40px;height:40px;border-radius:10px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </div>
-        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:4px;">Refer patient out</div>
-        <div id="refer-modal-patient-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
-      </div>
-      <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
-        <button onclick="closeReferModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
-        <button onclick="confirmRefer()" style="padding:9px 20px;border:1.5px solid var(--primary);border-radius:8px;background:white;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='white'">Refer out</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Enroll Modal -->
   <div id="enroll-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
@@ -543,8 +524,8 @@
       {
         id: 3, name: "Patricia Chen", age: 68, gender: "Female",
         diagnoses: ["PTSD", "Chronic Pain", "HTN"],
-        isNew: false, status: "pending", eligible: true, referOut: true,
-        reasoning: "Active suicidal ideation (C-SSRS: 4); long-term opioid escalation; 2 ER visits in 90 days; no BH contact in 24 months.",
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "PTSD with chronic pain and opioid use; 2 ER visits in 90 days; no BH contact in 24 months.",
         raw: { phq9: 12, gad7: null, pcl5: 40, cssrs: 4, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Oxycodone 15mg",      status: "Active", duration: "18 mo" },
@@ -556,7 +537,7 @@
       {
         id: 4, name: "Michael Thompson", age: 39, gender: "Male",
         diagnoses: ["Bipolar II Disorder", "Obesity", "HTN"],
-        isNew: false, status: "pending", eligible: true, referOut: true,
+        isNew: false, status: "pending", eligible: true, referOut: false,
         reasoning: "Bipolar II with prior psychiatric hospitalization; no BH provider on file despite active mood stabilizer; 4 missed visits.",
         raw: { phq9: 11, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
@@ -605,8 +586,8 @@
       {
         id: 8, name: "David Lee", age: 33, gender: "Male",
         diagnoses: ["PTSD", "Alcohol Use Disorder"],
-        isNew: true, status: "pending", eligible: true, referOut: true,
-        reasoning: "PTSD (PCL-5: 36) with active alcohol use disorder; detox required before CoCM enrollment.",
+        isNew: true, status: "pending", eligible: true, referOut: false,
+        reasoning: "PTSD (PCL-5: 36) with alcohol use disorder; no BH contact — eligible for integrated CoCM with substance use support.",
         raw: { phq9: 10, gad7: null, pcl5: 36, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Sertraline 50mg",  status: "Active", duration: "5 mo" },
@@ -663,8 +644,8 @@
       {
         id: 13, name: "Margaret Wilson", age: 64, gender: "Female",
         diagnoses: ["Bipolar I Disorder", "DM", "Obesity"],
-        isNew: false, status: "referred", eligible: true, referOut: true,
-        reasoning: "Bipolar I with escalating mood stabilizer dosage; no BH contact in 20 months — already enrolled in specialty program.",
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Bipolar I with escalating mood stabilizer dosage; no BH contact in 20 months — eligible for intensive CoCM with psychiatric consultation.",
         raw: { phq9: 9, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Valproic Acid 1000mg",    status: "Active", duration: "5 yr" },
@@ -685,7 +666,7 @@
       sessionStorage.removeItem('seenPatients');
     }
     const seenThisSession = new Set(JSON.parse(sessionStorage.getItem('seenPatients') || '[]'));
-    let currentFilter = 'all';
+    let currentFilter = 'eligible';
     let searchQuery = '';
     let expandedId = null;
 
@@ -697,7 +678,7 @@
       else if (currentFilter === 'high')    list = list.filter(p => p.tier === 'high');
       else if (currentFilter === 'medium')  list = list.filter(p => p.tier === 'medium');
       else if (currentFilter === 'low')     list = list.filter(p => p.tier === 'low');
-      else if (currentFilter === 'eligible')    list = list.filter(p => !p.referOut && p.tier !== 'low');
+      else if (currentFilter === 'eligible')    list = list.filter(p => p.tier === 'high' || p.tier === 'medium');
       else if (currentFilter === 'notenrolled') list = list.filter(p => !p.referOut && p.tier === 'low');
       else if (currentFilter === 'referout')    list = list.filter(p => p.referOut);
       if (searchQuery) list = list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -758,14 +739,8 @@
     }
 
     function renderActions(p) {
-      if (p.status === 'archived') {
-        return `<span data-id="${p.id}" data-action="unarchive" style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;">Referred</span>`;
-      }
       if (p.status === 'enrolled') {
         return `<span style="font-size:12px;font-weight:600;color:#16a34a;background:#dcfce7;padding:4px 12px;border-radius:9999px;">Enrolled ✓</span>`;
-      }
-      if (p.referOut) {
-        return `<button class="btn-refer" data-id="${p.id}" data-action="archive">Refer</button>`;
       }
       if (p.tier === 'low') return `<button class="btn-dismiss" disabled style="cursor:default;background:#F3F4F6;color:#6B7280;border:none;">Enroll</button>`;
       return `<button class="btn-enroll" data-id="${p.id}" data-action="enroll">Enroll</button>`;
@@ -816,7 +791,7 @@
       const list = getFiltered();
 
       if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
           <i class="ti ti-circle-off"></i>No patients match this filter.
         </div></td></tr>`;
         return;
@@ -829,21 +804,14 @@
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
           <td style="text-align:center;">
-            ${p.referOut
-              ? '<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 10px;border-radius:999px;white-space:nowrap;">Refer Out</span>'
-              : p.tier === 'low'
-                ? '<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 10px;border-radius:999px;white-space:nowrap;">Not Enrolled</span>'
-                : '<span style="font-size:12px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:4px 10px;border-radius:999px;white-space:nowrap;">CoCM Eligible</span>'}
+            <span style="font-size:20px;font-weight:700;color:#1e293b;">${p.score != null ? p.score : '—'}</span><span style="font-size:14px;color:#9CA3AF;font-weight:500;">/25</span>
           </td>
           <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
-          <td><div style="display:flex; justify-content:center;">
-            ${p.referOut && p.status !== 'archived' ? `<span class="refer-badge">Refer out</span>` : `<span style="color:var(--text-muted);font-size:13px;">—</span>`}
-          </div></td>
           <td><span class="reasoning">${p.reasoning}</span></td>
           <td onclick="event.stopPropagation()">${renderActions(p)}</td>
         </tr>
         <tr class="detail-row" id="detail-${p.id}" style="display:none;">
-          <td colspan="6">${renderDetail(p)}</td>
+          <td colspan="5">${renderDetail(p)}</td>
         </tr>
       `).join('');
 
@@ -871,7 +839,6 @@
           const patient = patients.find(p => p.id === id);
           if (!patient) return;
           if (action === 'enroll') { showEnrollModal(patient); return; }
-          if (action === 'archive') { showReferModal(patient); return; }
           const row = document.querySelector(`.patient-row[data-id="${id}"]`);
           if (action === 'unarchive') {
             patient.status = 'pending';
@@ -890,33 +857,26 @@
     }
 
     function updateMetrics() {
-      const eligible  = patients.filter(p => p.eligible && !p.referOut && p.status !== 'archived' && p.status !== 'enrolled').length;
-      const referOut  = patients.filter(p => p.referOut  && p.status !== 'archived').length;
-      const archived  = patients.filter(p => p.status === 'archived').length;
-      const all       = patients.filter(p => p.status !== 'archived' && p.status !== 'enrolled').length;
-      const newCount  = patients.filter(p => p.isNew && p.status !== 'archived').length;
-      const high      = patients.filter(p => p.tier === 'high'   && p.status !== 'archived').length;
-      const medium    = patients.filter(p => p.tier === 'medium' && p.status !== 'archived').length;
-      const low       = patients.filter(p => p.tier === 'low'    && p.status !== 'archived').length;
+      const all         = patients.filter(p => p.status !== 'archived' && p.status !== 'enrolled').length;
+      const eligible2   = patients.filter(p => p.tier !== 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
+      const notEnrolled = patients.filter(p => p.tier === 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
 
       if (isFirstRender) {
-        animateCount(document.getElementById('metric-total'),    all);
-        animateCount(document.getElementById('metric-eligible'), eligible);
-        animateCount(document.getElementById('metric-referout'), referOut);
+        animateCount(document.getElementById('metric-total'),      all);
+        animateCount(document.getElementById('metric-eligible'),   eligible2);
+        animateCount(document.getElementById('metric-monitoring'), notEnrolled);
         isFirstRender = false;
       } else {
-        document.getElementById('metric-total').textContent    = all;
-        document.getElementById('metric-eligible').textContent = eligible;
-        document.getElementById('metric-referout').textContent = referOut;
+        document.getElementById('metric-total').textContent      = all;
+        document.getElementById('metric-eligible').textContent   = eligible2;
+        document.getElementById('metric-monitoring').textContent = notEnrolled;
       }
-
-      const eligible2    = patients.filter(p => !p.referOut && p.tier !== 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
-      const notEnrolled  = patients.filter(p => !p.referOut && p.tier === 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
-      document.getElementById('count-all').textContent         = all;
+      const high   = patients.filter(p => p.tier === 'high'   && p.status !== 'archived' && p.status !== 'enrolled').length;
+      const medium = patients.filter(p => p.tier === 'medium' && p.status !== 'archived' && p.status !== 'enrolled').length;
       document.getElementById('count-eligible').textContent    = eligible2;
+      document.getElementById('count-high').textContent        = high;
+      document.getElementById('count-medium').textContent      = medium;
       document.getElementById('count-notenrolled').textContent = notEnrolled;
-      document.getElementById('count-referout').textContent    = referOut;
-      document.getElementById('count-archived').textContent    = archived;
     }
 
     // Filter pills
@@ -969,29 +929,6 @@
     }
 
     let pendingEnrollId = null;
-
-    let pendingReferId = null;
-
-    function showReferModal(patient) {
-      pendingReferId = patient.id;
-      document.getElementById('refer-modal-patient-name').textContent = `${patient.name} will be moved to the Referred list and flagged for specialty care.`;
-      document.getElementById('refer-modal').style.display = 'flex';
-    }
-
-    function closeReferModal() {
-      pendingReferId = null;
-      document.getElementById('refer-modal').style.display = 'none';
-    }
-
-    function confirmRefer() {
-      if (pendingReferId) {
-        const patient = patients.find(p => p.id === pendingReferId);
-        if (patient) { patient.status = 'archived'; }
-      }
-      closeReferModal();
-      renderTable();
-      updateMetrics();
-    }
 
     function showEnrollModal(patient) {
       pendingEnrollId = patient.id;
@@ -1047,7 +984,7 @@
     <div style="display:grid; grid-template-columns:110px 70px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
       <span style="font-size:13px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Low</span>
       <span style="font-size:13px;color:var(--text-muted);">0 – 8</span>
-      <span style="font-size:13px;color:var(--text-muted);">Not Enrolled</span>
+      <span style="font-size:13px;color:var(--text-muted);">Monitoring</span>
       <span style="font-size:13px;color:var(--text-mid);">Watchful waiting, psycho-education, re-screen in 6 months</span>
     </div>
     <!-- Moderate -->

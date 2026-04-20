@@ -367,7 +367,7 @@
           immunization:    "Up to date (influenza, COVID-19, pneumococcal, shingles)",
           vitals:          "BP 128/78, HR 68, BMI 24.1",
           insurance:       "Medicare Part B",
-          referral:        { recommended: true, to: "ED / Crisis Stabilization Unit", exclusionCriteria: "Active suicidal crisis with imminent risk", reason: "C-SSRS score of 4 indicates active suicidal ideation with some intent to act. Combined with long-term opioid escalation and 2 ER visits in 90 days, this patient requires immediate crisis evaluation before any CoCM enrollment can be considered." },
+          referral:        { recommended: false, to: null, reason: "High complexity patient — intensive CoCM with psychiatric consultation recommended given PTSD severity, opioid use, and 2 ER visits in 90 days." },
           phq9: { score: 12, date: "Feb 20, 2026" },
           gad7: { score: 9,  date: "Feb 20, 2026" },
           pcl5: { score: 40, date: "Feb 20, 2026" },
@@ -399,7 +399,7 @@
           immunization:    "Up to date (influenza, COVID-19, Tdap)",
           vitals:          "BP 124/80, HR 78, BMI 34.5",
           insurance:       "United Healthcare PPO",
-          referral:        { recommended: true, to: "Outpatient Psychiatry", exclusionCriteria: "Active psychosis or acute mania", reason: "Bipolar II with active mood stabilizer regimen (Lamotrigine + Quetiapine) requires psychiatrist-level prescribing and monitoring. Mood stabilizer titration and psychiatric hospitalization history place this patient outside CoCM scope." },
+          referral:        { recommended: false, to: null, reason: "Bipolar II with prior hospitalization — intensive CoCM with psychiatric consultation recommended for mood stabilizer monitoring and titration." },
           phq9: { score: 11, date: "Mar 10, 2026" },
           gad7: { score: 7,  date: "Mar 10, 2026" },
           pcl5: null,
@@ -473,6 +473,130 @@
           therapyHistory: "Prior CBT trial — 6 sessions (2021), discontinued. No current BH provider. No BH contact in 14 months.",
           hospitalizations: null,
           generalMeds: ["Esomeprazole 40mg"]
+        }
+      },
+      {
+        id: 7, name: "Nancy Walker", age: 55, gender: "Female", lastVisit: "Mar 20, 2026",
+        tier: "medium", eligible: true,
+        reasoning: "PHQ-9: 10 with marked functional impairment (SDS: 7); prior treatment failure; socially isolated.",
+        raw: { phq9: 10, gad7: 5, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "MDD (2021)",
+          psychiatricMeds: ["Duloxetine 60mg", "Pregabalin 75mg"],
+          chronicDx:       ["Fibromyalgia", "HTN"],
+          erVisits:        "1 visit in the last 12 months",
+          substanceUse:    "No substance use reported.",
+          familyHistory:   "Sibling with anxiety disorder",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 138/86, HR 74, BMI 28.1",
+          insurance:       "Aetna PPO",
+          referral:        { recommended: false, to: null, reason: "Not currently indicated. PHQ-9 of 10 with functional impairment; eligible for standard CoCM enrollment." },
+          phq9: { score: 10, date: "Mar 5, 2026" },
+          gad7: { score: 5, date: "Mar 5, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 5, 2026" },
+          sds: { work: 7, social: 7, family: 6, date: "Mar 5, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: true, aces: false },
+          therapyHistory: "Prior antidepressant trial (Sertraline, discontinued 2020). No active BH provider. No BH contact in 15 months.",
+          hospitalizations: null,
+          generalMeds: ["Lisinopril 10mg", "Hydrochlorothiazide 25mg"]
+        }
+      },
+      {
+        id: 9, name: "Carol Martinez", age: 71, gender: "Female", lastVisit: "Mar 10, 2026",
+        tier: "low", eligible: false,
+        reasoning: "Mild anxiety (GAD-7: 6); subclinical presentation — watchful waiting and re-screen in 6 months.",
+        raw: { phq9: 6, gad7: 6, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
+        details: {
+          mentalHealthDx:  "GAD (2024)",
+          psychiatricMeds: [],
+          chronicDx:       ["CHF"],
+          erVisits:        null,
+          substanceUse:    "No substance use reported.",
+          familyHistory:   "None documented",
+          allergies:       "Penicillin",
+          surgicalHistory: "Coronary stent placement (2019)",
+          immunization:    "Up to date (influenza, COVID-19, pneumococcal, shingles)",
+          vitals:          "BP 126/78, HR 62, BMI 24.5",
+          insurance:       "Medicare Part B",
+          referral:        { recommended: false, to: null, reason: "Not currently indicated. Subclinical GAD presentation; watchful waiting appropriate." },
+          phq9: { score: 6, date: "Feb 20, 2026" },
+          gad7: { score: 6, date: "Feb 20, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Feb 20, 2026" },
+          sds: { work: 3, social: 4, family: 4, date: "Feb 20, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: false, aces: false },
+          therapyHistory: "No prior BH treatment. Never seen a BH provider.",
+          hospitalizations: "CHF exacerbation (2019) — cardiac, not psychiatric.",
+          generalMeds: ["Furosemide 40mg", "Carvedilol 12.5mg", "Lisinopril 5mg", "Aspirin 81mg"]
+        }
+      },
+      {
+        id: 10, name: "Thomas Brown", age: 42, gender: "Male", lastVisit: "Mar 25, 2026",
+        tier: "low", eligible: false,
+        reasoning: "Mild dysthymia (PHQ-9: 5); socially isolated but stable — watchful waiting and re-screen in 6 months.",
+        raw: { phq9: 5, gad7: null, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "Dysthymia (2022)",
+          psychiatricMeds: [],
+          chronicDx:       [],
+          erVisits:        null,
+          substanceUse:    "No substance use reported.",
+          familyHistory:   "N/A",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 122/78, HR 68, BMI 26.4",
+          insurance:       "BlueCross BlueShield PPO",
+          referral:        { recommended: false, to: null, reason: "Not currently indicated. Subclinical dysthymia; watchful waiting with re-screen in 6 months." },
+          phq9: { score: 5, date: "Mar 10, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 10, 2026" },
+          sds: { work: 4, social: 5, family: 4, date: "Mar 10, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: true, aces: false },
+          therapyHistory: "No prior BH treatment. Last BH contact 13 months ago (primary care screening only).",
+          hospitalizations: null,
+          generalMeds: ["Atorvastatin 20mg"]
+        }
+      },
+      {
+        id: 12, name: "William Garcia", age: 58, gender: "Male", lastVisit: "Apr 2, 2026",
+        tier: "medium", eligible: true,
+        reasoning: "PHQ-9: 11 with 18-month gap in BH care; active antidepressant with no BH provider — enrolled in standard CoCM.",
+        raw: { phq9: 11, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
+        details: {
+          mentalHealthDx:  "MDD (2018)",
+          psychiatricMeds: ["Venlafaxine 150mg"],
+          chronicDx:       ["Type 2 Diabetes", "HTN"],
+          erVisits:        null,
+          substanceUse:    "No substance use reported.",
+          familyHistory:   "None documented",
+          allergies:       "Sulfa drugs",
+          surgicalHistory: "Appendectomy (2005)",
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 134/82, HR 70, BMI 29.7",
+          insurance:       "United Healthcare PPO",
+          referral:        { recommended: false, to: null, reason: "Not currently indicated. Enrolled in standard CoCM track." },
+          phq9: { score: 11, date: "Mar 18, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 18, 2026" },
+          sds: { work: 5, social: 6, family: 5, date: "Mar 18, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: false, aces: false },
+          therapyHistory: "No active BH provider. Active antidepressant (Venlafaxine) prescribed by PCP. No BH contact in 18 months.",
+          hospitalizations: null,
+          generalMeds: ["Metformin 1000mg", "Amlodipine 10mg", "Atorvastatin 40mg"]
         }
       },
       {
@@ -878,6 +1002,7 @@
           generalMeds: []
         }
       }
+    ];
 
     const RISK_LABELS = { high: 'High Risk', medium: 'Medium Risk', low: 'Low Risk' };
 
@@ -949,44 +1074,16 @@
         '</div>';
     }
     function buildEligibilityCard(p, delay) {
-      var d = p.details;
-      var isReferOut = d.referral && d.referral.recommended === true;
       if (!p.raw) return '';
       var domains = computeScore(p.raw);
       var tier    = getTier(domains.total);
       var sigs    = domainSignals(p.raw);
-      var tierLabels  = { high: 'High Risk', medium: 'Medium Risk', low: 'Low Risk' };
-      var tierActions = {
-        high:   'Enroll in Intensive CoCM + Psychiatric Consultation',
-        medium: 'Enroll in Standard CoCM Track',
-        low:    'Watchful waiting \u2014 re-screen in 6 months'
-      };
-      if (isReferOut) {
-        var criterion = d.referral.exclusionCriteria || 'Exclusion criteria met';
-        var dest      = d.referral.to || 'Specialist';
-        var reason    = d.referral.reason || '';
-        return '<div class="card animate-in card-refer-out" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
-          '<div class="refer-out-meta">' +
-            '<div class="refer-out-col">' +
-              '<span class="refer-out-col-label">Exclusion Criterion</span>' +
-              '<span class="refer-out-criterion-tag">' + criterion + '</span>' +
-            '</div>' +
-            '<div class="refer-out-col">' +
-              '<span class="refer-out-col-label">Recommended Referral</span>' +
-              '<span class="refer-out-dest-tag">' + dest + '</span>' +
-            '</div>' +
-          '</div>' +
-          '<div class="refer-out-reason-text">' + reason + '</div>' +
-          '</div>';
-      }
       return '<div class="card animate-in" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
         '<div class="card-title" style="justify-content:space-between;">' +
           '<span style="display:flex;align-items:center;gap:6px;"><span id="elig-info-icon" class="elig-info-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>CoCM Eligibility</span>' +
-          (isReferOut
-            ? '<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:5px 14px;border-radius:999px;text-transform:none;letter-spacing:0;">Refer Out</span>'
-            : tier === 'low'
-              ? '<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:5px 14px;border-radius:999px;text-transform:none;letter-spacing:0;">Monitoring</span>'
-              : '<span style="font-size:12px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:5px 14px;border-radius:999px;text-transform:none;letter-spacing:0;">CoCM Eligible</span>') +
+          (tier === 'low'
+            ? '<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:5px 14px;border-radius:999px;text-transform:none;letter-spacing:0;">Monitoring</span>'
+            : '<span style="font-size:12px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:5px 14px;border-radius:999px;text-transform:none;letter-spacing:0;">CoCM Eligible</span>') +
         '</div>' +
         '<div class="elig-header">' +
         '<div class="elig-score-num">' + domains.total + '<span class="elig-score-max"> / 25</span></div>' +
@@ -1113,9 +1210,7 @@
       document.title = p.name + ' \u2014 Patient Detail';
       document.getElementById('topbar-name').textContent = p.name;
 
-      var status     = p.eligible ? 'eligible' : 'ineligible';
       var d          = p.details;
-      var isReferOut = d.referral && d.referral.recommended === true;
       var domains    = p.raw ? computeScore(p.raw) : null;
       var cTier      = domains ? getTier(domains.total) : p.tier;
       var delay      = 0;
@@ -1124,11 +1219,9 @@
         ? keySignals.map(function(s) { return '<li class="key-signal' + (s.alert ? ' key-signal-alert' : '') + '">' + s.text + '</li>'; }).join('')
         : '<li class="key-signal" style="color:var(--text-muted);font-style:italic">No key signals identified.</li>';
 
-      var headerBtn = isReferOut
-        ? '<button id="header-action-btn" class="action-btn action-btn-refer" onclick="handleTopbarAction()">Refer out</button>'
-        : cTier === 'low'
-          ? '<button id="header-action-btn" class="action-btn action-btn-done" disabled>Enroll</button>'
-          : '<button id="header-action-btn" class="action-btn action-btn-enroll" onclick="handleTopbarAction()">Enroll</button>';
+      var headerBtn = cTier === 'low'
+        ? '<button id="header-action-btn" class="action-btn action-btn-done" disabled>Enroll</button>'
+        : '<button id="header-action-btn" class="action-btn action-btn-enroll" onclick="handleTopbarAction()">Enroll</button>';
 
       main.innerHTML =
         '<div class="patient-header animate-in" style="animation-delay:' + (delay=0) + 'ms">' +
@@ -1141,12 +1234,11 @@
         '</div>' +
         headerBtn +
         '</div>' +
-        (isReferOut ? buildEligibilityCard(p, (delay += 60)) : '') +
         '<div class="card animate-in" id="sec-summary" style="animation-delay:' + (delay += 60) + 'ms">' +
         '<div class="card-title">Patient Summary</div>' +
         '<ul class="key-signals">' + signalsHtml + '</ul>' +
         '</div>' +
-        (isReferOut ? '' : buildEligibilityCard(p, (delay += 60))) +
+        buildEligibilityCard(p, (delay += 60)) +
         '<div class="card animate-in" id="sec-scores" style="animation-delay:' + (delay += 60) + 'ms">' +
         '<div class="card-title">Assessments</div>' +
         '<div class="scores-grid">' +
@@ -1195,13 +1287,6 @@
         if (status === 'enrolled') {
           btn.className = 'action-btn action-btn-done';
           btn.innerHTML = '<i class="ti ti-check"></i> Enrolled';
-        } else if (status === 'archived') {
-          btn.className = 'action-btn action-btn-done';
-          btn.innerHTML = '<i class="ti ti-check"></i> Referred';
-        } else if (isReferOut) {
-          btn.style.display = 'none';
-          btn.className = 'action-btn action-btn-refer';
-          btn.innerHTML = 'Refer out';
         } else {
           btn.style.display = 'none';
           btn.className = 'action-btn action-btn-enroll';
@@ -1209,7 +1294,6 @@
         }
         btn.dataset.patientId = p.id;
         btn.dataset.patientName = p.name;
-        btn.dataset.isReferOut = isReferOut ? '1' : '0';
       }
 
       // Animate all bars after paint
@@ -1221,17 +1305,10 @@
     }
 
     function handleTopbarAction() {
-      var btn = document.getElementById('topbar-action-btn');
-      var id   = parseInt(btn.dataset.patientId, 10);
+      var btn  = document.getElementById('topbar-action-btn');
       var name = btn.dataset.patientName;
-      var isReferOut = btn.dataset.isReferOut === '1';
-      if (isReferOut) {
-        document.getElementById('pt-refer-name').textContent = name + ' will be moved to the Referred list and flagged for specialty care.';
-        document.getElementById('pt-refer-modal').style.display = 'flex';
-      } else {
-        document.getElementById('pt-enroll-name').textContent = name + ' will be enrolled in the Collaborative Care Model program.';
-        document.getElementById('pt-enroll-modal').style.display = 'flex';
-      }
+      document.getElementById('pt-enroll-name').textContent = name + ' will be enrolled in the Collaborative Care Model program.';
+      document.getElementById('pt-enroll-modal').style.display = 'flex';
     }
 
     function closePtEnrollModal() { document.getElementById('pt-enroll-modal').style.display = 'none'; }
