@@ -1145,11 +1145,21 @@
       document.getElementById('panel-overlay').classList.add('open');
     }
 
+    function syncStatusFromStorage() {
+      patients.forEach(p => {
+        const stored = localStorage.getItem('status_' + p.id);
+        if (stored) p.status = stored;
+      });
+    }
+
     function closePanel() {
       document.getElementById('detail-panel').classList.remove('open');
       document.getElementById('panel-overlay').classList.remove('open');
       document.querySelectorAll('.patient-row.selected').forEach(r => r.classList.remove('selected'));
       setTimeout(() => { document.getElementById('detail-iframe').src = ''; }, 350);
+      syncStatusFromStorage();
+      renderTable();
+      updateMetrics();
     }
 
     window.addEventListener('keydown', function(e) {
@@ -1176,12 +1186,13 @@
     document.querySelectorAll('.filter-pill').forEach(p => {
       p.classList.toggle('active', p.dataset.filter === currentFilter);
     });
+    syncStatusFromStorage();
     renderTable();
     updateMetrics();
 
     // Re-render when restored from bfcache (back navigation) so NEW badges update
     window.addEventListener('pageshow', function(e) {
-      if (e.persisted) { renderTable(); updateMetrics(); }
+      if (e.persisted) { syncStatusFromStorage(); renderTable(); updateMetrics(); }
     });
   </script>
   <div id="risk-tooltip" style="display:none; position:fixed; z-index:9999; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.10); pointer-events:none; overflow:hidden; font-family:'Geist','Inter',sans-serif; min-width:560px;">
