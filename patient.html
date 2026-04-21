@@ -1530,25 +1530,40 @@
     function closePtEnrollModal() { document.getElementById('pt-enroll-modal').style.display = 'none'; }
     function closePtReferModal()  { document.getElementById('pt-refer-modal').style.display  = 'none'; }
 
-    var selectedNotEnrollingReason = null;
+    var selectedNotEnrollingReasons = [];
     function showNotEnrollingModal() {
       var btn  = document.getElementById('topbar-action-btn');
       var name = btn ? btn.dataset.patientName : '';
-      selectedNotEnrollingReason = null;
+      selectedNotEnrollingReasons = [];
       document.querySelectorAll('.reason-tag').forEach(function(t) { t.classList.remove('selected'); });
+      document.getElementById('other-reason-wrap').style.display = 'none';
+      document.getElementById('other-reason-input').value = '';
       document.getElementById('pt-not-enrolling-name').textContent = name + ' will be marked as not enrolling and removed from the active eligibility list.';
       document.getElementById('pt-not-enrolling-modal').style.display = 'flex';
     }
     function closeNotEnrollingModal() { document.getElementById('pt-not-enrolling-modal').style.display = 'none'; }
     function toggleReason(el, reason) {
-      document.querySelectorAll('.reason-tag').forEach(function(t) { t.classList.remove('selected'); });
-      el.classList.add('selected');
-      selectedNotEnrollingReason = reason;
+      var idx = selectedNotEnrollingReasons.indexOf(reason);
+      if (idx > -1) {
+        selectedNotEnrollingReasons.splice(idx, 1);
+        el.classList.remove('selected');
+      } else {
+        selectedNotEnrollingReasons.push(reason);
+        el.classList.add('selected');
+      }
+      document.getElementById('other-reason-wrap').style.display =
+        selectedNotEnrollingReasons.indexOf('other') > -1 ? 'block' : 'none';
     }
     function confirmNotEnrolling() {
       var btn = document.getElementById('topbar-action-btn');
       var id  = btn ? parseInt(btn.dataset.patientId, 10) : null;
-      if (id) localStorage.setItem('status_' + id, 'archived');
+      if (id) {
+        localStorage.setItem('status_' + id, 'archived');
+        var reasons = selectedNotEnrollingReasons.slice();
+        var otherText = document.getElementById('other-reason-input').value.trim();
+        if (otherText) reasons.push('other: ' + otherText);
+        if (reasons.length) localStorage.setItem('notEnrollReasons_' + id, reasons.join(', '));
+      }
       closeNotEnrollingModal();
       var notEnrollBtn = document.getElementById('not-enroll-header-btn');
       if (notEnrollBtn) notEnrollBtn.remove();
@@ -1710,12 +1725,16 @@
         </div>
         <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Not enrolling in CoCM</div>
         <div id="pt-not-enrolling-name" style="font-size:13px;color:#6B7280;line-height:1.5;margin-bottom:20px;"></div>
-        <div style="font-size:11px;font-weight:700;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Reason</div>
+        <div style="font-size:11px;font-weight:700;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Reason <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-subtle);font-size:11px;">(select all that apply)</span></div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;">
           <span class="reason-tag" onclick="toggleReason(this,'declined')">Patient declined</span>
-          <span class="reason-tag" onclick="toggleReason(this,'not-indicated')">Not clinically indicated</span>
-          <span class="reason-tag" onclick="toggleReason(this,'insurance')">Insurance / coverage</span>
+          <span class="reason-tag" onclick="toggleReason(this,'personal')">Personal</span>
+          <span class="reason-tag" onclick="toggleReason(this,'financial')">Financial</span>
+          <span class="reason-tag" onclick="toggleReason(this,'insurance')">Insurance</span>
           <span class="reason-tag" onclick="toggleReason(this,'other')">Other</span>
+        </div>
+        <div id="other-reason-wrap" style="display:none;margin-top:12px;">
+          <textarea id="other-reason-input" placeholder="Please explain…" style="width:100%;height:72px;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:inherit;color:var(--text-mid);resize:none;outline:none;transition:border-color 0.12s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'"></textarea>
         </div>
       </div>
       <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
