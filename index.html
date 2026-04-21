@@ -886,12 +886,13 @@
           <td>
             <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span></div>
             <div class="page">${p.age} yo · ${p.gender}</div>
+            ${reScreenChip(p)}
           </td>
           <td style="text-align:center;">
             <span style="font-size:20px;font-weight:700;color:#1e293b;">${p.score != null ? p.score : '—'}</span><span style="font-size:14px;color:#9CA3AF;font-weight:500;">/25</span>
           </td>
           <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
-          <td><div class="reasoning">${p.reasoning}</div>${reScreenChip(p)}</td>
+          <td><div class="reasoning">${p.reasoning}</div></td>
           <td onclick="event.stopPropagation()">${renderActions(p)}</td>
         </tr>
         <tr class="detail-row" id="detail-${p.id}" style="display:none;">
