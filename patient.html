@@ -1292,7 +1292,7 @@
       return '<div class="card prior-referral-card animate-in" style="animation-delay:' + delay + 'ms">' +
         '<div style="margin-bottom:4px;">' +
           '<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px;">Prior Referral</div>' +
-          '<div style="font-size:15px;font-weight:700;color:var(--text);">' + (p.referredDate || '') + ' &middot; <span style="color:var(--text-muted);font-weight:500;">Did not enroll</span></div>' +
+          '<div style="font-size:15px;font-weight:700;color:var(--text);">' + (p.referredDate || '') + '</div>' +
         '</div>' +
         '<div style="margin-top:18px;">' +
           '<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Reasons for not enrolling</div>' +
@@ -1464,7 +1464,7 @@
             : storedStatus === 'archived'
               ? '<button id="header-action-btn" class="action-btn action-btn-done" disabled>Not Enrolled</button>'
               : '<button id="header-action-btn" class="action-btn action-btn-enroll" onclick="handleTopbarAction()">Enroll</button>';
-      var notEnrollBtn = (storedStatus !== 'referred' && storedStatus !== 'enrolled' && storedStatus !== 'archived')
+      var notEnrollBtn = (storedStatus !== 'enrolled' && storedStatus !== 'archived')
         ? '<button id="not-enroll-header-btn" class="action-btn action-btn-not-enroll" onclick="showNotEnrollingModal()">Not Enroll</button>'
         : '';
       var headerBtn = '<div style="display:flex;flex-direction:column;gap:8px;width:160px;">' + enrollBtn + notEnrollBtn + '</div>';
@@ -1689,7 +1689,6 @@
         </div>
         <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Enroll in CoCM</div>
         <div id="pt-enroll-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
-        <div id="pt-enroll-track" style="font-size:11px;font-weight:600;color:var(--primary);background:var(--primary-light);display:inline-block;padding:3px 10px;border-radius:9999px;margin-top:8px;"></div>
       </div>
       <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
         <button onclick="closePtEnrollModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
