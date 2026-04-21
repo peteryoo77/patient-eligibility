@@ -805,9 +805,12 @@
       const tier  = getTier(score);
       return { ...p, score, tier };
     });
-    // Clear seen state on hard refresh, keep it on back-navigation
+    // Clear seen state and patient status overrides on hard refresh (demo reset)
     if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
       sessionStorage.removeItem('seenPatients');
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('status_') || key.startsWith('notEnrollReasons_')) localStorage.removeItem(key);
+      });
     }
     const seenThisSession = new Set(JSON.parse(sessionStorage.getItem('seenPatients') || '[]'));
     let currentFilter = sessionStorage.getItem('activeFilter') || 'eligible';
