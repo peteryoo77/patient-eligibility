@@ -73,18 +73,18 @@
     .topbar-name { font-size: 14px; font-weight: 600; color: var(--text); }
     .topbar-action { margin-left: 16px; }
     .action-btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 10px 18px; border: none; border-radius: 6px;
-      font-family: inherit; font-size: 13px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; min-height: 44px; padding: 12px 20px; border: none; border-radius: 8px;
+      font-family: inherit; font-size: 14px; font-weight: 600;
       cursor: pointer; transition: background 0.15s, opacity 0.15s;
-      flex-shrink: 0; align-self: center;
+      flex-shrink: 0;
     }
     .action-btn-enroll { background: var(--primary); color: #fff; }
     .action-btn-enroll:hover { background: var(--primary-hover); }
     .action-btn-refer  { background: #fff; color: var(--primary); border: 1px solid var(--primary); }
     .action-btn-refer:hover  { background: var(--primary-light); }
     .action-btn-done         { background: #F3F4F6; color: #6B7280; cursor: default; pointer-events: none; }
-    .action-btn-not-enroll   { background: none; border: 1.5px solid #7DD3FC !important; color: var(--text-mid); padding: 9px 18px; }
+    .action-btn-not-enroll   { background: none; border: 1.5px solid #7DD3FC !important; color: var(--text-mid); }
     .action-btn-not-enroll:hover { background: var(--primary-light); border-color: var(--primary) !important; color: var(--primary); }
 
     /* ── MAIN ── */
@@ -1467,7 +1467,7 @@
       var notEnrollBtn = (storedStatus !== 'referred' && storedStatus !== 'enrolled' && storedStatus !== 'archived')
         ? '<button id="not-enroll-header-btn" class="action-btn action-btn-not-enroll" onclick="showNotEnrollingModal()">Not Enroll</button>'
         : '';
-      var headerBtn = '<div style="display:flex;gap:8px;align-items:center;">' + notEnrollBtn + enrollBtn + '</div>';
+      var headerBtn = '<div style="display:flex;flex-direction:column;gap:8px;width:160px;">' + enrollBtn + notEnrollBtn + '</div>';
 
       var TIER_COLORS = { high: 'var(--high-text)', medium: 'var(--med-text)', low: 'var(--low-text)' };
       var tierColor = TIER_COLORS[cTier] || '#6B7280';
