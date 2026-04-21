@@ -6,24 +6,24 @@
   <title>Patient Detail</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-  <style>@import url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css');</style>
+<style>@import url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css');</style>
   <style>
     :root {
       --primary:       hsl(199, 89%, 48%);
       --primary-hover: hsl(199, 89%, 42%);
       --primary-light: hsl(199, 89%, 95%);
-      --bg:            hsl(210, 20%, 98%);
+      --bg:            #F2F2F7;
       --card:          #ffffff;
       --border:        hsl(214, 14%, 89%);
       --text:          hsl(220, 20%, 10%);
       --text-mid:      #374151;
       --text-muted:    #6B7280;
-      --radius:        10px;
+      --radius:        16px;
       --text-subtle:   #9CA3AF;
 
-      --high-text: #C0392B; --high-bg: #FDF0EF;
-      --med-text:  #D4802A; --med-bg:  #FDF5E6;
-      --low-text:  #2D9E5C; --low-bg:  #EEF9F2;
+      --high-text: #E11D48; --high-bg: #FFF1F2;
+      --med-text:  #EA580C; --med-bg:  #FFF7ED;
+      --low-text:  #0EA5E9; --low-bg:  #E0F2FE;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -91,8 +91,8 @@
     /* ── PATIENT HEADER ── */
     .patient-header {
       background: var(--card);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 0 0 0.5px var(--border);
-      border-radius: var(--radius); padding: 24px 28px; margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      border-radius: var(--radius); padding: 20px 22px; margin-bottom: 14px;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
     .header-left {}
@@ -133,11 +133,11 @@
     /* ── SECTION CARD ── */
     .card {
       background: var(--card);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 0 0 0.5px var(--border);
-      border-radius: var(--radius); padding: 24px 28px; margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      border-radius: var(--radius); padding: 22px 24px; margin-bottom: 14px;
     }
     .card-title {
-      font-size: 12px; font-weight: 700; color: var(--text-subtle);
+      font-size: 12px; font-weight: 700; color: var(--text-muted);
       text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 18px;
       display: flex; align-items: center; gap: 6px;
     }
@@ -152,14 +152,14 @@
     .sdoh-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
     .sdoh-row:last-child { border-bottom: none; }
     .sdoh-label { font-size: 14px; color: var(--text); font-weight: 500; }
-    .sdoh-flag-yes { font-size: 13px; font-weight: 600; color: #C0392B; background: #FDF0EF; padding: 2px 8px; border-radius: 4px; }
+    .sdoh-flag-yes { font-size: 13px; font-weight: 600; color: #E11D48; background: #FFF1F2; padding: 2px 8px; border-radius: 4px; }
     .sdoh-flag-no  { font-size: 13px; color: var(--text-muted); }
     .score-box { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
     .score-label { font-size: 12px; font-weight: 600; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
     .score-num   { font-size: 38px; font-weight: 700; color: var(--text); line-height: 1; letter-spacing: -1.5px; }
     .score-interp { font-size: 12px; font-weight: 600; margin-top: 3px; color: var(--text-mid); }
-    .score-bar-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin: 10px 0 8px; }
-    .score-bar-fill  { height: 100%; width: 0; border-radius: 2px; transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+    .score-bar-track { height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; margin: 10px 0 8px; }
+    .score-bar-fill  { height: 100%; width: 0; border-radius: 999px; transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
     .score-date  { font-size: 12px; color: var(--text-muted); }
     .score-na    { font-size: 13px; color: var(--text-muted); font-style: italic; margin: 8px 0 4px; }
 
@@ -170,6 +170,10 @@
     }
     .referral-dest { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
     .referral-reason { font-size: 13px; color: var(--text-mid); line-height: 1.65; }
+
+    /* ── CLINICAL ROWS ── */
+    .c-row { display: grid; grid-template-columns: 160px 1fr; gap: 12px; padding: 9px 0; border-bottom: 0.5px solid var(--border); align-items: start; }
+    .c-row:last-child { border-bottom: none; }
 
     /* ── CLINICAL GRID ── */
     .clinical-grid { display: flex; flex-direction: column; }
@@ -189,8 +193,8 @@
     .key-signals { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
     .key-signal { font-size: 16px; color: var(--text-mid); line-height: 1.55; padding-left: 18px; position: relative; }
     .key-signal::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
-    .key-signal-alert { color: #C0392B; }
-    .key-signal-alert::before { background: #C0392B; }
+    .key-signal-alert { color: #E11D48; }
+    .key-signal-alert::before { background: #E11D48; }
 
 
     /* ── ELIGIBILITY CARD ── */
@@ -207,8 +211,8 @@
     .domain-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
     .domain-name { font-size: 14px; font-weight: 600; color: var(--text); }
     .domain-score-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
-    .domain-track { height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 5px; }
-    .domain-fill { height: 100%; border-radius: 4px; width: 0; transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+    .domain-track { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; margin-bottom: 5px; }
+    .domain-fill { height: 100%; border-radius: 999px; width: 0; transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
     .domain-signals { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
     .domain-signal-tag { font-size: 13px; color: var(--text-mid); background: #F3F4F6; border-radius: 4px; padding: 1px 7px; line-height: 1.6; }
     .domain-sep { height: 0.5px; background: var(--border); }
@@ -221,7 +225,7 @@
     .refer-out-meta { display: flex; gap: 24px; margin-bottom: 18px; flex-wrap: wrap; }
     .refer-out-col { display: flex; flex-direction: column; gap: 5px; }
     .refer-out-col-label { font-size: 12px; font-weight: 700; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.07em; }
-    .refer-out-criterion-tag { display: inline-block; background: #FDF0EF; border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: #C0392B; }
+    .refer-out-criterion-tag { display: inline-block; background: #FFF1F2; border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: #E11D48; }
     .refer-out-dest-tag { display: inline-block; background: var(--primary-light); border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: var(--primary); }
     .refer-out-divider { height: 1px; background: var(--border); margin-bottom: 14px; }
     .refer-out-reason-text { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
@@ -231,7 +235,7 @@
     .refer-out-footer i { font-size: 14px; flex-shrink: 0; }
 
     /* ── PRIOR REFERRAL CARD ── */
-    .prior-referral-card { border-left: 3px solid var(--primary); }
+    .prior-referral-card {}
     .prior-ref-reason-tag {
       display: inline-block; font-size: 13px; font-weight: 600;
       padding: 4px 12px; border-radius: 999px;
@@ -372,7 +376,7 @@
         }
       },
       {
-        id: 3, name: "Patricia Chen", age: 68, gender: "Female", lastVisit: "Mar 28, 2026", status: "referred", referredDate: "Jan 6, 2026", referralReasons: ["insurance", "other"], referralReasonNote: "Patient expressed concerns about being seen for mental health treatment. Needed more time to consider. Now ready to proceed.",
+        id: 3, name: "Patricia Chen", age: 68, gender: "Female", lastVisit: "Mar 28, 2026", status: "referred", referredDate: "Jan 6, 2026", referralReasons: ["insurance", "other"], referralReasonNote: "Patient had concerns about insurance coverage and expressed hesitancy about being seen for mental health treatment. Needed more time to consider.",
         tier: "high", eligible: true,
         reasoning: "Long-term opioid (18 mo) with escalating dosage; 2 ER visits in 90 days; PTSD with no BH contact in 24 months.",
         raw: { phq9: 12, gad7: null, pcl5: 40, cssrs: 4, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
@@ -1094,6 +1098,41 @@
         '<div class="domain-signals">' + sigText + '</div>' +
         '</div>';
     }
+    function buildGaugeSVG(total, tier) {
+      var color  = tier === 'high' ? '#E11D48' : tier === 'medium' ? '#EA580C' : '#0EA5E9';
+      var colorL = tier === 'high' ? '#FB7185' : tier === 'medium' ? '#FDBA74' : '#7DD3FC';
+      var label  = tier === 'high' ? 'High Risk' : tier === 'medium' ? 'Moderate Risk' : 'Low Risk';
+      var gradId = 'g_' + tier;
+      var r = 76, cx = 100, cy = 100;
+      var C      = 2 * Math.PI * r;
+      var arcLen = C * 0.75;
+      var lowLen  = arcLen * (8 / 25);
+      var medLen  = arcLen * (8 / 25);
+      var highLen = arcLen * (9 / 25);
+      var fillLen = arcLen * (total / 25);
+
+      var startDeg = 135;
+      var medDeg   = startDeg + (8 / 25) * 270;
+      var highDeg  = startDeg + (16 / 25) * 270;
+
+      return '<div style="width:260px;max-width:100%;margin:16px auto 26px;">' +
+        '<svg viewBox="0 0 200 166" style="width:100%;display:block;">' +
+        '<defs>' +
+          '<linearGradient id="' + gradId + '" x1="0" y1="0" x2="1" y2="0">' +
+            '<stop offset="0%" stop-color="' + colorL + '"/>' +
+            '<stop offset="100%" stop-color="' + color + '"/>' +
+          '</linearGradient>' +
+        '</defs>' +
+        '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="#E5E7EB" stroke-width="18" stroke-dasharray="' + arcLen.toFixed(1) + ' ' + C.toFixed(1) + '" stroke-linecap="round" transform="rotate(' + startDeg + ',' + cx + ',' + cy + ')"/>' +
+        '<circle id="gauge-arc-fill" cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="url(#' + gradId + ')" stroke-width="18" stroke-dasharray="' + fillLen.toFixed(1) + ' ' + C.toFixed(1) + '" stroke-dashoffset="' + fillLen.toFixed(1) + '" stroke-linecap="round" transform="rotate(' + startDeg + ',' + cx + ',' + cy + ')" style="transition:stroke-dashoffset 1.1s cubic-bezier(0.4,0,0.2,1);"/>' +
+        '<text text-anchor="middle" x="100" y="97" font-family="Geist,Inter,sans-serif">' +
+          '<tspan font-size="44" font-weight="800" fill="#111827" letter-spacing="-2">' + total + '</tspan>' +
+          '<tspan font-size="19" font-weight="400" fill="#9CA3AF"> /25</tspan>' +
+        '</text>' +
+        '<text x="100" y="121" text-anchor="middle" fill="' + color + '" font-size="14" font-weight="600" font-family="Geist,Inter,sans-serif">' + label + '</text>' +
+        '</svg></div>';
+    }
+
     function buildEligibilityCard(p, delay) {
       if (!p.raw) return '';
       var domains = computeScore(p.raw);
@@ -1103,13 +1142,10 @@
         '<div class="card-title" style="justify-content:space-between;">' +
           '<span style="display:flex;align-items:center;gap:6px;"><span id="elig-info-icon" class="elig-info-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>CoCM Eligibility</span>' +
           (tier === 'low'
-            ? '<span style="font-size:12px;font-weight:600;color:#0F766E;background:#F0FDFA;padding:5px 14px;border-radius:999px;text-transform:none;letter-spacing:0;">Monitoring</span>'
+            ? '<span style="font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:5px 14px;border-radius:999px;text-transform:none;letter-spacing:0;">Monitoring</span>'
             : '<span style="font-size:12px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:5px 14px;border-radius:999px;text-transform:none;letter-spacing:0;">CoCM Eligible</span>') +
         '</div>' +
-        '<div class="elig-header">' +
-        '<div class="elig-score-num">' + domains.total + '<span class="elig-score-max"> / 25</span></div>' +
-        '<div class="elig-score-label">Composite risk score</div>' +
-        '</div>' +
+        buildGaugeSVG(domains.total, tier) +
         '<div class="domain-list">' +
         domainBar('Symptom Severity',      domains.symptom,    10, 'var(--primary)', sigs.syms)  +
         '<div class="domain-sep"></div>' +
@@ -1135,7 +1171,7 @@
       if (s <= 14) return 'Moderate';
       return 'Severe';
     }
-    const C_LOW = '#16a34a', C_MED = '#d97706', C_HIGH = '#C0392B';
+    const C_LOW = '#0EA5E9', C_MED = '#EA580C', C_HIGH = '#E11D48';
     function scoreColor(s, type) {
       if (type === 'phq9')    return s<=4?C_LOW:s<=9?C_MED:C_HIGH;
       if (type === 'gad7')    return s<=4?C_LOW:s<=9?C_MED:C_HIGH;
@@ -1226,24 +1262,163 @@
     function buildPriorReferralCard(p, delay) {
       if (p.status !== 'referred') return '';
       var reasons = p.referralReasons || ['other'];
-      var noteHtml = reasons.indexOf('other') !== -1 && p.referralReasonNote
-        ? '<div style="margin-top:12px;font-size:13px;color:var(--text-mid);line-height:1.6;background:#F9FAFB;border:0.5px solid var(--border);border-radius:8px;padding:10px 14px;">' + p.referralReasonNote + '</div>'
+      var noteHtml = p.referralReasonNote
+        ? '<div style="margin-top:20px;background:#F9FAFB;border-radius:10px;padding:14px 16px;font-size:13px;color:var(--text-mid);line-height:1.75;">' + p.referralReasonNote + '</div>'
         : '';
       return '<div class="card prior-referral-card animate-in" style="animation-delay:' + delay + 'ms">' +
-        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">' +
-          '<div>' +
-            '<div style="font-size:13px;font-weight:700;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;">Prior Referral</div>' +
-            '<div style="font-size:13px;font-weight:500;color:var(--text-muted);">' + (p.referredDate || '') + ' · Did not enroll</div>' +
-          '</div>' +
+        '<div style="margin-bottom:4px;">' +
+          '<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px;">Prior Referral</div>' +
+          '<div style="font-size:15px;font-weight:700;color:var(--text);">' + (p.referredDate || '') + ' &middot; <span style="color:var(--text-muted);font-weight:500;">Did not enroll</span></div>' +
         '</div>' +
-        '<div style="font-size:13px;font-weight:600;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Reasons</div>' +
-        '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-          ['insurance','personal','financial','other'].map(function(r) {
-            return '<span class="prior-ref-reason-tag' + (reasons.indexOf(r) !== -1 ? ' active' : '') + '">' + REASON_LABELS[r] + '</span>';
-          }).join('') +
+        '<div style="margin-top:18px;">' +
+          '<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Reasons for not enrolling</div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+            reasons.map(function(r) {
+              return '<span class="prior-ref-reason-tag active">' + (REASON_LABELS[r] || r) + '</span>';
+            }).join('') +
+          '</div>' +
         '</div>' +
         noteHtml +
         '</div>';
+    }
+
+    function buildAssessmentsCard(d, delay) {
+      function sevColor(key, score) {
+        if (score === null || score === undefined) return '#9CA3AF';
+        if (key === 'phq9')    return score <= 4 ? '#0EA5E9' : score <= 9 ? '#EA580C' : '#E11D48';
+        if (key === 'gad7')    return score <= 4 ? '#0EA5E9' : score <= 9 ? '#EA580C' : '#E11D48';
+        if (key === 'cssrs')   return score === 0 ? '#0EA5E9' : score <= 1 ? '#EA580C' : '#E11D48';
+        if (key === 'pcl5')    return score < 33  ? '#0EA5E9' : '#E11D48';
+        if (key === 'sds')     return score < 5   ? '#0EA5E9' : score <= 6 ? '#EA580C' : '#E11D48';
+        if (key === 'mdq')     return score <= 7  ? '#0EA5E9' : '#E11D48';
+        if (key === 'audit10') return score <= 7  ? '#0EA5E9' : score <= 15 ? '#EA580C' : '#E11D48';
+        return '#9CA3AF';
+      }
+      function aRow(name, key, score, max, interp, isLast) {
+        var has   = score !== null && score !== undefined;
+        var color = sevColor(key, score);
+        var pct   = has ? Math.min(100, Math.round(score / max * 100)) : 0;
+        var border = isLast ? '' : 'border-bottom:0.5px solid var(--border);';
+        return '<div style="display:grid;grid-template-columns:80px 44px 1fr 130px;gap:12px;align-items:center;padding:14px 0;' + border + '">' +
+          '<span style="font-size:13px;font-weight:600;color:var(--text);">' + name + '</span>' +
+          '<span style="font-size:24px;font-weight:800;letter-spacing:-1px;color:' + (has ? 'var(--text)' : '#D1D5DB') + ';">' + (has ? score : '—') + '</span>' +
+          '<div style="height:8px;background:#F3F4F6;border-radius:999px;overflow:hidden;">' +
+            (has ? '<div class="score-bar-fill" style="height:100%;border-radius:999px;background:' + color + ';width:0;" data-pct="' + pct + '"></div>' : '') +
+          '</div>' +
+          '<span style="font-size:12px;font-weight:600;color:' + color + ';text-align:right;">' + (has ? interp : 'Not assessed') + '</span>' +
+        '</div>';
+      }
+      var phq9s  = d.phq9    ? d.phq9.score    : null;
+      var gad7s  = d.gad7    ? d.gad7.score    : null;
+      var csrs   = d.cssrs   ? d.cssrs.score   : null;
+      var pcl5s  = d.pcl5    ? d.pcl5.score    : null;
+      var sdss   = d.sds     ? Math.max(d.sds.work||0, d.sds.social||0, d.sds.family||0) : null;
+      var mdqs   = d.mdq     ? d.mdq.score     : null;
+      var audits = d.audit10 ? d.audit10.score : null;
+      return '<div class="card animate-in" id="sec-scores" style="animation-delay:' + delay + 'ms">' +
+        '<div class="card-title">Assessments</div>' +
+        aRow('PHQ-9',    'phq9',    phq9s,  27, phq9s  !== null ? phq9Interp(phq9s)  : '', false) +
+        aRow('GAD-7',    'gad7',    gad7s,  21, gad7s  !== null ? gad7Interp(gad7s)  : '', false) +
+        aRow('C-SSRS',   'cssrs',   csrs,    5, csrs   !== null ? scoreInterp(csrs,   'cssrs')   : '', false) +
+        aRow('PCL-5',    'pcl5',    pcl5s,  80, pcl5s  !== null ? (pcl5s >= 33 ? 'Probable PTSD' : 'Below threshold') : '', false) +
+        aRow('SDS',      'sds',     sdss,   10, sdss   !== null ? scoreInterp(sdss,   'sds')     : '', false) +
+        aRow('MDQ',      'mdq',     mdqs,   13, mdqs   !== null ? scoreInterp(mdqs,   'mdq')     : '', false) +
+        aRow('AUDIT-10', 'audit10', audits, 40, audits !== null ? scoreInterp(audits, 'audit10') : '', true) +
+      '</div>';
+    }
+
+    function buildSdohCard(d, delay) {
+  var sd = d.sdoh || {};
+  var items = [
+    { key: 'housingInsecurity', label: 'Housing Insecurity' },
+    { key: 'foodInsecurity',    label: 'Food Insecurity' },
+    { key: 'socialIsolation',   label: 'Social Isolation' },
+    { key: 'aces',              label: 'Adverse Childhood Experiences' }
+  ];
+  var tiles = items.map(function(item) {
+    var present = !!sd[item.key];
+    return '<div style="background:' + (present ? '#FFF1F2' : '#F9FAFB') + ';border-radius:12px;padding:18px 16px;display:flex;align-items:center;justify-content:center;text-align:center;">' +
+      '<span style="font-size:13px;font-weight:600;color:' + (present ? '#E11D48' : '#9CA3AF') + ';line-height:1.4;">' + item.label + '</span>' +
+    '</div>';
+  }).join('');
+  return '<div class="card animate-in" id="sec-sdoh" style="animation-delay:' + delay + 'ms">' +
+    '<div class="card-title">Social Determinants of Health</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">' + tiles + '</div>' +
+  '</div>';
+}
+
+    function buildClinicalCard(p, d, delay) {
+      function pill(text, bg, color) {
+        return '<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:500;background:' + bg + ';color:' + color + ';margin:2px 3px 2px 0;">' + text + '</span>';
+      }
+      function pills(arr, bg, color) {
+        if (!arr || !arr.length) return naText();
+        return arr.map(function(t) { return pill(t, bg, color); }).join('');
+      }
+      function naText() {
+        return '<span style="font-size:13px;color:var(--text-muted);font-style:italic;">Not documented</span>';
+      }
+      function textVal(v) {
+        return v ? '<span style="font-size:13px;color:var(--text);font-weight:400;line-height:1.6;">' + v + '</span>' : naText();
+      }
+      function cRow(label, content) {
+        return '<div class="c-row">' +
+          '<span style="font-size:13px;color:var(--text-muted);padding-top:3px;">' + label + '</span>' +
+          '<div>' + content + '</div>' +
+        '</div>';
+      }
+      function sectionHead(title) {
+        return '<div style="font-size:11px;font-weight:700;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.08em;padding:16px 0 4px;">' + title + '</div>';
+      }
+
+      var vitalContent = naText();
+      if (d.vitals) {
+        var vParts = d.vitals.split(',').map(function(v) { return v.trim(); });
+        vitalContent = '<div style="display:flex;gap:8px;">' +
+          vParts.map(function(v) {
+            var sp = v.indexOf(' ');
+            var lbl = v.substring(0, sp);
+            var val = v.substring(sp + 1);
+            return '<div style="flex:1;background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);">' +
+              '<div style="font-size:11px;font-weight:600;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;">' + lbl + '</div>' +
+              '<div style="font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.5px;">' + val + '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>';
+      }
+
+      var hasOpioid = p.raw && p.raw.chronicPainOpioid;
+      var opioidMedName = d.opioidRx ? d.opioidRx.split(' —')[0].trim() : 'Active';
+      var opioidBadge = hasOpioid
+        ? pill(opioidMedName, '#FFF1F2', '#E11D48')
+        : pill('None', '#F0FDFA', '#0EA5E9');
+
+      return (
+        '<div class="card animate-in" id="sec-mental" style="animation-delay:' + delay + 'ms">' +
+          '<div class="card-title">Clinical</div>' +
+          cRow('Diagnosis',        d.mentalHealthDx ? pill(d.mentalHealthDx, '#F3F4F6', '#374151') : naText()) +
+          cRow('Psychiatric meds', pills(d.psychiatricMeds, '#F3F4F6', '#374151')) +
+          cRow('Therapy',          textVal(d.therapyHistory)) +
+        '</div>' +
+
+        '<div class="card animate-in" id="sec-medical" style="animation-delay:' + (delay + 60) + 'ms">' +
+          '<div class="card-title">Medical</div>' +
+          cRow('Conditions',  pills(d.chronicDx,   '#F3F4F6', '#374151')) +
+          cRow('Medications', pills(d.generalMeds, '#F3F4F6', '#374151')) +
+          cRow('Opioid Rx',   opioidBadge) +
+          cRow('Vitals',      vitalContent) +
+        '</div>' +
+
+        '<div class="card animate-in" id="sec-background" style="animation-delay:' + (delay + 120) + 'ms">' +
+          '<div class="card-title">Background</div>' +
+          cRow('ER visits',         textVal(d.erVisits)) +
+          cRow('Hospitalizations',  textVal(d.hospitalizations)) +
+          cRow('Substance use',     textVal(d.substanceUse)) +
+          cRow('Family history',    textVal(d.familyHistory)) +
+          cRow('Surgical history',  textVal(d.surgicalHistory)) +
+          cRow('Insurance',         textVal(d.insurance)) +
+        '</div>'
+      );
     }
 
     function render() {
@@ -1274,59 +1449,19 @@
       main.innerHTML =
         '<div class="patient-header animate-in" style="animation-delay:' + (delay=0) + 'ms">' +
         '<div>' +
-        '<div class="header-name-row">' +
-        '<span class="header-name">' + p.name + '</span>' +
-        '<span class="risk-badge risk-' + cTier + '">' + RISK_LABELS[cTier] + '</span>' +
-        '</div>' +
-        '<div class="header-meta" style="margin-top:5px">' + p.age + ' yo \xB7 ' + p.gender + ' \xB7 Last visit ' + p.lastVisit + '</div>' +
-        '</div>' +
+            '<div class="header-name-row">' +
+              '<span class="header-name">' + p.name + '</span>' +
+              '<span class="risk-badge risk-' + cTier + '">' + RISK_LABELS[cTier] + '</span>' +
+            '</div>' +
+            '<div class="header-meta" style="margin-top:4px">' + p.age + ' yo \xB7 ' + p.gender + ' \xB7 Last examination ' + p.lastVisit + '</div>' +
+          '</div>' +
         headerBtn +
         '</div>' +
         buildPriorReferralCard(p, delay += 60) +
-        '<div class="card animate-in" id="sec-summary" style="animation-delay:' + (delay += 60) + 'ms">' +
-        '<div class="card-title">Patient Summary</div>' +
-        '<ul class="key-signals">' + signalsHtml + '</ul>' +
-        '</div>' +
         buildEligibilityCard(p, (delay += 60)) +
-        '<div class="card animate-in" id="sec-scores" style="animation-delay:' + (delay += 60) + 'ms">' +
-        '<div class="card-title">Assessments</div>' +
-        '<div class="scores-grid">' +
-        scoreBox('PHQ-9',    d.phq9,    27, 'phq9') +
-        scoreBox('GAD-7',    d.gad7,    21, 'gad7') +
-        scoreBox('PCL-5',    d.pcl5,    80, 'pcl5') +
-        scoreBox('C-SSRS',   d.cssrs,    5, 'cssrs') +
-        sdsBox(d.sds) +
-        scoreBox('MDQ',      d.mdq,     13, 'mdq') +
-        scoreBox('AUDIT-10', d.audit10, 40, 'audit10') +
-        '</div>' +
-        '</div>' +
-        '<div class="card animate-in" id="sec-sdoh" style="animation-delay:' + (delay += 60) + 'ms">' +
-        '<div class="card-title">Social Determinants of Health</div>' +
-        '<div class="sdoh-grid">' +
-        sdohRow('Housing insecurity',                    d.sdoh && d.sdoh.housingInsecurity) +
-        sdohRow('Food insecurity',                       d.sdoh && d.sdoh.foodInsecurity) +
-        sdohRow('Social isolation',                      d.sdoh && d.sdoh.socialIsolation) +
-        sdohRow('Adverse Childhood Experiences (ACEs)',  d.sdoh && d.sdoh.aces) +
-        '</div>' +
-        '</div>' +
-        '<div class="card animate-in" id="sec-clinical" style="animation-delay:' + (delay += 60) + 'ms">' +
-        '<div class="card-title">Clinical picture</div>' +
-        '<div class="clinical-grid">' +
-        clRow('Mental health dx',       d.mentalHealthDx) +
-        clRow('Psychiatric meds',       d.psychiatricMeds && d.psychiatricMeds.length ? d.psychiatricMeds.join(', ') : null) +
-        clRow('General medications',    d.generalMeds && d.generalMeds.length ? d.generalMeds.join(', ') : null) +
-        clRow('Opioid prescription',    p.raw && p.raw.chronicPainOpioid ? (d.opioidRx || 'Active') : 'None') +
-        clRow('Chronic conditions',     d.chronicDx && d.chronicDx.length ? d.chronicDx.join(', ') : null) +
-        clRow('ER visits',              d.erVisits) +
-        clRow('Prior hospitalizations', d.hospitalizations) +
-        clRow('Therapy history',        d.therapyHistory) +
-        clRow('Substance use',          d.substanceUse) +
-        clRow('Family history',         d.familyHistory) +
-        clRow('Surgical history',       d.surgicalHistory) +
-        clRow('Vitals',                 d.vitals) +
-        clRow('Insurance',              d.insurance) +
-        '</div>' +
-        '</div>';
+        buildAssessmentsCard(d, delay += 60) +
+        buildSdohCard(d, delay += 60) +
+        buildClinicalCard(p, d, delay += 60);
 
 
       // Topbar action button
@@ -1345,11 +1480,13 @@
         btn.dataset.patientName = p.name;
       }
 
-      // Animate all bars after paint
+      // Animate bars after paint
       requestAnimationFrame(function() { requestAnimationFrame(function() {
         document.querySelectorAll('.score-bar-fill, .domain-fill').forEach(function(bar) {
           bar.style.width = bar.dataset.pct + '%';
         });
+        var gaugeArc = document.getElementById('gauge-arc-fill');
+        if (gaugeArc) gaugeArc.style.strokeDashoffset = '0';
       }); });
     }
 
@@ -1413,7 +1550,7 @@
     render();
   </script>
 
-  <div id="elig-tooltip" style="display:none; position:fixed; z-index:9999; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.10); pointer-events:none; overflow:hidden; font-family:'Geist','Inter',sans-serif; min-width:480px;">
+  <div id="elig-tooltip" style="display:none; position:fixed; z-index:9999; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.10); pointer-events:none; overflow:hidden; font-family:'Geist','Inter',sans-serif; min-width:420px; max-width:calc(100vw - 24px);">
     <div style="display:grid; grid-template-columns:110px 70px 120px 1fr; padding:10px 16px 9px; background:#F9FAFB; border-bottom:1px solid #E5E7EB;">
       <span style="font-size:12px;font-weight:600;color:var(--text-subtle);letter-spacing:0.07em;text-transform:uppercase;">Tier</span>
       <span style="font-size:12px;font-weight:600;color:var(--text-subtle);letter-spacing:0.07em;text-transform:uppercase;">Score</span>
@@ -1421,19 +1558,19 @@
       <span style="font-size:12px;font-weight:600;color:var(--text-subtle);letter-spacing:0.07em;text-transform:uppercase;">Action</span>
     </div>
     <div style="display:grid; grid-template-columns:110px 70px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
-      <span style="font-size:13px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Low</span>
+      <span style="font-size:13px;font-weight:600;color:#374151;background:#F3F4F6;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Low</span>
       <span style="font-size:13px;color:var(--text-muted);">0 – 8</span>
-      <span style="font-size:13px;color:#0F766E;">Monitoring</span>
+      <span style="font-size:13px;color:var(--text-muted);">Monitoring</span>
       <span style="font-size:13px;color:var(--text-mid);">Watchful waiting, psycho-education, re-screen in 6 months</span>
     </div>
     <div style="display:grid; grid-template-columns:110px 70px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
-      <span style="font-size:13px;font-weight:600;color:var(--med-text);background:var(--med-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Moderate</span>
+      <span style="font-size:13px;font-weight:600;color:#374151;background:#F3F4F6;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Moderate</span>
       <span style="font-size:13px;color:var(--text-muted);">9 – 16</span>
       <span style="font-size:13px;color:var(--text-muted);">CoCM Eligible</span>
       <span style="font-size:13px;color:var(--text-mid);">Enroll in standard CoCM Track</span>
     </div>
     <div style="display:grid; grid-template-columns:110px 70px 120px 1fr; align-items:center; padding:11px 16px;">
-      <span style="font-size:13px;font-weight:600;color:var(--high-text);background:var(--high-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">High</span>
+      <span style="font-size:13px;font-weight:600;color:#374151;background:#F3F4F6;padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">High</span>
       <span style="font-size:13px;color:var(--text-muted);">17 – 25</span>
       <span style="font-size:13px;color:var(--text-muted);">CoCM Eligible</span>
       <span style="font-size:13px;color:var(--text-mid);">Enroll in Intensive CoCM + Psychiatric Consultation</span>
@@ -1448,9 +1585,14 @@
         tip.style.display = 'block';
         var r  = icon.getBoundingClientRect();
         var tw = tip.offsetWidth;
-        var left = r.left;
-        if (left + tw + 12 > window.innerWidth) left = window.innerWidth - tw - 12;
-        tip.style.top  = (r.bottom + 6) + 'px';
+        var th = tip.offsetHeight;
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+        var left = Math.min(r.left, vw - tw - 12);
+        left = Math.max(12, left);
+        var top = r.bottom + 6;
+        if (top + th > vh - 12) top = r.top - th - 6;
+        tip.style.top  = top + 'px';
         tip.style.left = left + 'px';
       });
       icon.addEventListener('mouseleave', function() { tip.style.display = 'none'; });
