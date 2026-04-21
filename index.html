@@ -21,9 +21,9 @@
       --radius:        10px;
       --text-subtle:   #9CA3AF;
 
-      --high-text:   #C0392B; --high-bg: #FDF0EF; --high-border: #F5C2BE; --high-bar: #C0392B;
-      --med-text:    #D4802A; --med-bg:  #FDF5E6; --med-border:  #F5DFB8; --med-bar: #D4802A;
-      --low-text:    #2D9E5C; --low-bg:  #EEF9F2; --low-border:  #B4E8CC; --low-bar: #2D9E5C;
+      --high-text:   #E11D48; --high-bg: #FFF1F2; --high-border: #FECDD3; --high-bar: #E11D48;
+      --med-text:    #EA580C; --med-bg:  #FFF7ED; --med-border:  #FED7AA; --med-bar: #EA580C;
+      --low-text:    #0EA5E9; --low-bg:  #E0F2FE; --low-border:  #BAE6FD; --low-bar: #0EA5E9;
       --ref-text:    #6B7280; --ref-bg:  #F3F4F6; --ref-border:  #E5E7EB; --ref-bar: #9CA3AF;
     }
 
@@ -234,7 +234,7 @@
       border-radius: var(--radius); overflow: hidden;
     }
     .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; table-layout: fixed; }
 
     thead th {
       padding: 14px 14px; text-align: left;
@@ -296,7 +296,7 @@
     .risk-referred { color: var(--ref-text);  background: var(--ref-bg);  border-color: var(--ref-border); }
 
     /* Reasoning */
-    .reasoning { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+    .reasoning { font-size: 14px; color: var(--text-mid); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
     /* Actions */
     .action-group { display: flex; align-items: center; gap: 6px; }
@@ -458,6 +458,7 @@
           <div class="filter-pills">
             <button class="filter-pill active" data-filter="eligible">CoCM Eligible <span class="filter-count" id="count-eligible"></span></button>
             <button class="filter-pill" data-filter="notenrolled">Monitoring <span class="filter-count" id="count-notenrolled"></span></button>
+            <button class="filter-pill" data-filter="referred">Returning <span class="filter-count" id="count-returning"></span></button>
           </div>
         </div>
         <div class="search-wrap">
@@ -471,10 +472,10 @@
         <table>
           <thead>
             <tr>
-              <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;cursor:default;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></div></th>
-              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:40%">Description</th>
+              <th style="width:20%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
+              <th style="width:16%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;cursor:default;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></div></th>
+              <th style="width:16%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
+              <th style="width:36%">Description</th>
               <th style="width:12%">Actions</th>
             </tr>
           </thead>
@@ -552,7 +553,7 @@
         id: 1, name: "Sarah Mitchell", age: 52, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "DM", "HTN"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Active suicidal ideation (C-SSRS: 2), severe depression (PHQ-9: 14), 2 ED visits in 12 months — housing insecure, no BH provider on file.",
+        reasoning: "Severe depression with active suicidal ideation and 2 ED visits in 12 months; non-adherent on antidepressant with no BH provider — housing insecure and socially isolated, last contact 22 months ago.",
         raw: { phq9: 14, gad7: null, pcl5: null, cssrs: 2, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Sertraline 100mg", status: "Active", duration: "18 mo" },
@@ -564,7 +565,7 @@
         id: 2, name: "James Rodriguez", age: 45, gender: "Male",
         diagnoses: ["Generalized Anxiety Disorder", "Type 2 Diabetes"],
         tier: "high", score: 82, isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Severe depression and anxiety (PHQ-9: 16, GAD-7: 12), 2 ED visits, medication non-adherent — 18 months without behavioral health contact.",
+        reasoning: "Severe depression and anxiety with 2 ED visits; escalating benzodiazepine use over 14 months without psychiatric oversight — food insecure, socially isolated, last BH contact 18 months ago.",
         raw: { phq9: 16, gad7: 12, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Escitalopram 20mg", status: "Active", duration: "8 mo" },
@@ -577,7 +578,7 @@
         id: 3, name: "Patricia Chen", age: 68, gender: "Female",
         diagnoses: ["PTSD", "Chronic Pain", "HTN"],
         isNew: false, status: "referred", eligible: true, referOut: false,
-        reasoning: "PTSD (PCL-5: 40) with active suicidal ideation (C-SSRS: 4), opioid use, 2 ER visits in 90 days — no behavioral health contact in 24 months.",
+        reasoning: "Probable PTSD with high suicidal ideation and 2 ER visits in 90 days; on escalating opioids for 18 months without BH oversight — socially isolated, last behavioral health contact 24 months ago.",
         raw: { phq9: 12, gad7: null, pcl5: 40, cssrs: 4, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Oxycodone 15mg",      status: "Active", duration: "18 mo" },
@@ -590,7 +591,7 @@
         id: 4, name: "Michael Thompson", age: 39, gender: "Male",
         diagnoses: ["Bipolar II Disorder", "Obesity", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Bipolar II with prior hospitalization, on mood stabilizers with no BH oversight, 4 missed visits — housing insecure and disengaging from care.",
+        reasoning: "Bipolar II on dual mood stabilizers with no psychiatric oversight; prior hospitalization and 4 missed appointments signal active disengagement — housing insecure, last BH contact 14 months ago.",
         raw: { phq9: 11, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Lamotrigine 150mg", status: "Active", duration: "3 yr" },
@@ -603,7 +604,7 @@
         id: 5, name: "Linda Park", age: 61, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "COPD", "DM"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Moderate depression (PHQ-9: 10) with COPD and diabetes, significant functional impairment (SDS: 7) — medication non-adherent across multiple conditions.",
+        reasoning: "Moderate depression with COPD and diabetes; non-adherent on antidepressant with 1 ED visit — food insecure, socially isolated, last BH contact 15 months ago.",
         raw: { phq9: 10, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Bupropion 150mg",    status: "Active", duration: "15 mo" },
@@ -615,7 +616,7 @@
         id: 6, name: "Robert Kim", age: 47, gender: "Male",
         diagnoses: ["Generalized Anxiety Disorder", "Insomnia"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Moderate anxiety and depression (GAD-7: 11, PHQ-9: 10), chronic insomnia, prior benzodiazepine failure — no behavioral health contact ever.",
+        reasoning: "Moderate anxiety and depression with escalating benzodiazepine use alongside sleep medication over 14 months — dependence risk unassessed, prior CBT discontinued, last BH contact 14 months ago.",
         raw: { phq9: 10, gad7: 11, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Lorazepam 1mg", status: "Active", duration: "14 mo" },
@@ -627,7 +628,7 @@
         id: 7, name: "Nancy Walker", age: 55, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "Fibromyalgia", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Moderate depression (PHQ-9: 10) with fibromyalgia, significant functional impairment (SDS: 7), prior treatment failure — socially isolated with no support network.",
+        reasoning: "Moderate depression complicated by fibromyalgia; prior antidepressant trial failed and functional ability is significantly reduced — socially isolated, last BH contact 15 months ago.",
         raw: { phq9: 10, gad7: 5, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Duloxetine 60mg", status: "Active", duration: "2 yr" },
@@ -639,7 +640,7 @@
         id: 8, name: "David Lee", age: 33, gender: "Male",
         diagnoses: ["PTSD", "Alcohol Use Disorder"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "PTSD (PCL-5: 36) with comorbid alcohol use disorder — dual-diagnosis presentation with no prior behavioral health contact.",
+        reasoning: "Active alcohol use disorder alongside trauma symptoms — dual diagnosis requires a specialized substance use program before CoCM; on Naltrexone without addiction oversight, food insecure, no prior BH contact.",
         raw: { phq9: 10, gad7: null, pcl5: 36, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Sertraline 50mg",  status: "Active", duration: "5 mo" },
@@ -651,7 +652,7 @@
         id: 9, name: "Carol Martinez", age: 71, gender: "Female",
         diagnoses: ["Generalized Anxiety", "CHF"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Mild anxiety (GAD-7: 6), no acute risk factors or functional impairment — subclinical, re-screen in 6 months.",
+        reasoning: "Mild anxiety and low mood that haven't reached a level requiring active treatment; managing heart failure but otherwise stable with no prior mental health history — re-screen in 6 months.",
         raw: { phq9: 6, gad7: 6, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Furosemide 40mg",   status: "Active", duration: "3 yr" },
@@ -663,7 +664,7 @@
         id: 10, name: "Thomas Brown", age: 42, gender: "Male",
         diagnoses: ["Dysthymia"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Mild persistent depressive symptoms (PHQ-9: 5), clinically stable despite social isolation — watchful waiting, re-screen in 6 months.",
+        reasoning: "Persistent low mood consistent with mild dysthymia; not on any psychiatric medication and socially withdrawn, but clinically stable with no prior treatment — watchful waiting, re-screen in 6 months.",
         raw: { phq9: 5, gad7: null, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Atorvastatin 20mg", status: "Active", duration: "2 yr" }
@@ -674,7 +675,7 @@
         id: 11, name: "Jennifer Davis", age: 29, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "ADHD"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "First-time presentation of mild depressive symptoms (PHQ-9: 6), no acute risk factors or prior treatment — re-screen in 6 months.",
+        reasoning: "First signs of depression alongside ADHD managed by primary care; no history of mental health treatment and no significant impairment yet — food insecure, re-screen in 6 months.",
         raw: { phq9: 6, gad7: null, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Amphetamine salts 20mg", status: "Active", duration: "2 yr" }
@@ -685,7 +686,7 @@
         id: 12, name: "William Garcia", age: 58, gender: "Male",
         diagnoses: ["Major Depressive Disorder", "DM", "HTN"],
         isNew: false, status: "referred", eligible: true, referOut: false,
-        reasoning: "Moderate depression (PHQ-9: 11) on antidepressant with 18-month BH gap — no clinical oversight, enrolled in standard CoCM.",
+        reasoning: "Moderate depression on an antidepressant prescribed by their primary care doctor with no mental health provider involved; managing diabetes and high blood pressure — enrolled in standard CoCM after an 18-month gap in care.",
         raw: { phq9: 11, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Venlafaxine 150mg", status: "Active", duration: "2 yr" },
@@ -697,7 +698,7 @@
         id: 13, name: "Margaret Wilson", age: 64, gender: "Female",
         diagnoses: ["Bipolar I Disorder", "DM", "Obesity"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Bipolar I on escalating dual mood stabilizers (valproic acid + lithium), 20 months without BH contact — prior hospitalization, psychiatric consultation urgently indicated.",
+        reasoning: "Bipolar I on two escalating mood stabilizers that require regular lab monitoring — previously hospitalized, 1 ED visit, socially isolated, and no mental health contact in 20 months; complexity exceeds CoCM scope, refer to outpatient psychiatry.",
         raw: { phq9: 9, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Valproic Acid 1000mg",    status: "Active", duration: "5 yr" },
@@ -718,7 +719,7 @@
       sessionStorage.removeItem('seenPatients');
     }
     const seenThisSession = new Set(JSON.parse(sessionStorage.getItem('seenPatients') || '[]'));
-    let currentFilter = 'eligible';
+    let currentFilter = sessionStorage.getItem('activeFilter') || 'eligible';
     let searchQuery = '';
     let expandedId = null;
 
@@ -730,9 +731,10 @@
       else if (currentFilter === 'high')    list = list.filter(p => p.tier === 'high');
       else if (currentFilter === 'medium')  list = list.filter(p => p.tier === 'medium');
       else if (currentFilter === 'low')     list = list.filter(p => p.tier === 'low');
-      else if (currentFilter === 'eligible')    list = list.filter(p => p.tier === 'high' || p.tier === 'medium');
-      else if (currentFilter === 'notenrolled') list = list.filter(p => !p.referOut && p.tier === 'low');
+      else if (currentFilter === 'eligible')    list = list.filter(p => p.status !== 'referred' && (p.tier === 'high' || p.tier === 'medium'));
+      else if (currentFilter === 'notenrolled') list = list.filter(p => p.status !== 'referred' && !p.referOut && p.tier === 'low');
       else if (currentFilter === 'referout')    list = list.filter(p => p.referOut);
+      else if (currentFilter === 'referred')    list = list.filter(p => p.status === 'referred');
       if (searchQuery) list = list.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
       function bhMonths(p) {
@@ -812,6 +814,21 @@
       return `<button class="btn-enroll" data-id="${p.id}" data-action="enroll">Enroll</button>`;
     }
 
+    function reScreenChip(p) {
+      if (p.tier !== 'low') return '';
+      const last = new Date(p.lastVisit);
+      const due  = new Date(last);
+      due.setMonth(due.getMonth() + 6);
+      const now  = new Date('2026-04-21');
+      const days = Math.round((due - now) / 86400000);
+      const dueStr = due.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const label  = days < 0 ? `Re-screen overdue · ${dueStr}` : `Re-screen ${dueStr}`;
+      const color  = days < 0 ? '#E11D48' : days <= 60 ? '#EA580C' : '#6B7280';
+      const bg     = days < 0 ? '#FFF1F2' : days <= 60 ? '#FFF7ED' : '#F3F4F6';
+      const icon   = days < 0 ? '⚑ ' : days <= 60 ? '◷ ' : '◷ ';
+      return `<div style="margin-top:6px;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:${color};background:${bg};padding:2px 8px;border-radius:999px;letter-spacing:0.01em;">${icon}${label}</div>`;
+    }
+
     function renderDetail(p) {
       return `<div class="inline-detail">
         <div class="detail-col">
@@ -867,14 +884,14 @@
       tbody.innerHTML = list.map(p => `
         <tr class="patient-row${p.status === 'enrolled' ? ' is-enrolled' : ''}" data-id="${p.id}">
           <td>
-            <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span>${p.status === 'referred' ? '<span style="font-size:11px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:2px 8px;border-radius:999px;margin-left:6px;white-space:nowrap;">Returning</span>' : ''}</div>
+            <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span></div>
             <div class="page">${p.age} yo · ${p.gender}</div>
           </td>
           <td style="text-align:center;">
             <span style="font-size:20px;font-weight:700;color:#1e293b;">${p.score != null ? p.score : '—'}</span><span style="font-size:14px;color:#9CA3AF;font-weight:500;">/25</span>
           </td>
           <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
-          <td><span class="reasoning">${p.reasoning}</span></td>
+          <td><div class="reasoning">${p.reasoning}</div>${reScreenChip(p)}</td>
           <td onclick="event.stopPropagation()">${renderActions(p)}</td>
         </tr>
         <tr class="detail-row" id="detail-${p.id}" style="display:none;">
@@ -948,6 +965,8 @@
       const elHigh = document.getElementById('count-high');   if (elHigh)   elHigh.textContent   = high;
       const elMed  = document.getElementById('count-medium'); if (elMed)    elMed.textContent    = medium;
       document.getElementById('count-notenrolled').textContent = notEnrolled;
+      const returning = patients.filter(p => p.status === 'referred').length;
+      document.getElementById('count-returning').textContent = returning;
 
       const totalAll   = patients.filter(p => p.status !== 'archived').length;
       const enrolled   = patients.filter(p => p.status === 'enrolled' || p.status === 'referred').length;
@@ -962,6 +981,7 @@
         document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
         currentFilter = pill.dataset.filter;
+        sessionStorage.setItem('activeFilter', currentFilter);
         expandedId = null;
         const tbody = document.getElementById('patient-tbody');
         tbody.style.transition = 'opacity 0.12s';
@@ -1054,6 +1074,9 @@
       updateMetrics();
     }
 
+    document.querySelectorAll('.filter-pill').forEach(p => {
+      p.classList.toggle('active', p.dataset.filter === currentFilter);
+    });
     renderTable();
     updateMetrics();
 
