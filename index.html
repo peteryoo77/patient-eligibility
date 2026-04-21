@@ -826,7 +826,7 @@
       const color  = days < 0 ? '#E11D48' : days <= 60 ? '#EA580C' : '#0284C7';
       const bg     = days < 0 ? '#FFF1F2' : days <= 60 ? '#FFF7ED' : '#E0F2FE';
       const icon   = days < 0 ? '⚑ ' : days <= 60 ? '◷ ' : '◷ ';
-      return `<div style="margin-top:6px;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:${color};background:${bg};padding:2px 8px;border-radius:999px;letter-spacing:0.01em;">${icon}${label}</div>`;
+      return `<div style="margin-top:10px;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:${color};background:${bg};padding:4px 10px;border-radius:999px;letter-spacing:0.01em;">${icon}${label}</div>`;
     }
 
     function renderDetail(p) {
