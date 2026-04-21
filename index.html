@@ -22,7 +22,7 @@
       --text-subtle:   #9CA3AF;
 
       --high-text:   #E11D48; --high-bg: #FFF1F2; --high-border: #FECDD3; --high-bar: #E11D48;
-      --med-text:    #EA580C; --med-bg:  #FFF7ED; --med-border:  #FED7AA; --med-bar: #EA580C;
+      --med-text:    #B45309; --med-bg:  #FEF3C7; --med-border:  #FDE68A; --med-bar: #D97706;
       --low-text:    #0EA5E9; --low-bg:  #E0F2FE; --low-border:  #BAE6FD; --low-bar: #0EA5E9;
       --ref-text:    #6B7280; --ref-bg:  #F3F4F6; --ref-border:  #E5E7EB; --ref-bar: #9CA3AF;
     }
@@ -70,9 +70,9 @@
       color: var(--text-mid); border-radius: calc(var(--radius) - 2px);
       cursor: pointer; text-decoration: none; transition: background 0.12s, color 0.12s;
     }
-    .nav-item i { font-size: 17px; color: var(--text-subtle); flex-shrink: 0; }
+    .nav-item i { font-size: 16px; color: var(--border); flex-shrink: 0; }
     .nav-item:hover { background: var(--bg); }
-    .nav-item:hover i { color: var(--text-muted); }
+    .nav-item:hover i { color: var(--text-subtle); }
     .nav-item.active { background: var(--primary-light); color: var(--primary); }
     .nav-item.active i { color: var(--primary); }
     .nav-badge {
@@ -169,7 +169,8 @@
     .metric-card {
       background: var(--card);
       box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 0.5px var(--border);
-      border-radius: var(--radius); padding: 22px 24px;
+      border-radius: var(--radius); padding: 20px 24px;
+      overflow: hidden;
     }
     .metric-label {
       font-size: 12px; font-weight: 600; color: var(--text-muted);
@@ -511,8 +512,9 @@
         <div style="width:40px;height:40px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
-        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:4px;">Enroll in CoCM</div>
+        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Enroll in CoCM</div>
         <div id="modal-patient-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
+        <div id="modal-enroll-track" style="font-size:11px;font-weight:600;color:var(--primary);background:var(--primary-light);display:inline-block;padding:3px 10px;border-radius:9999px;margin-top:8px;"></div>
       </div>
       <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
         <button onclick="closeModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
@@ -560,7 +562,7 @@
         id: 1, name: "Sarah Mitchell", age: 52, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "DM", "HTN"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Severe depression with active suicidal ideation and 2 ED visits in 12 months; non-adherent on antidepressant with no BH provider — housing insecure and socially isolated, last contact 22 months ago.",
+        reasoning: "Severe depression with active suicidal ideation and 2 ED visits; housing insecure, non-adherent on antidepressant with no BH provider in over 22 months.",
         raw: { phq9: 14, gad7: null, pcl5: null, cssrs: 2, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Sertraline 100mg", status: "Active", duration: "18 mo" },
@@ -572,7 +574,7 @@
         id: 2, name: "James Rodriguez", age: 45, gender: "Male",
         diagnoses: ["Generalized Anxiety Disorder", "Type 2 Diabetes"],
         tier: "high", score: 82, isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Severe depression and anxiety with 2 ED visits; escalating benzodiazepine use over 14 months without psychiatric oversight — food insecure, socially isolated, last BH contact 18 months ago.",
+        reasoning: "Severe depression and anxiety with escalating benzodiazepine use over 14 months; food insecure, socially isolated, no psychiatric oversight in 18 months.",
         raw: { phq9: 16, gad7: 12, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Escitalopram 20mg", status: "Active", duration: "8 mo" },
@@ -585,7 +587,7 @@
         id: 3, name: "Patricia Chen", age: 68, gender: "Female", referredDate: "Jan 6, 2026",
         diagnoses: ["PTSD", "Chronic Pain", "HTN"],
         isNew: false, status: "referred", eligible: true, referOut: false,
-        reasoning: "Probable PTSD with high suicidal ideation and 2 ER visits in 90 days; on escalating opioids for 18 months without BH oversight — socially isolated, last behavioral health contact 24 months ago.",
+        reasoning: "Probable PTSD with elevated suicidal ideation and escalating opioid use; 2 ED visits in 90 days with no behavioral health care in 2 years.",
         raw: { phq9: 12, gad7: null, pcl5: 40, cssrs: 4, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Oxycodone 15mg",      status: "Active", duration: "18 mo" },
@@ -598,7 +600,7 @@
         id: 4, name: "Michael Thompson", age: 39, gender: "Male",
         diagnoses: ["Bipolar II Disorder", "Obesity", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Bipolar II on dual mood stabilizers with no psychiatric oversight; prior hospitalization and 4 missed appointments signal active disengagement — housing insecure, last BH contact 14 months ago.",
+        reasoning: "Unstable Bipolar II on dual mood stabilizers with no psychiatric oversight; prior hospitalization, housing insecure, disengaged from care for 14 months.",
         raw: { phq9: 11, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Lamotrigine 150mg", status: "Active", duration: "3 yr" },
@@ -611,8 +613,8 @@
         id: 5, name: "Linda Park", age: 61, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "COPD", "DM"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Moderate depression with COPD and diabetes; non-adherent on antidepressant with 1 ED visit — food insecure, socially isolated, last BH contact 15 months ago.",
-        raw: { phq9: 10, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
+        reasoning: "Moderate depression with COPD and diabetes; non-adherent on antidepressant, food insecure and socially isolated with no BH contact in 15 months.",
+        raw: { phq9: 10, gad7: null, pcl5: null, cssrs: 0, sds: 4, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
         medications: [
           { name: "Bupropion 150mg",    status: "Active", duration: "15 mo" },
           { name: "Tiotropium inhaler", status: "Active", duration: "6 yr" }
@@ -623,7 +625,7 @@
         id: 6, name: "Robert Kim", age: 47, gender: "Male", lastVisit: "Mar 15, 2026",
         diagnoses: ["Generalized Anxiety Disorder", "Insomnia"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Moderate anxiety and depression with escalating benzodiazepine use alongside sleep medication over 14 months — dependence risk unassessed, prior CBT discontinued, last BH contact 14 months ago.",
+        reasoning: "Moderate anxiety with escalating benzodiazepine and sleep medication use over 14 months; dependence risk unassessed, prior therapy discontinued.",
         raw: { phq9: 10, gad7: 11, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Lorazepam 1mg", status: "Active", duration: "14 mo" },
@@ -635,7 +637,7 @@
         id: 7, name: "Nancy Walker", age: 55, gender: "Female",
         diagnoses: ["Major Depressive Disorder", "Fibromyalgia", "HTN"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Moderate depression complicated by fibromyalgia; prior antidepressant trial failed and functional ability is significantly reduced — socially isolated, last BH contact 15 months ago.",
+        reasoning: "Moderate depression complicated by fibromyalgia; prior antidepressant failure with significant functional decline — socially isolated, no BH contact in 15 months.",
         raw: { phq9: 10, gad7: 5, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Duloxetine 60mg", status: "Active", duration: "2 yr" },
@@ -647,7 +649,7 @@
         id: 8, name: "David Lee", age: 33, gender: "Male",
         diagnoses: ["PTSD", "Alcohol Use Disorder"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "Active alcohol use disorder alongside trauma symptoms — dual diagnosis requires a specialized substance use program before CoCM; on Naltrexone without addiction oversight, food insecure, no prior BH contact.",
+        reasoning: "Active alcohol use disorder alongside PTSD and trauma symptoms; dual diagnosis requires specialized SUD care before CoCM enrollment.",
         raw: { phq9: 10, gad7: null, pcl5: 36, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Sertraline 50mg",  status: "Active", duration: "5 mo" },
@@ -659,7 +661,7 @@
         id: 9, name: "Carol Martinez", age: 71, gender: "Female", lastVisit: "Mar 10, 2026",
         diagnoses: ["Generalized Anxiety", "CHF"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Mild anxiety and low mood that haven't reached a level requiring active treatment; managing heart failure but otherwise stable with no prior mental health history — re-screen in 6 months.",
+        reasoning: "Mild anxiety and subclinical low mood not yet at treatment threshold; medically stable with no prior mental health history — re-screen in 6 months.",
         raw: { phq9: 6, gad7: 6, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Furosemide 40mg",   status: "Active", duration: "3 yr" },
@@ -671,7 +673,7 @@
         id: 10, name: "Thomas Brown", age: 42, gender: "Male", lastVisit: "Oct 1, 2025",
         diagnoses: ["Dysthymia"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Persistent low mood consistent with mild dysthymia; not on any psychiatric medication and socially withdrawn, but clinically stable with no prior treatment — watchful waiting, re-screen in 6 months.",
+        reasoning: "Mild persistent low mood with social withdrawal; clinically stable with no prior psychiatric treatment or medication — watchful waiting, re-screen in 6 months.",
         raw: { phq9: 5, gad7: null, pcl5: null, cssrs: 0, sds: 6, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Atorvastatin 20mg", status: "Active", duration: "2 yr" }
@@ -682,7 +684,7 @@
         id: 11, name: "Jennifer Davis", age: 29, gender: "Female", lastVisit: "Apr 5, 2026",
         diagnoses: ["Major Depressive Disorder", "ADHD"],
         isNew: true, status: "pending", eligible: true, referOut: false,
-        reasoning: "First signs of depression alongside ADHD managed by primary care; no history of mental health treatment and no significant impairment yet — food insecure, re-screen in 6 months.",
+        reasoning: "Early depression signals alongside ADHD managed by PCP; no functional impairment or prior mental health treatment — re-screen in 6 months.",
         raw: { phq9: 6, gad7: null, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
         medications: [
           { name: "Amphetamine salts 20mg", status: "Active", duration: "2 yr" }
@@ -693,7 +695,7 @@
         id: 12, name: "William Garcia", age: 58, gender: "Male", referredDate: "Feb 15, 2026",
         diagnoses: ["Major Depressive Disorder", "DM", "HTN"],
         isNew: false, status: "referred", eligible: true, referOut: false,
-        reasoning: "Moderate depression on an antidepressant prescribed by their primary care doctor with no mental health provider involved; managing diabetes and high blood pressure — enrolled in standard CoCM after an 18-month gap in care.",
+        reasoning: "Moderate depression managed by PCP with no BH provider involvement; enrolled in standard CoCM after an 18-month gap in behavioral health care.",
         raw: { phq9: 11, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
         medications: [
           { name: "Venlafaxine 150mg", status: "Active", duration: "2 yr" },
@@ -705,7 +707,7 @@
         id: 13, name: "Margaret Wilson", age: 64, gender: "Female",
         diagnoses: ["Bipolar I Disorder", "DM", "Obesity"],
         isNew: false, status: "pending", eligible: true, referOut: false,
-        reasoning: "Bipolar I on two escalating mood stabilizers that require regular lab monitoring — previously hospitalized, 1 ED visit, socially isolated, and no mental health contact in 20 months; complexity exceeds CoCM scope, refer to outpatient psychiatry.",
+        reasoning: "Bipolar I on escalating dual mood stabilizers with no BH contact in 20 months; prior hospitalization, socially isolated — complexity exceeds CoCM scope.",
         raw: { phq9: 9, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
         medications: [
           { name: "Valproic Acid 1000mg",    status: "Active", duration: "5 yr" },
@@ -713,6 +715,76 @@
           { name: "Metformin 500mg",         status: "Active", duration: "3 yr" }
         ],
         history: { mhDiagnosis: "Bipolar I (2012)", familyHistory: "Sibling bipolar I", lastBHContact: "20 months ago" }
+      },
+      {
+        id: 14, name: "Angela Foster", age: 48, gender: "Female",
+        diagnoses: ["Major Depressive Disorder", "Hypertension", "Obesity"],
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Moderate depression with persistent anhedonia and medication non-adherence; 2 chronic conditions with no behavioral health contact in 14 months.",
+        raw: { phq9: 12, gad7: null, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
+        medications: [
+          { name: "Fluoxetine 40mg",             status: "Active", duration: "6 mo" },
+          { name: "Amlodipine 5mg",              status: "Active", duration: "3 yr" },
+          { name: "Hydrochlorothiazide 12.5mg",  status: "Active", duration: "3 yr" }
+        ],
+        history: { mhDiagnosis: "MDD (2020)", familyHistory: "Maternal depression", lastBHContact: "14 months ago" }
+      },
+      {
+        id: 15, name: "Kevin Okafor", age: 36, gender: "Male",
+        diagnoses: ["PTSD", "GAD", "Type 2 Diabetes"],
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Elevated depression and anxiety with active PTSD and no prior BH provider; housing insecure with 2 ED visits in the past year.",
+        raw: { phq9: 13, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
+        medications: [
+          { name: "Sertraline 100mg",  status: "Active", duration: "8 mo" },
+          { name: "Hydroxyzine 25mg",  status: "Active", duration: "8 mo" },
+          { name: "Metformin 500mg",   status: "Active", duration: "2 yr" },
+          { name: "Lisinopril 5mg",    status: "Active", duration: "2 yr" }
+        ],
+        history: { mhDiagnosis: "PTSD (2022), GAD (2021)", familyHistory: "No known family psychiatric history", lastBHContact: "Never" }
+      },
+      {
+        id: 17, name: "Marcus Bell", age: 41, gender: "Male",
+        diagnoses: ["Bipolar II Disorder", "Chronic Pain", "Hypertension"],
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Moderate-to-severe depression and anxiety with prior psychiatric hospitalization; chronic pain on long-term opioids, housing insecure, no BH contact in 11 months.",
+        raw: { phq9: 14, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: false },
+        medications: [
+          { name: "Lamotrigine 200mg",  status: "Active", duration: "4 yr" },
+          { name: "Oxycodone 10mg",     status: "Active", duration: "14 mo" },
+          { name: "Lisinopril 20mg",    status: "Active", duration: "3 yr" },
+          { name: "Gabapentin 300mg",   status: "Active", duration: "2 yr" }
+        ],
+        history: { mhDiagnosis: "Bipolar II (2017)", familyHistory: "Father: Bipolar I", lastBHContact: "11 months ago" }
+      },
+      {
+        id: 18, name: "Priya Sharma", age: 33, gender: "Female",
+        diagnoses: ["Major Depressive Disorder", "ADHD", "Hypothyroidism"],
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Moderate depression with ADHD complicating treatment response; prior antidepressant failure, marked work impairment, socially isolated.",
+        raw: { phq9: 11, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
+        medications: [
+          { name: "Escitalopram 10mg",       status: "Active", duration: "1 yr" },
+          { name: "Amphetamine salts 30mg",  status: "Active", duration: "5 yr" },
+          { name: "Levothyroxine 75mcg",     status: "Active", duration: "3 yr" }
+        ],
+        history: { mhDiagnosis: "MDD (2022), ADHD (2016)", familyHistory: "Maternal MDD", lastBHContact: "8 months ago" }
+      },
+      {
+        id: 19, name: "Raymond Torres", age: 67, gender: "Male",
+        diagnoses: ["Major Depressive Disorder", "CHF", "DM", "Chronic Pain"],
+        isNew: false, status: "pending", eligible: true, referOut: false,
+        reasoning: "Severe depression and functional decline complicated by CHF, diabetes, and chronic pain on opioids — housing insecure with 2 ED visits in 12 months.",
+        raw: { phq9: 15, gad7: null, pcl5: null, cssrs: 0, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
+        medications: [
+          { name: "Sertraline 50mg",      status: "Active", duration: "2 yr" },
+          { name: "Furosemide 40mg",      status: "Active", duration: "4 yr" },
+          { name: "Carvedilol 12.5mg",    status: "Active", duration: "4 yr" },
+          { name: "Metformin 1000mg",     status: "Active", duration: "5 yr" },
+          { name: "Oxycodone 5mg",        status: "Active", duration: "2 yr" },
+          { name: "Spironolactone 25mg",  status: "Active", duration: "4 yr" }
+        ],
+        history: { mhDiagnosis: "MDD (2016)", familyHistory: "No known family psychiatric history", lastBHContact: "over 5 years ago" }
       }
     ];
 
@@ -830,6 +902,10 @@
       if (p.status === 'enrolled') {
         return `<span style="font-size:12px;font-weight:600;color:#16a34a;background:#dcfce7;padding:4px 12px;border-radius:9999px;">Enrolled ✓</span>`;
       }
+      if (p.status === 'archived') {
+        const reason = p.notEnrollReason ? ` · ${p.notEnrollReason}` : '';
+        return `<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 12px;border-radius:9999px;">Not Enrolled${reason}</span>`;
+      }
       if (p.tier === 'low') return `<button class="btn-dismiss" disabled style="cursor:default;background:#F3F4F6;color:#6B7280;border:none;">Enroll</button>`;
       return `<button class="btn-enroll" data-id="${p.id}" data-action="enroll">Enroll</button>`;
     }
@@ -910,7 +986,7 @@
             ${reScreenChip(p)}
           </td>
           <td style="text-align:center;">
-            <span style="font-size:20px;font-weight:700;color:#1e293b;">${p.score != null ? p.score : '—'}</span><span style="font-size:14px;color:#9CA3AF;font-weight:500;">/25</span>
+            <span style="font-size:24px;font-weight:700;color:#1e293b;letter-spacing:-0.5px;">${p.score != null ? p.score : '—'}</span><span style="font-size:12px;color:#C4C9D4;font-weight:500;margin-left:1px;">/25</span>
           </td>
           <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
           <td><div class="reasoning">${p.reasoning}</div></td>
@@ -1052,6 +1128,7 @@
     function showEnrollModal(patient) {
       pendingEnrollId = patient.id;
       document.getElementById('modal-patient-name').textContent = `${patient.name} will be enrolled in the Collaborative Care Model program.`;
+      document.getElementById('modal-enroll-track').textContent = patient.tier === 'high' ? 'Intensive CoCM + Psychiatric Consultation' : 'Standard CoCM Track';
       const modal = document.getElementById('enroll-modal');
       modal.style.display = 'flex';
     }
