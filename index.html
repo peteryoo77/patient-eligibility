@@ -967,7 +967,7 @@
 
     function updateMetrics() {
       const all         = patients.filter(p => p.status !== 'archived' && p.status !== 'enrolled').length;
-      const eligible2   = patients.filter(p => p.tier !== 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
+      const eligible2   = patients.filter(p => (p.tier === 'high' || p.tier === 'medium') && p.status !== 'referred' && p.status !== 'archived' && p.status !== 'enrolled').length;
       const notEnrolled = patients.filter(p => p.tier === 'low' && p.status !== 'archived' && p.status !== 'enrolled').length;
 
       if (isFirstRender) {
