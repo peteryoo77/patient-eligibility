@@ -480,11 +480,10 @@
           <thead>
             <tr>
               <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:10%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;cursor:default;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></div></th>
-              <th style="width:10%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th style="width:10%; text-align:center;">Benefit</th>
-              <th style="width:38%">Description</th>
-              <th style="width:14%">Actions</th>
+              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;cursor:default;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></div></th>
+              <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
+              <th style="width:40%">Description</th>
+              <th style="width:12%">Actions</th>
             </tr>
           </thead>
           <tbody id="patient-tbody"></tbody>
@@ -827,64 +826,6 @@
       }, 1200);
     }
 
-    function computeBenefit(p) {
-      if (p.tier === 'low') return null;
-      const r = p.raw;
-
-      // Clinical response potential
-      let clinical = 0;
-      if (r.phq9 >= 10)  clinical += 2;
-      if (r.gad7 >= 10)  clinical += 2;
-      if (r.pcl5 >= 33)  clinical += 1;
-      if (r.cssrs >= 2)  clinical += 1;
-      if (r.sds >= 7 || r.functionalImpairment) clinical += 1;
-      if (r.nonAdherent && r.priorTreatmentFailure) clinical -= 2;
-      if (r.housingInsecurity) clinical -= 1;
-      clinical = Math.max(0, Math.min(7, clinical));
-
-      // Utilization reduction potential
-      let utilization = 0;
-      if (r.edVisits >= 2 || r.hospitalized) utilization += 3;
-      else if (r.edVisits >= 1) utilization += 1;
-      if (r.chronicConditions >= 2) utilization += 1;
-      utilization = Math.min(4, utilization);
-
-      // Engagement risk penalty
-      let engagementRisk = 0;
-      if (r.housingInsecurity) engagementRisk += 2;
-      if (r.socialIsolation)   engagementRisk += 1;
-      if (r.nonAdherent)       engagementRisk += 1;
-      if (r.priorTreatmentFailure) engagementRisk += 1;
-
-      const total = clinical + utilization - Math.floor(engagementRisk / 2);
-      const tier  = total >= 7 ? 'high' : total >= 4 ? 'moderate' : 'low';
-
-      const responseTier    = clinical >= 5 ? 'high' : clinical >= 3 ? 'moderate' : 'low';
-      const utilizationTier = utilization >= 3 ? 'high' : utilization >= 1 ? 'moderate' : 'low';
-      const engagementTier  = engagementRisk >= 4 ? 'high' : engagementRisk >= 2 ? 'moderate' : 'low';
-
-      const drivers = [];
-      if (r.phq9 >= 10 || r.gad7 >= 10) drivers.push('Moderate–severe symptoms');
-      if (r.edVisits >= 2 || r.hospitalized) drivers.push(r.edVisits >= 2 ? `${r.edVisits} ED visits` : 'Prior hospitalization');
-      if (r.nonAdherent && r.priorTreatmentFailure) drivers.push('Prior non-adherence');
-      if (r.housingInsecurity) drivers.push('Housing insecure');
-      if (r.socialIsolation) drivers.push('Socially isolated');
-
-      return { tier, responseTier, utilizationTier, engagementTier, drivers };
-    }
-
-    function renderBenefitBadge(p) {
-      const b = computeBenefit(p);
-      if (!b) return '<span style="font-size:12px;color:#D1D5DB;">—</span>';
-      const styles = {
-        high:     'color:#16a34a;background:#dcfce7;',
-        moderate: 'color:var(--primary);background:var(--primary-light);',
-        low:      'color:#6B7280;background:#F3F4F6;'
-      };
-      const labels = { high: 'High', moderate: 'Moderate', low: 'Low' };
-      return `<span class="risk-badge" style="${styles[b.tier]}">${labels[b.tier]}</span>`;
-    }
-
     function renderActions(p) {
       if (p.status === 'enrolled') {
         return `<span style="font-size:12px;font-weight:600;color:#16a34a;background:#dcfce7;padding:4px 12px;border-radius:9999px;">Enrolled ✓</span>`;
@@ -909,26 +850,7 @@
     }
 
     function renderDetail(p) {
-      const b = computeBenefit(p);
-      const tierLabel = { high: 'High', moderate: 'Moderate', low: 'Low' };
-      const tierColor = {
-        high:     'color:#16a34a;background:#dcfce7;',
-        moderate: 'color:var(--primary);background:var(--primary-light);',
-        low:      'color:#6B7280;background:#F3F4F6;'
-      };
-      const engLabel = { low: 'Low risk', moderate: 'Moderate risk', high: 'High risk' };
-      const engColor = { low: 'color:#16a34a;background:#dcfce7;', moderate: 'color:#EA580C;background:#FFF7ED;', high: 'color:#E11D48;background:#FFF1F2;' };
-
-      const benefitSection = b ? `
-        <div class="detail-col">
-          <div class="detail-col-title">Benefit Forecast</div>
-          <div class="detail-row-item"><span class="detail-key">Clinical response</span><span class="detail-val"><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;${tierColor[b.responseTier]}">${tierLabel[b.responseTier]}</span></span></div>
-          <div class="detail-row-item"><span class="detail-key">ED utilization reduction</span><span class="detail-val"><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;${tierColor[b.utilizationTier]}">${tierLabel[b.utilizationTier]}</span></span></div>
-          <div class="detail-row-item"><span class="detail-key">Engagement risk</span><span class="detail-val"><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;${engColor[b.engagementTier]}">${engLabel[b.engagementTier]}</span></span></div>
-          ${b.drivers.length ? `<div style="margin-top:10px;font-size:12px;color:var(--text-muted);">${b.drivers.join(' · ')}</div>` : ''}
-        </div>` : '';
-
-      return `<div class="inline-detail" style="grid-template-columns:${b ? '1fr 1fr 1fr 1fr' : '1fr 1fr 1fr'};">
+      return `<div class="inline-detail">
         <div class="detail-col">
           <div class="detail-col-title">Medications</div>
           ${p.medications.map(m => `
@@ -950,7 +872,6 @@
           <div class="detail-row-item"><span class="detail-key">Family history</span><span class="detail-val">${p.history.familyHistory}</span></div>
           <div class="detail-row-item"><span class="detail-key">Last BH contact</span><span class="detail-val">${p.history.lastBHContact}</span></div>
         </div>
-        ${benefitSection}
       </div>`;
     }
 
@@ -974,7 +895,7 @@
       const list = getFiltered();
 
       if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
           <i class="ti ti-circle-off"></i>No patients match this filter.
         </div></td></tr>`;
         return;
@@ -991,12 +912,11 @@
             <span style="font-size:20px;font-weight:700;color:#1e293b;">${p.score != null ? p.score : '—'}</span><span style="font-size:14px;color:#9CA3AF;font-weight:500;">/25</span>
           </td>
           <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
-          <td><div style="display:flex; justify-content:center;">${renderBenefitBadge(p)}</div></td>
           <td><div class="reasoning">${p.reasoning}</div></td>
           <td onclick="event.stopPropagation()">${renderActions(p)}</td>
         </tr>
         <tr class="detail-row" id="detail-${p.id}" style="display:none;">
-          <td colspan="6">${renderDetail(p)}</td>
+          <td colspan="5">${renderDetail(p)}</td>
         </tr>
       `).join('');
 
