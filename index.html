@@ -319,6 +319,21 @@
       transition: background 0.12s, color 0.12s;
     }
     .btn-refer:hover { background: var(--primary-light); }
+    .btn-not-enroll {
+      background: none; border: none; padding: 0;
+      font-size: 12px; font-weight: 500; color: var(--text-subtle);
+      cursor: pointer; font-family: 'Geist','Inter',sans-serif;
+      transition: color 0.12s;
+    }
+    .btn-not-enroll:hover { color: #E11D48; }
+    .btn-x {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: none; border: 0.5px solid var(--border);
+      color: var(--text-muted); font-size: 13px; flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.12s, border-color 0.12s, color 0.12s;
+    }
+    .btn-x:hover { background: #FFF1F2; border-color: #FECDD3; color: #E11D48; }
     .btn-dismiss {
       padding: 8px 20px; background: none; border: 0.5px solid var(--border);
       color: var(--text-mid); font-size: 13px; font-weight: 600; cursor: pointer;
@@ -341,6 +356,15 @@
 
     /* Actioned row state */
     .patient-row.is-enrolled td { opacity: 0.55; }
+
+    /* Not-enroll reason tags */
+    .ne-reason {
+      padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 500;
+      border: 1px solid var(--border); background: #fff; color: var(--text-mid);
+      cursor: pointer; font-family: 'Geist','Inter',sans-serif; transition: all 0.12s;
+    }
+    .ne-reason:hover { border-color: #9CA3AF; color: var(--text); }
+    .ne-reason.selected { background: var(--primary-light); border-color: var(--primary); color: var(--primary); font-weight: 600; }
 
     /* ── INLINE DETAIL (expanded table row) ── */
     .detail-row td { padding: 0; border-bottom: 0.5px solid var(--border); background: #F9FAFB; }
@@ -515,6 +539,27 @@
       <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
         <button onclick="closeModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
         <button onclick="confirmEnroll()" style="padding:9px 20px;border:none;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'">Enroll</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Not Enroll Modal -->
+  <div id="not-enroll-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
+    <div style="background:#fff; border-radius:16px; width:400px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
+      <div style="padding:28px 28px 24px;">
+        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Not Enrolling</div>
+        <div id="not-enroll-patient-name" style="font-size:13px;color:#6B7280;line-height:1.5;margin-bottom:18px;"></div>
+        <div style="font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Reason (optional)</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;" id="not-enroll-reasons">
+          <button class="ne-reason" data-reason="insurance" onclick="toggleNeReason(this)">Insurance</button>
+          <button class="ne-reason" data-reason="declined" onclick="toggleNeReason(this)">Declined</button>
+          <button class="ne-reason" data-reason="not-reachable" onclick="toggleNeReason(this)">Not reachable</button>
+          <button class="ne-reason" data-reason="other" onclick="toggleNeReason(this)">Other</button>
+        </div>
+      </div>
+      <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
+        <button onclick="closeNotEnrollModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;">Cancel</button>
+        <button onclick="confirmNotEnroll()" style="padding:9px 20px;border:none;border-radius:8px;background:#111827;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Confirm</button>
       </div>
     </div>
   </div>
@@ -910,7 +955,10 @@
         return `<span style="font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 12px;border-radius:9999px;">Not Enrolled${reason}</span>`;
       }
       if (p.tier === 'low') return `<button class="btn-dismiss" disabled style="cursor:default;background:#F3F4F6;color:#6B7280;border:none;">Enroll</button>`;
-      return `<button class="btn-enroll" data-id="${p.id}" data-action="enroll">Enroll</button>`;
+      return `<div style="display:flex;align-items:center;gap:8px;">
+        <button class="btn-enroll" data-id="${p.id}" data-action="enroll">Enroll</button>
+        <button class="btn-x" data-id="${p.id}" data-action="not-enroll" title="Not Enroll"><i class="ti ti-x"></i></button>
+      </div>`;
     }
 
     function reScreenChip(p) {
@@ -1028,6 +1076,8 @@
           const patient = patients.find(p => p.id === id);
           if (!patient) return;
           if (action === 'enroll') { showEnrollModal(patient); return; }
+          if (action === 'not-enroll') { showNotEnrollModal(patient); return; }
+
           const row = document.querySelector(`.patient-row[data-id="${id}"]`);
           if (action === 'unarchive') {
             patient.status = 'pending';
@@ -1131,7 +1181,6 @@
     function showEnrollModal(patient) {
       pendingEnrollId = patient.id;
       document.getElementById('modal-patient-name').textContent = `${patient.name} will be enrolled in the Collaborative Care Model program.`;
-      document.getElementById('modal-enroll-track').textContent = patient.tier === 'high' ? 'Intensive CoCM + Psychiatric Consultation' : 'Standard CoCM Track';
       const modal = document.getElementById('enroll-modal');
       modal.style.display = 'flex';
     }
@@ -1140,6 +1189,44 @@
       pendingEnrollId = null;
       var m = document.getElementById('enroll-modal');
       if (m) m.style.display = 'none';
+    }
+
+    let pendingNotEnrollId = null;
+    let selectedNeReasons = [];
+
+    function showNotEnrollModal(patient) {
+      pendingNotEnrollId = patient.id;
+      selectedNeReasons = [];
+      document.querySelectorAll('.ne-reason').forEach(b => b.classList.remove('selected'));
+      document.getElementById('not-enroll-patient-name').textContent = `${patient.name} will be removed from the active eligibility list.`;
+      document.getElementById('not-enroll-modal').style.display = 'flex';
+    }
+
+    function closeNotEnrollModal() {
+      pendingNotEnrollId = null;
+      document.getElementById('not-enroll-modal').style.display = 'none';
+    }
+
+    function toggleNeReason(el) {
+      el.classList.toggle('selected');
+      const r = el.dataset.reason;
+      const idx = selectedNeReasons.indexOf(r);
+      if (idx > -1) selectedNeReasons.splice(idx, 1);
+      else selectedNeReasons.push(r);
+    }
+
+    function confirmNotEnroll() {
+      if (!pendingNotEnrollId) return;
+      const patient = patients.find(p => p.id === pendingNotEnrollId);
+      if (patient) {
+        patient.status = 'archived';
+        if (selectedNeReasons.length) patient.notEnrollReason = selectedNeReasons.join(', ');
+        localStorage.setItem('status_' + patient.id, 'archived');
+        if (selectedNeReasons.length) localStorage.setItem('notEnrollReasons_' + patient.id, selectedNeReasons.join(', '));
+      }
+      closeNotEnrollModal();
+      renderTable();
+      updateMetrics();
     }
 
     function openPanel(id) {
@@ -1166,7 +1253,7 @@
     }
 
     window.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' || e.key === 'Esc') { closeModal(); closePanel(); }
+      if (e.key === 'Escape' || e.key === 'Esc') { closeModal(); closeNotEnrollModal(); closePanel(); }
     });
 
     window.addEventListener('mousedown', function(e) {
@@ -1174,6 +1261,8 @@
       if (m && m.style.display !== 'none' && e.target === m) closeModal();
       var r = document.getElementById('refer-modal');
       if (r && r.style.display !== 'none' && e.target === r) closeReferModal();
+      var ne = document.getElementById('not-enroll-modal');
+      if (ne && ne.style.display !== 'none' && e.target === ne) closeNotEnrollModal();
     });
 
     function confirmEnroll() {
