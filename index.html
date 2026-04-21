@@ -815,7 +815,8 @@
     }
 
     function reScreenChip(p) {
-      if (p.tier !== 'low' || !p.lastVisit) return '';
+      if (p.tier !== 'low') return '';
+      if (!p.lastVisit) return `<div style="margin-top:10px;display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:#9CA3AF;background:#F3F4F6;padding:4px 10px;border-radius:999px;letter-spacing:0.01em;">No screening on record</div>`;
       const last = new Date(p.lastVisit);
       const due  = new Date(last);
       due.setMonth(due.getMonth() + 6);
@@ -825,8 +826,7 @@
       const label  = days < 0 ? `Re-screen overdue · ${dueStr}` : `Re-screen ${dueStr}`;
       const color  = days < 0 ? '#E11D48' : days <= 60 ? '#EA580C' : '#0284C7';
       const bg     = days < 0 ? '#FFF1F2' : days <= 60 ? '#FFF7ED' : '#E0F2FE';
-      const icon   = days < 0 ? '⚑ ' : days <= 60 ? '◷ ' : '◷ ';
-      return `<div style="margin-top:10px;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:${color};background:${bg};padding:4px 10px;border-radius:999px;letter-spacing:0.01em;">${icon}${label}</div>`;
+      return `<div style="margin-top:10px;display:inline-flex;align-items:center;font-size:11px;font-weight:600;color:${color};background:${bg};padding:4px 10px;border-radius:999px;letter-spacing:0.01em;">${label}</div>`;
     }
 
     function renderDetail(p) {
