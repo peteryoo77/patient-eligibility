@@ -450,12 +450,11 @@
         <h1 class="page-title">Eligible Patients</h1>
         <div class="practice-meta">
           <span class="sync-dot"></span> <span id="last-synced-text">Last synced Apr 10, 2026 at 2:14 PM</span>
-          <span class="meta-sep">·</span>
-          <button id="sync-btn" onclick="triggerSync()" style="background:none;border:none;cursor:pointer;font-size:12px;font-weight:600;color:var(--primary);font-family:inherit;padding:0;display:inline-flex;align-items:center;gap:4px;transition:opacity 0.15s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-            <i class="ti ti-refresh" style="font-size:13px;"></i> Sync
-          </button>
         </div>
       </div>
+      <button id="sync-btn" onclick="triggerSync()" style="display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'">
+        <i id="sync-icon" class="ti ti-refresh" style="font-size:15px;"></i> Sync EMR
+      </button>
     </div>
 
     <!-- Table card -->
@@ -816,12 +815,14 @@
 
     function triggerSync() {
       const btn = document.getElementById('sync-btn');
-      const icon = btn.querySelector('i');
+      const icon = document.getElementById('sync-icon');
       icon.style.animation = 'spin 0.8s linear infinite';
       btn.disabled = true;
+      btn.style.opacity = '0.75';
       setTimeout(() => {
         icon.style.animation = '';
         btn.disabled = false;
+        btn.style.opacity = '1';
         const now = new Date();
         const label = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
         document.getElementById('last-synced-text').textContent = 'Last synced ' + label;
