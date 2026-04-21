@@ -815,7 +815,7 @@
     }
 
     function reScreenChip(p) {
-      if (p.tier !== 'low') return '';
+      if (p.tier !== 'low' || !p.lastVisit) return '';
       const last = new Date(p.lastVisit);
       const due  = new Date(last);
       due.setMonth(due.getMonth() + 6);
