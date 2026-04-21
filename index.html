@@ -806,22 +806,11 @@
       return `<span class="badge-signal signal-normal">${val}</span>`;
     }
 
-    function isDue(p) {
-      if (!p.lastVisit) return false;
-      const due = new Date(p.lastVisit);
-      due.setMonth(due.getMonth() + 6);
-      const days = Math.round((due - new Date('2026-04-21')) / 86400000);
-      return days <= 60;
-    }
-
     function renderActions(p) {
       if (p.status === 'enrolled') {
         return `<span style="font-size:12px;font-weight:600;color:#16a34a;background:#dcfce7;padding:4px 12px;border-radius:9999px;">Enrolled ✓</span>`;
       }
-      if (p.tier === 'low') {
-        if (isDue(p)) return `<button class="btn-enroll" data-id="${p.id}" data-action="update">Update</button>`;
-        return `<button class="btn-dismiss" disabled style="cursor:default;background:#F3F4F6;color:#6B7280;border:none;">Enroll</button>`;
-      }
+      if (p.tier === 'low') return `<button class="btn-dismiss" disabled style="cursor:default;background:#F3F4F6;color:#6B7280;border:none;">Enroll</button>`;
       return `<button class="btn-enroll" data-id="${p.id}" data-action="enroll">Enroll</button>`;
     }
 
