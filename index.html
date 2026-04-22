@@ -474,7 +474,7 @@
       <div>
         <h1 class="page-title">Eligible Patients</h1>
         <div class="practice-meta">
-          <span class="sync-dot"></span> <span id="last-synced-text">Last synced Apr 10, 2026 at 2:14 PM</span>
+          <span class="sync-dot"></span> <span id="last-synced-text">Last synced …</span>
         </div>
       </div>
     </div>
@@ -941,9 +941,9 @@
       setTimeout(() => {
         btn.disabled = false;
         btn.style.opacity = '1';
-        const now = new Date();
-        const label = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-        document.getElementById('last-synced-text').textContent = 'Last synced ' + label;
+        setLastSyncedNow();
+        const badge = document.getElementById('new-update-badge');
+        if (badge) { badge.remove(); localStorage.setItem(VERSION_KEY, DEPLOY_VERSION); }
       }, 1200);
     }
 
@@ -1279,6 +1279,35 @@
     document.querySelectorAll('.filter-pill').forEach(p => {
       p.classList.toggle('active', p.dataset.filter === currentFilter);
     });
+    // Version string — bump this on every meaningful data push
+    const DEPLOY_VERSION = '2026-04-22T04:00:00Z';
+    const VERSION_KEY    = 'ih_deploy_version';
+
+    function setLastSyncedNow() {
+      const now = new Date();
+      const label = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                  + ' at ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      document.getElementById('last-synced-text').textContent = 'Last synced ' + label;
+    }
+
+    function checkForUpdates() {
+      const seen = localStorage.getItem(VERSION_KEY);
+      if (seen !== DEPLOY_VERSION) {
+        const el = document.getElementById('last-synced-text');
+        el.insertAdjacentHTML('afterend',
+          '<span id="new-update-badge" style="margin-left:8px;font-size:11px;font-weight:700;'
+        + 'color:#0369a1;background:#e0f2fe;padding:2px 8px;border-radius:999px;'
+        + 'cursor:pointer;" title="Click to dismiss">New updates</span>');
+        document.getElementById('new-update-badge').addEventListener('click', () => {
+          document.getElementById('new-update-badge').remove();
+          localStorage.setItem(VERSION_KEY, DEPLOY_VERSION);
+        });
+      }
+    }
+
+    setLastSyncedNow();
+    checkForUpdates();
+
     syncStatusFromStorage();
     renderTable();
     updateMetrics();
