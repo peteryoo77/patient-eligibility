@@ -236,9 +236,6 @@
     }
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; min-width: 900px; table-layout: fixed; }
-    table.show-rescreen { table-layout: auto; }
-    table .col-rescreen { display: none; }
-    table.show-rescreen .col-rescreen { display: table-cell; }
 
     thead th {
       padding: 14px 14px; text-align: left;
@@ -507,7 +504,6 @@
               <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;cursor:default;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></div></th>
               <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th class="col-rescreen" style="width:13%; text-align:center;">Re-screen Date</th>
               <th style="width:40%">Description</th>
               <th style="width:12%">Actions</th>
             </tr>
@@ -1022,29 +1018,12 @@
 
     let isFirstRender = true;
 
-    function reScreenDateCell(p) {
-      if (!p.lastVisit) {
-        return `<span style="font-size:12px;color:#9CA3AF;">No record</span>`;
-      }
-      const last = new Date(p.lastVisit);
-      const due  = new Date(last);
-      due.setMonth(due.getMonth() + 6);
-      const now  = new Date('2026-04-22');
-      const days = Math.round((due - now) / 86400000);
-      const dueStr = due.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      const color  = days < 0 ? '#E11D48' : days <= 60 ? '#EA580C' : '#0284C7';
-      return `<div style="font-size:13px;font-weight:600;color:${color};text-align:center;">${dueStr}</div>`;
-    }
-
     function renderTable() {
       const tbody = document.getElementById('patient-tbody');
       const list = getFiltered();
-      const isMonitoring = currentFilter === 'notenrolled';
-      const colCount = isMonitoring ? 6 : 5;
-      document.querySelector('table').classList.toggle('show-rescreen', isMonitoring);
 
       if (!list.length) {
-        tbody.innerHTML = `<tr><td colspan="${colCount}"><div class="empty-state">
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
           <i class="ti ti-circle-off"></i>No patients match this filter.
         </div></td></tr>`;
         return;
@@ -1056,18 +1035,17 @@
             <div class="pname">${p.isNew && !seenThisSession.has(p.id) ? '<span class="new-badge"></span>' : ''}<span>${p.name}</span></div>
             <div class="page">${p.age} yo · ${p.gender}</div>
             ${p.status === 'referred' && p.referredDate ? `<div style="margin-top:10px;display:inline-flex;align-items:center;font-size:12px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:4px 10px;border-radius:999px;">Referred ${p.referredDate}</div>` : ''}
-            ${isMonitoring ? '' : reScreenChip(p)}
+            ${reScreenChip(p)}
           </td>
           <td style="text-align:center;">
             <span style="font-size:24px;font-weight:700;color:#1e293b;letter-spacing:-0.5px;">${p.score != null ? p.score : '—'}</span><span style="font-size:12px;color:#C4C9D4;font-weight:500;margin-left:1px;">/25</span>
           </td>
           <td><div style="display:flex; justify-content:center;"><span class="risk-badge ${badgeClass(p)}">${badgeLabel(p)}</span></div></td>
-          <td class="col-rescreen">${reScreenDateCell(p)}</td>
           <td><div class="reasoning">${p.reasoning}</div></td>
           <td onclick="event.stopPropagation()">${renderActions(p)}</td>
         </tr>
         <tr class="detail-row" id="detail-${p.id}" style="display:none;">
-          <td colspan="${colCount}">${renderDetail(p)}</td>
+          <td colspan="5">${renderDetail(p)}</td>
         </tr>
       `).join('');
 
