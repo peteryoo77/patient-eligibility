@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Detail</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>@import url('https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css');</style>
+  <style>
+    :root {
+      --primary:       hsl(199, 89%, 48%);
+      --primary-hover: hsl(199, 89%, 42%);
+      --primary-light: hsl(199, 89%, 95%);
+      --bg:            #F2F2F7;
+      --card:          #ffffff;
+      --border:        hsl(214, 14%, 89%);
+      --text:          hsl(220, 20%, 10%);
+      --text-mid:      #374151;
+      --text-muted:    #6B7280;
+      --radius:        16px;
+      --text-subtle:   #9CA3AF;
+
+      --high-text: #E11D48; --high-bg: #FFF1F2;
+      --med-text:  #B45309; --med-bg:  #FEF3C7; --med-border: #FDE68A; --med-bar: #D97706;
+      --low-text:  #0EA5E9; --low-bg:  #E0F2FE; --low-border: #BAE6FD;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Geist', 'Inter', sans-serif;
+      background: var(--bg); color: var(--text);
+      font-size: 13px; min-height: 100vh; display: flex;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 216px; min-height: 100vh;
+      background: var(--card); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; flex-shrink: 0;
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+    }
+    .sidebar-logo {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 14px 14px 12px; border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo-left { display: flex; align-items: center; gap: 10px; }
+    .logo-icon { width: 34px; height: 34px; background: #111827; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .logo-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .logo-sub  { font-size: 12px; font-weight: 600; color: var(--text-subtle); letter-spacing: 0.07em; text-transform: uppercase; }
+    .sidebar-nav { flex: 1; overflow-y: auto; padding: 6px 0 8px; }
+    .nav-section-label { font-size: 12px; font-weight: 600; color: var(--text-subtle); letter-spacing: 0.07em; text-transform: uppercase; padding: 14px 16px 4px; }
+    .nav-item { display: flex; align-items: center; gap: 9px; padding: 7px 10px; margin: 1px 8px; font-size: 13px; font-weight: 500; color: var(--text-mid); border-radius: calc(var(--radius) - 2px); cursor: pointer; text-decoration: none; transition: background 0.12s, color 0.12s; }
+    .nav-item i { font-size: 17px; color: var(--text-subtle); flex-shrink: 0; }
+    .nav-item:hover { background: #F9FAFB; }
+    .nav-item.active { background: var(--primary-light); color: var(--primary); }
+    .nav-item.active i { color: var(--primary); }
+    .sidebar-user { border-top: 1px solid var(--border); padding: 10px 12px; display: flex; align-items: center; gap: 9px; }
+    .user-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; flex-shrink: 0; }
+    .user-name  { font-size: 13px; font-weight: 600; color: var(--text); }
+    .user-email { font-size: 12px; color: var(--text-subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      margin-left: 216px; background: var(--card); border-bottom: 1px solid var(--border);
+      padding: 0 28px; height: 52px; display: flex; align-items: center; gap: 12px;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .back-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; padding: 5px 10px; border-radius: var(--radius); transition: background 0.12s, color 0.12s; }
+    .back-btn:hover { background: var(--bg); color: var(--text); }
+    .topbar-divider { width: 1px; height: 18px; background: var(--border); }
+    .topbar-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .topbar-action { margin-left: 16px; }
+    .action-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; min-height: 44px; padding: 12px 20px; border: none; border-radius: 8px;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s, opacity 0.15s;
+      flex-shrink: 0;
+    }
+    .action-btn-enroll { background: var(--primary); color: #fff; }
+    .action-btn-enroll:hover { background: var(--primary-hover); }
+    .action-btn-refer  { background: #fff; color: var(--primary); border: 1px solid var(--primary); }
+    .action-btn-refer:hover  { background: var(--primary-light); }
+    .action-btn-done         { background: #F3F4F6; color: #6B7280; cursor: default; pointer-events: none; }
+    .action-btn-not-enroll   { background: none; border: 1.5px solid #7DD3FC !important; color: var(--text-mid); }
+    .action-btn-not-enroll:hover { background: var(--primary-light); border-color: var(--primary) !important; color: var(--primary); }
+
+    /* ── MAIN ── */
+    .main { margin-left: 216px; flex: 1; padding: 28px 28px 48px; max-width: 780px; }
+
+    /* ── PATIENT HEADER ── */
+    .patient-header {
+      background: var(--card);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      border-radius: var(--radius); padding: 28px 28px; margin-bottom: 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .header-left {}
+    .header-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .header-name { font-size: 22px; font-weight: 700; color: var(--text); }
+    .header-meta { font-size: 14px; color: var(--text-muted); }
+    .elig-badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+    .elig-yes { background: #dcfce7; color: #16a34a; }
+    .elig-no  { background: #f3f4f6; color: #6b7280; }
+    .risk-badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; border: none; }
+    .risk-high   { background: var(--high-bg); color: var(--high-text); }
+    .risk-medium { background: var(--med-bg);  color: var(--med-text); }
+    .risk-low    { background: var(--low-bg);  color: var(--low-text); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { opacity: 0; animation: fadeUp 0.32s ease forwards; }
+
+    /* ── SECTION NAV ── */
+    .section-nav {
+      display: flex; gap: 2px;
+      background: var(--card); border: 0.5px solid var(--border);
+      border-radius: var(--radius); padding: 4px; margin-bottom: 16px;
+      position: sticky; top: 52px; z-index: 9;
+    }
+    .snav-btn {
+      flex: 1; padding: 6px 10px; border: none; background: none;
+      font-family: inherit; font-size: 12px; font-weight: 500;
+      color: var(--text-muted); cursor: pointer; border-radius: 7px;
+      transition: background 0.12s, color 0.12s; white-space: nowrap;
+    }
+    .snav-btn:hover { color: var(--text); }
+    .snav-btn.active { background: var(--bg); color: var(--text); font-weight: 600; }
+
+    /* ── SECTION CARD ── */
+    .card {
+      background: var(--card);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      border-radius: var(--radius); padding: 22px 24px; margin-bottom: 14px;
+    }
+    .card-title {
+      font-size: 12px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 18px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .elig-info-icon { display:inline-flex; align-items:center; cursor:default; }
+
+    /* ── REASONING ── */
+    .reasoning-text { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
+
+    /* ── SCORES ── */
+    .scores-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 10px; }
+    .sdoh-grid { display: flex; flex-direction: column; }
+    .sdoh-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
+    .sdoh-row:last-child { border-bottom: none; }
+    .sdoh-label { font-size: 14px; color: var(--text); font-weight: 500; }
+    .sdoh-flag-yes { font-size: 13px; font-weight: 600; color: #E11D48; background: #FFF1F2; padding: 2px 8px; border-radius: 4px; }
+    .sdoh-flag-no  { font-size: 13px; color: var(--text-muted); }
+    .score-box { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+    .score-label { font-size: 12px; font-weight: 600; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+    .score-num   { font-size: 38px; font-weight: 700; color: var(--text); line-height: 1; letter-spacing: -1.5px; }
+    .score-interp { font-size: 12px; font-weight: 600; margin-top: 3px; color: var(--text-mid); }
+    .score-bar-track { height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; margin: 10px 0 8px; }
+    .score-bar-fill  { height: 100%; width: 0; border-radius: 999px; transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+    .score-date  { font-size: 12px; color: var(--text-muted); }
+    .score-na    { font-size: 13px; color: var(--text-muted); font-style: italic; margin: 8px 0 4px; }
+
+    /* ── REFERRAL ── */
+    .referral-to-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: #d97706; margin-bottom: 3px;
+    }
+    .referral-dest { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .referral-reason { font-size: 13px; color: var(--text-mid); line-height: 1.65; }
+
+    /* ── CLINICAL ROWS ── */
+    .c-row { display: grid; grid-template-columns: 160px 1fr; gap: 12px; padding: 9px 0; border-bottom: 0.5px solid var(--border); align-items: start; }
+    .c-row:last-child { border-bottom: none; }
+
+    /* ── CLINICAL GRID ── */
+    .clinical-grid { display: flex; flex-direction: column; }
+    .cl-row {
+      display: grid; grid-template-columns: 210px 1fr;
+      border-bottom: 0.5px solid var(--border);
+      border-radius: 6px; transition: background 0.1s; cursor: default;
+    }
+    .cl-row:last-child { border-bottom: none; }
+    .cl-row:hover { background: var(--bg); }
+    .cl-label { font-size: 14px; color: var(--text-muted); padding: 11px 8px; }
+    .cl-value { font-size: 14px; color: var(--text); font-weight: 500; padding: 11px 0; }
+    .cl-na    { font-style: italic; color: var(--text-muted); font-weight: 400; }
+
+
+    /* ── KEY SIGNALS ── */
+    .key-signals { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .key-signal { font-size: 16px; color: var(--text-mid); line-height: 1.55; padding-left: 18px; position: relative; }
+    .key-signal::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+    .key-signal-alert { color: #E11D48; }
+    .key-signal-alert::before { background: #E11D48; }
+
+
+    /* ── ELIGIBILITY CARD ── */
+    .elig-header { margin-bottom: 20px; }
+    .elig-score-block { flex-shrink: 0; }
+    .elig-score-num { font-size: 56px; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -3px; }
+    .elig-score-max { font-size: 22px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
+    .elig-score-label { font-size: 12px; font-weight: 600; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 6px; }
+    .elig-tier-block { flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; }
+    .elig-tier-action { font-size: 14px; color: var(--text-mid); line-height: 1.5; }
+
+    /* ── DOMAIN BARS ── */
+    .domain-list { display: flex; flex-direction: column; gap: 14px; }
+    .domain-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+    .domain-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .domain-score-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .domain-track { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; margin-bottom: 5px; }
+    .domain-fill { height: 100%; border-radius: 999px; width: 0; transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+    .domain-signals { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+    .domain-signal-tag { font-size: 13px; color: var(--text-mid); background: #F3F4F6; border-radius: 4px; padding: 1px 7px; line-height: 1.6; }
+    .domain-sep { height: 0.5px; background: var(--border); }
+
+    /* ── REFER-OUT ── */
+    .card-refer-out { border-left: 3px solid var(--primary); }
+    .refer-out-badge { display: inline-block; font-size: 11px; font-weight: 600; color: var(--primary); background: var(--primary-light); border: 0.5px solid hsl(199,89%,82%); padding: 3px 10px; border-radius: 9999px; white-space: nowrap; margin-bottom: 20px; }
+    .refer-out-eyebrow { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+    .refer-out-eyebrow i { font-size: 13px; }
+    .refer-out-meta { display: flex; gap: 24px; margin-bottom: 18px; flex-wrap: wrap; }
+    .refer-out-col { display: flex; flex-direction: column; gap: 5px; }
+    .refer-out-col-label { font-size: 12px; font-weight: 700; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.07em; }
+    .refer-out-criterion-tag { display: inline-block; background: #FFF1F2; border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: #E11D48; }
+    .refer-out-dest-tag { display: inline-block; background: var(--primary-light); border-radius: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: var(--primary); }
+    .refer-out-divider { height: 1px; background: var(--border); margin-bottom: 14px; }
+    .refer-out-reason-text { font-size: 14px; color: var(--text-mid); line-height: 1.7; }
+    .refer-out-dest { font-size: 22px; font-weight: 700; color: #111827; line-height: 1.2; margin-bottom: 14px; }
+    .refer-out-reason-box { background: #F9FAFB; border: 0.5px solid var(--border); border-radius: 8px; padding: 14px 16px; font-size: 13px; color: #374151; line-height: 1.7; margin-bottom: 14px; }
+    .refer-out-footer { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-muted); font-style: italic; }
+    .refer-out-footer i { font-size: 14px; flex-shrink: 0; }
+
+    /* ── PRIOR REFERRAL CARD ── */
+    .prior-referral-card {}
+    .prior-ref-reason-tag {
+      display: inline-block; font-size: 13px; font-weight: 600;
+      padding: 4px 12px; border-radius: 999px;
+      color: var(--text-muted); background: #F3F4F6;
+      transition: all 0.15s;
+    }
+    .prior-ref-reason-tag.active {
+      color: var(--primary); background: var(--primary-light);
+    }
+    .reason-tag {
+      display: inline-block; font-size: 13px; font-weight: 500;
+      padding: 6px 14px; border-radius: 999px;
+      color: var(--text-muted); background: #F3F4F6; border: 1.5px solid transparent;
+      cursor: pointer; transition: all 0.15s; user-select: none;
+    }
+    .reason-tag.selected { color: #111827; background: #fff; border-color: #374151; }
+
+    /* ── PANEL MODE ── */
+    body.panel-mode                { overflow-x: hidden; min-height: 100vh; display: block; }
+    body.panel-mode .sidebar       { display: none; }
+    body.panel-mode .topbar        { display: none; }
+    body.panel-mode .main          { margin-left: 0; width: 100%; max-width: none; box-sizing: border-box; padding: 20px 24px 48px; }
+    body.panel-mode .patient-header { flex-wrap: wrap; gap: 12px; align-items: center; }
+    body.panel-mode .header-divider { display: none; }
+    body.panel-mode > div          { width: 100%; }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-left">
+        <div class="logo-icon"><i class="ti ti-heartbeat" style="font-size:17px;color:white;"></i></div>
+        <div>
+          <div class="logo-name">Integral Health</div>
+          <div class="logo-sub">Mission Control</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="dashboard.html"><i class="ti ti-layout-dashboard"></i> Dashboard</a>
+      <div class="nav-section-label">General</div>
+      <a class="nav-item" href="#"><i class="ti ti-users"></i> Patients</a>
+      <a class="nav-item" href="#"><i class="ti ti-calendar"></i> Appointments</a>
+      <div class="nav-section-label">Clinical</div>
+      <a class="nav-item" href="#"><i class="ti ti-stethoscope"></i> Team</a>
+      <a class="nav-item" href="#"><i class="ti ti-clock"></i> Time</a>
+      <a class="nav-item" href="#"><i class="ti ti-clipboard-list"></i> Caseload</a>
+      <a class="nav-item" href="#"><i class="ti ti-chart-bar"></i> Performance</a>
+      <a class="nav-item active" href="index.html"><i class="ti ti-shield-check"></i> Eligibility</a>
+      <div class="nav-section-label">Operations</div>
+      <a class="nav-item" href="#"><i class="ti ti-list"></i> Waitlist</a>
+      <a class="nav-item" href="#"><i class="ti ti-bookmark"></i> Follow-up</a>
+      <a class="nav-item" href="#"><i class="ti ti-shield"></i> Enrollments</a>
+      <div class="nav-section-label">Settings</div>
+      <a class="nav-item" href="#"><i class="ti ti-building"></i> Practice</a>
+      <a class="nav-item" href="#"><i class="ti ti-user-cog"></i> Providers</a>
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-avatar">PY</div>
+      <div style="flex:1;min-width:0;">
+        <div class="user-name">Peter Yoo</div>
+        <div class="user-email">peter.yoo@integralhealth.me</div>
+      </div>
+    </div>
+  </aside>
+
+  <div style="flex:1; display:flex; flex-direction:column;">
+    <header class="topbar">
+      <a class="back-btn" href="index.html"><i class="ti ti-arrow-left"></i> Eligibility</a>
+      <div class="topbar-divider"></div>
+      <span class="topbar-name" id="topbar-name">Patient detail</span>
+      <div class="topbar-action">
+        <button id="topbar-action-btn" class="action-btn" onclick="handleTopbarAction()" style="display:none"></button>
+      </div>
+    </header>
+
+    <main class="main" id="main-content">
+      <p style="color:var(--text-muted)">Loading…</p>
+    </main>
+
+  </div>
+
+  <script>
+    const PATIENTS = [
+      {
+        id: 1, name: "Eleanor Vance", age: 54, gender: "Female", lastVisit: "Apr 7, 2026",
+        tier: "high", eligible: true,
+        reasoning: "Severe depression with active suicidal ideation and 2 ED visits in 90 days; housing insecure, medication non-adherent, no BH contact in 20 months.",
+        raw: { phq9: 14, gad7: null, pcl5: null, cssrs: 3, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "MDD (2021)",
+          psychiatricMeds: ["Bupropion 150mg"],
+          chronicDx:       ["Type 2 Diabetes", "COPD"],
+          erVisits:        "2 visits in the last 90 days",
+          substanceUse:    "No substance use disorder reported. Social alcohol use — not clinically significant.",
+          familyHistory:   "Maternal depression",
+          allergies:       "Sulfa drugs",
+          surgicalHistory: "Cholecystectomy (2014)",
+          immunization:    "Up to date (influenza, COVID-19, pneumococcal)",
+          vitals:          "BP 136/86, HR 76, BMI 29.4",
+          insurance:       "Aetna PPO",
+          referral:        { recommended: false, to: null, reason: "Strong CoCM candidate. PHQ-9 of 14 with active suicidal ideation (C-SSRS 3), 2 ED visits, and housing instability — intensive CoCM with psychiatric consultation indicated." },
+          phq9: { score: 14, date: "Mar 24, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 3, date: "Mar 24, 2026" },
+          sds: { work: 8, social: 7, family: 6, date: "Mar 24, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: true, foodInsecurity: false, socialIsolation: true, aces: true },
+          therapyHistory: "No active BH provider. Last documented BH contact approximately 20 months ago. No formal therapy on file.",
+          hospitalizations: null,
+          generalMeds: ["Metformin 1000mg", "Tiotropium 18mcg", "Albuterol inhaler PRN"]
+        }
+      },
+      {
+        id: 2, name: "Derek Calloway", age: 47, gender: "Male", lastVisit: "Apr 9, 2026",
+        tier: "high", eligible: true,
+        reasoning: "Severe anxiety with escalating benzodiazepine use over 16 months; food insecure, socially isolated, no psychiatric oversight in 20 months.",
+        raw: { phq9: 15, gad7: 12, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "GAD (2022)",
+          psychiatricMeds: ["Paroxetine 40mg", "Clonazepam 1mg"],
+          chronicDx:       ["Hypertension", "Obesity"],
+          erVisits:        "2 visits in the last 12 months",
+          substanceUse:    "Benzodiazepine use: Clonazepam 1mg prescribed for anxiety — active, 16 months, dose escalating. No illicit substance use reported.",
+          familyHistory:   "Paternal anxiety disorder",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 146/92, HR 90, BMI 31.5",
+          insurance:       "Cigna PPO",
+          referral:        { recommended: false, to: null, reason: "Strong CoCM candidate despite severity. PHQ-9 of 15 and GAD-7 of 12 with escalating benzodiazepine use — intensive CoCM with psychiatric consultation warranted." },
+          phq9: { score: 15, date: "Mar 28, 2026" },
+          gad7: { score: 12, date: "Mar 28, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 28, 2026" },
+          sds: { work: 7, social: 6, family: 5, date: "Mar 28, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: true, socialIsolation: true, aces: false },
+          therapyHistory: "No active therapy. Last BH contact 20 months ago. One prior trial of CBT — discontinued after 3 sessions.",
+          hospitalizations: null,
+          generalMeds: ["Lisinopril 20mg", "Atorvastatin 20mg"]
+        }
+      },
+      {
+        id: 3, name: "Ruth Halvorsen", age: 69, gender: "Female", lastVisit: "Mar 30, 2026", status: "referred", referredDate: "Feb 4, 2026", referralReasons: ["insurance", "other"], referralReasonNote: "Patient expressed concerns about insurance coverage and hesitancy about mental health treatment. Needed additional time to consider.",
+        tier: "high", eligible: true,
+        reasoning: "Probable PTSD with elevated suicidal ideation and escalating opioid use; 2 ED visits in 90 days, no behavioral health care in over 2 years.",
+        raw: { phq9: 11, gad7: null, pcl5: 38, cssrs: 3, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "PTSD (2017)",
+          psychiatricMeds: ["Hydrocodone 10mg", "Pregabalin 150mg"],
+          chronicDx:       ["Chronic Pain Syndrome", "Hypertension"],
+          erVisits:        "2 visits in the last 90 days",
+          substanceUse:    "Long-term opioid use: Hydrocodone 10mg — active, escalating dose over 22 months. No other substance use reported.",
+          familyHistory:   "N/A",
+          allergies:       "Penicillin, Codeine",
+          surgicalHistory: "Hip replacement (2021), Appendectomy (2009)",
+          immunization:    "Up to date (influenza, COVID-19, pneumococcal, shingles)",
+          vitals:          "BP 132/80, HR 70, BMI 25.6",
+          insurance:       "Medicare Part B",
+          referral:        { recommended: false, to: null, reason: "High complexity patient — intensive CoCM with psychiatric consultation recommended given PTSD severity, escalating opioid use, and 2 ED visits in 90 days." },
+          phq9: { score: 11, date: "Feb 18, 2026" },
+          gad7: { score: 8, date: "Feb 18, 2026" },
+          pcl5: { score: 38, date: "Feb 18, 2026" },
+          cssrs: { score: 3, date: "Feb 18, 2026" },
+          sds: { work: 9, social: 6, family: 7, date: "Feb 18, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: true, aces: true },
+          therapyHistory: "No active therapy. Last BH contact 26 months ago. Prior CPT trial — incomplete. No current BH provider.",
+          hospitalizations: null,
+          opioidRx: "Hydrocodone 10mg — active, 22 months, escalating dosage",
+          generalMeds: ["Cyclobenzaprine 5mg", "Amlodipine 5mg", "Acetaminophen 650mg"]
+        }
+      },
+      {
+        id: 4, name: "Owen Garrett", age: 38, gender: "Male", lastVisit: "Apr 2, 2026",
+        tier: "high", eligible: true,
+        reasoning: "Unstable Bipolar II on dual mood stabilizers with no psychiatric oversight; prior hospitalization, housing insecure, disengaged from care for 16 months.",
+        raw: { phq9: 11, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "Bipolar II (2018)",
+          psychiatricMeds: ["Lamotrigine 200mg", "Quetiapine 100mg"],
+          chronicDx:       ["Obesity", "Hypertension"],
+          erVisits:        null,
+          substanceUse:    "No substance use disorder documented. Social alcohol use reported — not formally assessed with AUDIT-10.",
+          familyHistory:   "Sibling: Bipolar I",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19, Tdap)",
+          vitals:          "BP 128/82, HR 80, BMI 36.1",
+          insurance:       "UnitedHealthcare PPO",
+          referral:        { recommended: false, to: null, reason: "Bipolar II with prior hospitalization — intensive CoCM with psychiatric consultation recommended for mood stabilizer monitoring and titration." },
+          phq9: { score: 11, date: "Mar 12, 2026" },
+          gad7: { score: 10, date: "Mar 12, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 12, 2026" },
+          sds: { work: 8, social: 7, family: 6, date: "Mar 12, 2026" },
+          mdq: { score: 8, date: "Mar 12, 2026" },
+          audit10: null,
+          sdoh: { housingInsecurity: true, foodInsecurity: false, socialIsolation: true, aces: true },
+          therapyHistory: "No active BH provider. Last BH contact 16 months ago. Prior psychiatric hospitalization (2023).",
+          hospitalizations: "Psychiatric hospitalization (2023)",
+          generalMeds: ["Metoprolol 25mg", "Metformin 500mg"]
+        }
+      },
+      {
+        id: 5, name: "Sylvia Reeves", age: 63, gender: "Female", lastVisit: "Mar 26, 2026",
+        tier: "medium", eligible: true,
+        reasoning: "Moderate depression with CHF and diabetes; non-adherent on antidepressant, food insecure and socially isolated with no BH contact in 16 months.",
+        raw: { phq9: 10, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "MDD (2021)",
+          psychiatricMeds: ["Fluoxetine 20mg"],
+          chronicDx:       ["CHF", "Type 2 Diabetes"],
+          erVisits:        "1 visit in the last 16 months",
+          substanceUse:    "No substance use reported.",
+          familyHistory:   "None documented",
+          allergies:       "Aspirin",
+          surgicalHistory: "Cataract surgery (2020)",
+          immunization:    "Up to date (influenza, COVID-19, pneumococcal, shingles)",
+          vitals:          "BP 130/82, HR 74, BMI 28.9, EF 45%",
+          insurance:       "Medicare Advantage (Humana)",
+          referral:        { recommended: false, to: null, reason: "Standard CoCM candidate. PHQ-9 of 10 with CHF and diabetes complicating depression management. Medication non-adherence requires attention." },
+          phq9: { score: 10, date: "Mar 10, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 10, 2026" },
+          sds: { work: 7, social: 6, family: 5, date: "Mar 10, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: true, socialIsolation: true, aces: false },
+          therapyHistory: "No active therapy. No BH contact in 16 months. Prior antidepressant trial — Sertraline discontinued due to GI side effects.",
+          hospitalizations: null,
+          generalMeds: ["Furosemide 40mg", "Carvedilol 6.25mg", "Metformin 1000mg", "Spironolactone 12.5mg"]
+        }
+      },
+      {
+        id: 6, name: "Craig Whitfield", age: 49, gender: "Male", lastVisit: "Mar 2, 2026",
+        tier: "low", eligible: false,
+        reasoning: "Moderate anxiety with escalating benzodiazepine and sleep medication use over 12 months; dependence risk unassessed, prior therapy discontinued.",
+        raw: { phq9: 8, gad7: 9, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
+        details: {
+          mentalHealthDx:  "GAD (2023)",
+          psychiatricMeds: ["Alprazolam 0.5mg", "Zolpidem 5mg"],
+          chronicDx:       ["Insomnia"],
+          erVisits:        null,
+          substanceUse:    "Benzodiazepine use: Alprazolam 0.5mg — active 12 months. Zolpidem 5mg for insomnia. Dependence risk not formally assessed.",
+          familyHistory:   "N/A",
+          allergies:       "NKDA",
+          surgicalHistory: "Appendectomy (2003)",
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 122/78, HR 68, BMI 27.1",
+          insurance:       "BlueCross BlueShield PPO",
+          referral:        { recommended: false, to: null, reason: "Not currently indicated. GAD-7 of 9 is moderate; benzodiazepine and sleep medication review at next visit. Re-screen in 6 months." },
+          phq9: null,
+          gad7: { score: 9, date: "Feb 2, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Feb 2, 2026" },
+          sds: { work: 4, social: 5, family: 3, date: "Feb 2, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: false, aces: false },
+          therapyHistory: "Prior CBT trial — 5 sessions (2022), discontinued. No current BH provider. No BH contact in 12 months.",
+          hospitalizations: null,
+          generalMeds: ["Omeprazole 20mg"]
+        }
+      },
+      {
+        id: 7, name: "Diane Tremblay", age: 57, gender: "Female", lastVisit: "Mar 22, 2026",
+        tier: "medium", eligible: true,
+        reasoning: "Moderate depression complicated by chronic pain from RA; prior antidepressant failure and significant functional decline — socially isolated, no BH contact in 18 months.",
+        raw: { phq9: 10, gad7: 6, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "MDD (2020)",
+          psychiatricMeds: ["Duloxetine 60mg"],
+          chronicDx:       ["Rheumatoid Arthritis", "Hypertension"],
+          erVisits:        "1 visit in the last 12 months",
+          substanceUse:    "No substance use reported.",
+          familyHistory:   "Mother: anxiety disorder",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 140/88, HR 72, BMI 26.8",
+          insurance:       "Aetna PPO",
+          referral:        { recommended: false, to: null, reason: "Standard CoCM candidate. PHQ-9 of 10 with RA-related functional decline; prior antidepressant failure warrants integrated care and closer monitoring." },
+          phq9: { score: 10, date: "Mar 6, 2026" },
+          gad7: { score: 6, date: "Mar 6, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 6, 2026" },
+          sds: { work: 7, social: 6, family: 5, date: "Mar 6, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: true, aces: false },
+          therapyHistory: "Prior antidepressant trial (Sertraline, discontinued 2019). No active BH provider. No BH contact in 18 months.",
+          hospitalizations: null,
+          generalMeds: ["Methotrexate 15mg", "Hydroxychloroquine 200mg", "Lisinopril 10mg"]
+        }
+      },
+      {
+        id: 9, name: "Norma Easton", age: 70, gender: "Female", lastVisit: "Mar 8, 2026",
+        tier: "low", eligible: false,
+        reasoning: "Mild anxiety and subclinical low mood not yet at treatment threshold; medically stable with no prior mental health history — re-screen in 6 months.",
+        raw: { phq9: 5, gad7: 6, pcl5: null, cssrs: 0, sds: 4, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
+        details: {
+          mentalHealthDx:  "GAD (2025)",
+          psychiatricMeds: [],
+          chronicDx:       ["CHF"],
+          erVisits:        null,
+          substanceUse:    "No substance use reported.",
+          familyHistory:   "None documented",
+          allergies:       "Penicillin",
+          surgicalHistory: "Coronary stent placement (2021)",
+          immunization:    "Up to date (influenza, COVID-19, pneumococcal, shingles)",
+          vitals:          "BP 124/76, HR 64, BMI 23.8",
+          insurance:       "Medicare Part B",
+          referral:        { recommended: false, to: null, reason: "Not currently indicated. Subclinical GAD presentation; watchful waiting appropriate. Re-screen in 6 months." },
+          phq9: { score: 5, date: "Feb 22, 2026" },
+          gad7: { score: 6, date: "Feb 22, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Feb 22, 2026" },
+          sds: { work: 4, social: 4, family: 3, date: "Feb 22, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: false, aces: false },
+          therapyHistory: "No prior BH treatment. Never seen a BH provider.",
+          hospitalizations: "CHF exacerbation (2021) — cardiac, not psychiatric.",
+          generalMeds: ["Lisinopril 10mg", "Carvedilol 12.5mg", "Furosemide 20mg", "Aspirin 81mg"]
+        }
+      },
+      {
+        id: 10, name: "Felix Drummond", age: 44, gender: "Male", lastVisit: "Mar 28, 2026",
+        tier: "low", eligible: false,
+        reasoning: "Mild persistent low mood with social withdrawal; clinically stable with no prior psychiatric treatment or medication — watchful waiting, re-screen in 6 months.",
+        raw: { phq9: 6, gad7: null, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "PDD (2023)",
+          psychiatricMeds: [],
+          chronicDx:       [],
+          erVisits:        null,
+          substanceUse:    "No substance use reported.",
+          familyHistory:   "N/A",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 118/74, HR 66, BMI 25.2",
+          insurance:       "UnitedHealthcare PPO",
+          referral:        { recommended: false, to: null, reason: "Not currently indicated. Subclinical PDD; watchful waiting with re-screen in 6 months." },
+          phq9: { score: 6, date: "Mar 14, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 14, 2026" },
+          sds: { work: 4, social: 5, family: 4, date: "Mar 14, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: true, aces: false },
+          therapyHistory: "No prior BH treatment. Last BH contact 11 months ago (primary care screening only).",
+          hospitalizations: null,
+          generalMeds: ["Rosuvastatin 10mg"]
+        }
+      },
+      {
+        id: 12, name: "Bernard Ashworth", age: 60, gender: "Male", lastVisit: "Apr 4, 2026",
+        tier: "medium", eligible: true, status: "referred", referredDate: "Mar 12, 2026", referralReasons: ["insurance"], referralReasonNote: null,
+        reasoning: "Moderate depression managed by PCP with no BH provider involvement; enrolled in standard CoCM after a 20-month gap in behavioral health care.",
+        raw: { phq9: 11, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
+        details: {
+          mentalHealthDx:  "MDD (2019)",
+          psychiatricMeds: ["Mirtazapine 30mg"],
+          chronicDx:       ["Type 2 Diabetes", "Hypertension"],
+          erVisits:        null,
+          substanceUse:    "No substance use reported.",
+          familyHistory:   "None documented",
+          allergies:       "NKDA",
+          surgicalHistory: "Knee arthroscopy (2018)",
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 138/84, HR 72, BMI 30.1",
+          insurance:       "Cigna HMO",
+          referral:        { recommended: false, to: null, reason: "Not currently indicated. Enrolled in standard CoCM track." },
+          phq9: { score: 11, date: "Mar 20, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 20, 2026" },
+          sds: { work: 7, social: 5, family: 5, date: "Mar 20, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: false, aces: false },
+          therapyHistory: "No active BH provider. Mirtazapine prescribed by PCP. No BH contact in 20 months.",
+          hospitalizations: null,
+          generalMeds: ["Metformin 1000mg", "Amlodipine 10mg", "Atorvastatin 40mg"]
+        }
+      },
+      {
+        id: 8, name: "Aaron Hendricks", age: 31, gender: "Male", lastVisit: "Apr 6, 2026",
+        tier: "medium", eligible: true,
+        reasoning: "Active alcohol use disorder alongside PTSD and trauma symptoms; dual diagnosis requires specialized SUD care before CoCM enrollment.",
+        raw: { phq9: 10, gad7: null, pcl5: 35, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: false, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
+        details: {
+          mentalHealthDx:  "PTSD (2024), AUD (2023)",
+          psychiatricMeds: ["Sertraline 50mg", "Naltrexone 50mg"],
+          chronicDx:       [],
+          erVisits:        null,
+          substanceUse:    "Alcohol use disorder (currently in remission). AUDIT-10 of 16 at last screen.",
+          familyHistory:   "N/A",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19, Tdap)",
+          vitals:          "BP 118/76, HR 64, BMI 24.2",
+          insurance:       "Medicaid",
+          referral:        { recommended: true, to: "Specialized SUD Program", exclusionCriteria: "Severe, untreated SUD requiring detox", reason: "Active alcohol use disorder with AUDIT-10 of 16 warrants management through a specialized SUD program. Naltrexone requires addiction medicine oversight, and co-occurring PTSD should be addressed in an integrated dual-diagnosis setting before CoCM enrollment." },
+          phq9: { score: 10, date: "Mar 22, 2026" },
+          gad7: { score: 7, date: "Mar 22, 2026" },
+          pcl5: { score: 35, date: "Mar 22, 2026" },
+          cssrs: { score: 0, date: "Mar 22, 2026" },
+          sds: { work: 7, social: 5, family: 6, date: "Mar 22, 2026" },
+          mdq: null,
+          audit10: { score: 16, date: "Mar 22, 2026" },
+          sdoh: { housingInsecurity: false, foodInsecurity: true, socialIsolation: false, aces: true },
+          therapyHistory: "Completed IOP for AUD in 2023. No ongoing therapy. Naltrexone maintained for AUD.",
+          hospitalizations: null,
+          generalMeds: []
+        }
+      },
+      {
+        id: 11, name: "Tara Sinclair", age: 27, gender: "Female", lastVisit: "Apr 3, 2026",
+        tier: "low", eligible: false,
+        reasoning: "Early depression signals alongside ADHD managed by PCP; no functional impairment or prior mental health treatment — re-screen in 6 months.",
+        raw: { phq9: 6, gad7: null, pcl5: null, cssrs: 0, sds: 4, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
+        details: {
+          mentalHealthDx:  "MDD (2024), ADHD (2016)",
+          psychiatricMeds: ["Methylphenidate 20mg"],
+          chronicDx:       [],
+          erVisits:        null,
+          substanceUse:    "Methylphenidate prescribed for ADHD — managed by PCP. No illicit substance use or alcohol misuse reported.",
+          familyHistory:   "Paternal ADHD",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19, Tdap, HPV)",
+          vitals:          "BP 108/68, HR 78, BMI 21.6",
+          insurance:       "Parent's insurance (dependent coverage)",
+          referral:        { recommended: false, to: null, reason: "Not currently indicated. PHQ-9 of 6 is minimal; ADHD managed with stimulant medication. Continue monitoring for depressive symptom progression." },
+          phq9: { score: 6, date: "Mar 20, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 20, 2026" },
+          sds: { work: 3, social: 4, family: 3, date: "Mar 20, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: true, socialIsolation: false, aces: false },
+          therapyHistory: "No current therapy. First-time depression flag. ADHD managed with stimulant. No prior BH contact on file.",
+          hospitalizations: null,
+          generalMeds: []
+        }
+      },
+      {
+        id: 13, name: "Cynthia Holbrook", age: 66, gender: "Female", lastVisit: "Mar 7, 2026",
+        tier: "medium", eligible: true,
+        reasoning: "Bipolar I on escalating dual mood stabilizers with no BH contact in 22 months; prior hospitalization, socially isolated — complexity exceeds CoCM scope.",
+        raw: { phq9: 9, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 1, hospitalized: true, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "Bipolar I (2011)",
+          psychiatricMeds: ["Valproic Acid 750mg", "Lithium Carbonate 600mg"],
+          chronicDx:       ["Type 2 Diabetes", "Obesity"],
+          erVisits:        "1 visit in the last 22 months",
+          substanceUse:    "Prior alcohol use reported in history — currently in remission. No active substance use disorder documented.",
+          familyHistory:   "Mother: Bipolar I",
+          allergies:       "Carbamazepine",
+          surgicalHistory: "Cataract surgery (2023)",
+          immunization:    "Up to date (influenza, COVID-19, pneumococcal, shingles)",
+          vitals:          "BP 138/88, HR 76, BMI 31.4",
+          insurance:       "Medicare Advantage (Aetna)",
+          referral:        { recommended: true, to: "Outpatient Psychiatry", exclusionCriteria: "Active psychosis or acute mania", reason: "Bipolar I with dual mood stabilizer regimen (Valproic Acid + Lithium) requires psychiatrist oversight for lithium level monitoring, LFTs, and medication adjustments. Complexity exceeds CoCM scope." },
+          phq9: { score: 9, date: "Feb 8, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Feb 8, 2026" },
+          sds: { work: 8, social: 7, family: 6, date: "Feb 8, 2026" },
+          mdq: { score: 10, date: "Feb 8, 2026" },
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: true, aces: false },
+          therapyHistory: "No active BH provider. Escalating mood stabilizer dosage. Last known BH contact approximately 22 months ago.",
+          hospitalizations: "Psychiatric hospitalization (2022)",
+          generalMeds: ["Metformin 1000mg", "Insulin glargine 18 units nightly"]
+        }
+      },
+      {
+        id: 14, name: "Irene Callaway", age: 46, gender: "Female", lastVisit: "Apr 5, 2026",
+        tier: "medium", eligible: true,
+        reasoning: "Moderate depression with persistent anhedonia and medication non-adherence; 2 chronic conditions with no behavioral health contact in 16 months.",
+        raw: { phq9: 12, gad7: null, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: false },
+        details: {
+          mentalHealthDx:  "MDD (2021)",
+          psychiatricMeds: ["Sertraline 100mg"],
+          chronicDx:       ["Hypertension", "Obesity"],
+          erVisits:        null,
+          substanceUse:    "No substance use disorder reported. Occasional alcohol use — not clinically significant.",
+          familyHistory:   "Maternal depression",
+          allergies:       "Sulfa drugs",
+          surgicalHistory: "Cholecystectomy (2017)",
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 146/92, HR 80, BMI 34.8",
+          insurance:       "UnitedHealthcare PPO",
+          referral:        { recommended: false, to: null, reason: "Good CoCM candidate. PHQ-9 of 12 with documented medication non-adherence and no BH contact in 16 months. Integrated care model well suited to improve engagement and adherence." },
+          phq9: { score: 12, date: "Mar 18, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 18, 2026" },
+          sds: { work: 8, social: 6, family: 7, date: "Mar 18, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: true, socialIsolation: false, aces: false },
+          therapyHistory: "No active BH provider. Last documented BH contact approximately 16 months ago. Prior SSRI trial — switched due to side effects.",
+          hospitalizations: null,
+          generalMeds: ["Amlodipine 5mg", "Hydrochlorothiazide 12.5mg"]
+        }
+      },
+      {
+        id: 15, name: "Darius Flemming", age: 37, gender: "Male", lastVisit: "Apr 10, 2026",
+        tier: "high", eligible: true,
+        reasoning: "Elevated depression and anxiety with active PTSD and no prior BH provider; housing insecure with 2 ED visits in the past year.",
+        raw: { phq9: 13, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "PTSD (2023), GAD (2022)",
+          psychiatricMeds: ["Escitalopram 20mg", "Prazosin 1mg"],
+          chronicDx:       ["Type 2 Diabetes"],
+          erVisits:        "2 visits in the last 12 months",
+          substanceUse:    "No substance use disorder reported. Denied alcohol and illicit substance use at last visit.",
+          familyHistory:   "No known family psychiatric history",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19, Tdap)",
+          vitals:          "BP 130/84, HR 94, BMI 27.3",
+          insurance:       "Medicaid",
+          referral:        { recommended: false, to: null, reason: "High-risk CoCM candidate. PHQ-9 of 13 and GAD-7 of 11 with PTSD, 2 ED visits, and housing instability. CoCM Intensive Track with psychiatric consultation indicated." },
+          phq9: { score: 13, date: "Apr 2, 2026" },
+          gad7: { score: 11, date: "Apr 2, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Apr 2, 2026" },
+          sds: { work: 8, social: 7, family: 6, date: "Apr 2, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: true, foodInsecurity: false, socialIsolation: true, aces: true },
+          therapyHistory: "No active BH provider. No prior formal therapy documented. First presentation to BH services.",
+          hospitalizations: null,
+          generalMeds: ["Metformin 500mg", "Lisinopril 5mg"]
+        }
+      },
+      {
+        id: 17, name: "Liam Carver", age: 43, gender: "Male", lastVisit: "Apr 3, 2026",
+        tier: "high", eligible: true,
+        reasoning: "Moderate-to-severe depression and anxiety with prior psychiatric hospitalization; chronic pain on long-term opioids, housing insecure, no BH contact in 13 months.",
+        raw: { phq9: 14, gad7: 10, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: true, nonAdherent: false, housingInsecurity: true, foodInsecurity: false, socialIsolation: false },
+        details: {
+          mentalHealthDx:  "Bipolar II (2016)",
+          psychiatricMeds: ["Lamotrigine 150mg"],
+          chronicDx:       ["Chronic Pain", "Hypertension"],
+          erVisits:        null,
+          substanceUse:    "Opioid use: Oxycodone 5mg prescribed for chronic pain — active 16 months. Monitored via PDMP. No illicit substance use reported.",
+          familyHistory:   "Father: Bipolar II",
+          allergies:       "Codeine",
+          surgicalHistory: "Lumbar fusion (2020)",
+          immunization:    "Up to date (influenza, COVID-19, Tdap)",
+          vitals:          "BP 138/90, HR 82, BMI 28.5",
+          insurance:       "Cigna PPO",
+          referral:        { recommended: false, to: null, reason: "High-risk CoCM candidate. Bipolar II with prior hospitalization and long-term opioid use — intensive CoCM with psychiatric consultation for mood-opioid interaction monitoring." },
+          phq9: { score: 14, date: "Mar 26, 2026" },
+          gad7: { score: 10, date: "Mar 26, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 26, 2026" },
+          sds: { work: 8, social: 6, family: 7, date: "Mar 26, 2026" },
+          mdq: { score: 7, date: "Mar 26, 2026" },
+          audit10: null,
+          sdoh: { housingInsecurity: true, foodInsecurity: false, socialIsolation: false, aces: true },
+          therapyHistory: "Prior psychiatric hospitalization (2021). Last known BH contact approximately 13 months ago. No active therapist on file.",
+          hospitalizations: "Psychiatric hospitalization (2021)",
+          generalMeds: ["Oxycodone 5mg", "Lisinopril 10mg", "Gabapentin 300mg"]
+        }
+      },
+      {
+        id: 18, name: "Nadia Holloway", age: 35, gender: "Female", lastVisit: "Apr 8, 2026",
+        tier: "medium", eligible: true,
+        reasoning: "Moderate depression with ADHD complicating treatment response; prior antidepressant failure, marked work impairment, socially isolated.",
+        raw: { phq9: 11, gad7: null, pcl5: null, cssrs: 0, sds: 7, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "MDD (2023), ADHD (2017)",
+          psychiatricMeds: ["Venlafaxine 75mg", "Amphetamine salts 25mg"],
+          chronicDx:       ["Hypothyroidism"],
+          erVisits:        null,
+          substanceUse:    "Stimulant use: Amphetamine salts 25mg prescribed for ADHD — active. Monitored via PDMP. No illicit substance use reported.",
+          familyHistory:   "Maternal MDD",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19, HPV)",
+          vitals:          "BP 114/74, HR 86, BMI 23.4",
+          insurance:       "Aetna PPO",
+          referral:        { recommended: false, to: null, reason: "Standard CoCM candidate. PHQ-9 of 11 with ADHD comorbidity. CoCM can coordinate mood and ADHD management, monitor treatment response, and address social isolation." },
+          phq9: { score: 11, date: "Apr 2, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Apr 2, 2026" },
+          sds: { work: 7, social: 6, family: 5, date: "Apr 2, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: true, aces: false },
+          therapyHistory: "Prior Venlafaxine trial at 37.5mg — dose escalated due to partial response. Last BH contact approximately 9 months ago. No active therapist.",
+          hospitalizations: null,
+          generalMeds: ["Levothyroxine 50mcg"]
+        }
+      },
+      {
+        id: 19, name: "Walter Brinkmann", age: 65, gender: "Male", lastVisit: "Mar 20, 2026",
+        tier: "high", eligible: true,
+        reasoning: "Severe depression and functional decline complicated by CHF, diabetes, and chronic pain on opioids — housing insecure with 2 ED visits in 12 months.",
+        raw: { phq9: 15, gad7: null, pcl5: null, cssrs: 0, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: true, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "MDD (2017)",
+          psychiatricMeds: ["Sertraline 100mg"],
+          chronicDx:       ["CHF", "Type 2 Diabetes", "Chronic Pain"],
+          erVisits:        "2 visits in the last 12 months",
+          substanceUse:    "Opioid use: Hydrocodone 5mg prescribed for chronic pain — active 2 years. Monitored via PDMP. No illicit substance use reported.",
+          familyHistory:   "No known family psychiatric history",
+          allergies:       "ACE inhibitors (cough)",
+          surgicalHistory: "CABG (2019), Left knee replacement (2021)",
+          immunization:    "Up to date (influenza, COVID-19, pneumococcal, shingles)",
+          vitals:          "BP 150/94, HR 70, BMI 30.1, EF 38%",
+          insurance:       "Medicare Advantage (Humana)",
+          referral:        { recommended: false, to: null, reason: "High-risk CoCM candidate. PHQ-9 of 15 with complex medical burden and functional decline. CoCM Intensive Track with psychiatric consultation indicated — attention to opioid-antidepressant interaction and CHF adherence barriers." },
+          phq9: { score: 15, date: "Mar 6, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 6, 2026" },
+          sds: { work: 9, social: 8, family: 7, date: "Mar 6, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: true, foodInsecurity: false, socialIsolation: true, aces: false },
+          therapyHistory: "No active BH provider. No documented therapy in over 4 years. Sertraline initiated by PCP — no psychiatric oversight.",
+          hospitalizations: null,
+          generalMeds: ["Furosemide 40mg", "Carvedilol 6.25mg", "Metformin 500mg", "Hydrocodone 5mg", "Spironolactone 25mg"]
+        }
+      },
+      {
+        id: 21, name: "Victor Stanhope", age: 74, gender: "Male", lastVisit: "Mar 24, 2026",
+        tier: "high", eligible: true,
+        reasoning: "Severe depression and anxiety with COPD and hypertension; medication non-adherent, food insecure, socially isolated — 2 ED visits in 12 months.",
+        raw: { phq9: 16, gad7: 11, pcl5: null, cssrs: 0, sds: 9, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 2, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "MDD (2014)",
+          psychiatricMeds: ["Desvenlafaxine 100mg"],
+          chronicDx:       ["COPD", "Hypertension", "Obesity"],
+          erVisits:        "2 visits in the last 12 months",
+          substanceUse:    "Former smoker — quit 2019. No current substance use reported.",
+          familyHistory:   "No known family psychiatric history",
+          allergies:       "Penicillin",
+          surgicalHistory: "Bilateral hip replacement (2018)",
+          immunization:    "Up to date (influenza, COVID-19, pneumococcal, shingles, RSV)",
+          vitals:          "BP 154/96, HR 78, BMI 32.2, O2 Sat 93%",
+          insurance:       "Medicare Part B + Supplement",
+          referral:        { recommended: false, to: null, reason: "High-risk CoCM candidate. Elevated PHQ-9 and GAD-7 with 2 ED visits and medication non-adherence across multiple conditions. CoCM Intensive Track with psychiatric consultation indicated." },
+          phq9: { score: 16, date: "Mar 10, 2026" },
+          gad7: { score: 11, date: "Mar 10, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 10, 2026" },
+          sds: { work: 9, social: 8, family: 7, date: "Mar 10, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: true, socialIsolation: true, aces: false },
+          therapyHistory: "No active BH provider. Last documented BH contact approximately 26 months ago. Long-term desvenlafaxine managed by PCP without psychiatric oversight.",
+          hospitalizations: null,
+          generalMeds: ["Tiotropium 18mcg", "Amlodipine 10mg", "Albuterol inhaler PRN", "Atorvastatin 40mg"]
+        }
+      },
+      {
+        id: 23, name: "Quentin Albright", age: 57, gender: "Male", lastVisit: "Apr 9, 2026",
+        tier: "high", eligible: true,
+        reasoning: "Severe depression and anxiety with prior psychiatric hospitalization; persistent medication non-adherence, housing insecure, socially isolated.",
+        raw: { phq9: 14, gad7: 11, pcl5: null, cssrs: 0, sds: 8, functionalImpairment: true, priorTreatmentFailure: true, chronicConditions: 2, edVisits: 0, hospitalized: true, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: true, foodInsecurity: false, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "MDD (2019)",
+          psychiatricMeds: ["Duloxetine 60mg"],
+          chronicDx:       ["Type 2 Diabetes", "Hypertension", "Obesity"],
+          erVisits:        null,
+          substanceUse:    "No substance use disorder reported. Denied alcohol and illicit substance use at last visit.",
+          familyHistory:   "Paternal depression",
+          allergies:       "NKDA",
+          surgicalHistory: "Hernia repair (2015)",
+          immunization:    "Up to date (influenza, COVID-19, Tdap)",
+          vitals:          "BP 148/94, HR 84, BMI 35.7",
+          insurance:       "BlueCross BlueShield HMO",
+          referral:        { recommended: false, to: null, reason: "High-risk CoCM candidate. PHQ-9 of 14, GAD-7 of 11, prior hospitalization, and persistent medication non-adherence. CoCM Intensive Track with psychiatric consultation indicated." },
+          phq9: { score: 14, date: "Apr 4, 2026" },
+          gad7: { score: 11, date: "Apr 4, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Apr 4, 2026" },
+          sds: { work: 8, social: 7, family: 6, date: "Apr 4, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: true, foodInsecurity: false, socialIsolation: true, aces: false },
+          therapyHistory: "Prior psychiatric hospitalization (2023). Duloxetine initiated post-discharge. Last known BH contact approximately 10 months ago. No active therapist.",
+          hospitalizations: "Psychiatric hospitalization (2023)",
+          generalMeds: ["Metformin 500mg", "Lisinopril 10mg", "Atorvastatin 20mg"]
+        }
+      },
+      {
+        id: 25, name: "Grant Pendleton", age: 46, gender: "Male", lastVisit: "Mar 28, 2026",
+        tier: "low", eligible: false,
+        reasoning: "Subclinical low mood with prior antidepressant trial and partial response; food insecure, socially isolated — watchful waiting, re-screen in 6 months.",
+        raw: { phq9: 7, gad7: null, pcl5: null, cssrs: 0, sds: 5, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "Dysthymia (2022)",
+          psychiatricMeds: [],
+          chronicDx:       ["Hypertension"],
+          erVisits:        null,
+          substanceUse:    "No substance use disorder. Social alcohol use — 2-3 drinks/week, not clinically significant.",
+          familyHistory:   "No known family psychiatric history",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 136/84, HR 72, BMI 26.8",
+          insurance:       "UnitedHealthcare HMO",
+          referral:        { recommended: false, to: null, reason: "Low risk. PHQ-9 of 7 — below threshold. Prior SSRI trial with partial response. Monitor and re-screen in 6 months; escalate if PHQ-9 reaches 10+." },
+          phq9: { score: 7, date: "Mar 14, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 14, 2026" },
+          sds: { work: 5, social: 5, family: 4, date: "Mar 14, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: true, socialIsolation: true, aces: false },
+          therapyHistory: "Prior escitalopram trial (2023) — partial response, discontinued. Last BH contact approximately 16 months ago. No active provider.",
+          hospitalizations: null,
+          generalMeds: ["Amlodipine 5mg"]
+        }
+      },
+      {
+        id: 26, name: "Fiona Larrabee", age: 51, gender: "Female", lastVisit: "Apr 1, 2026",
+        tier: "low", eligible: false,
+        reasoning: "Subclinical depression with mild medication non-adherence on antidepressant; medically stable with no functional impairment — re-screen in 6 months.",
+        raw: { phq9: 7, gad7: null, pcl5: null, cssrs: 0, sds: 4, functionalImpairment: false, priorTreatmentFailure: true, chronicConditions: 1, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: true, housingInsecurity: false, foodInsecurity: false, socialIsolation: false },
+        details: {
+          mentalHealthDx:  "MDD (2024)",
+          psychiatricMeds: ["Escitalopram 10mg"],
+          chronicDx:       ["Type 2 Diabetes"],
+          erVisits:        null,
+          substanceUse:    "No substance use disorder reported.",
+          familyHistory:   "No known family psychiatric history",
+          allergies:       "Penicillin",
+          surgicalHistory: "C-section (2003)",
+          immunization:    "Up to date (influenza, COVID-19)",
+          vitals:          "BP 126/80, HR 78, BMI 30.6",
+          insurance:       "Cigna HMO",
+          referral:        { recommended: false, to: null, reason: "Low risk. PHQ-9 of 7 with stable mood and no functional impairment. Medication non-adherence noted — address at next visit. Re-screen in 6 months." },
+          phq9: { score: 7, date: "Mar 20, 2026" },
+          gad7: null,
+          pcl5: null,
+          cssrs: { score: 0, date: "Mar 20, 2026" },
+          sds: { work: 4, social: 4, family: 3, date: "Mar 20, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: false, socialIsolation: false, aces: false },
+          therapyHistory: "Escitalopram initiated by PCP in 2024. Inconsistent adherence documented. No formal therapy history.",
+          hospitalizations: null,
+          generalMeds: ["Metformin 500mg", "Atorvastatin 10mg"]
+        }
+      },
+      {
+        id: 28, name: "Maisie Thornton", age: 24, gender: "Female", lastVisit: "Apr 10, 2026",
+        tier: "low", eligible: false,
+        reasoning: "Mild first-episode depression with no prior mental health treatment; food insecure, socially isolated — psychoeducation and re-screen in 6 months.",
+        raw: { phq9: 6, gad7: 5, pcl5: null, cssrs: 0, sds: 3, functionalImpairment: false, priorTreatmentFailure: false, chronicConditions: 0, edVisits: 0, hospitalized: false, chronicPainOpioid: false, nonAdherent: false, housingInsecurity: false, foodInsecurity: true, socialIsolation: true },
+        details: {
+          mentalHealthDx:  "MDD (2025)",
+          psychiatricMeds: [],
+          chronicDx:       [],
+          erVisits:        null,
+          substanceUse:    "No substance use disorder reported. Denied alcohol and illicit substance use.",
+          familyHistory:   "Maternal depression",
+          allergies:       "NKDA",
+          surgicalHistory: null,
+          immunization:    "Up to date (influenza, COVID-19, HPV, Tdap)",
+          vitals:          "BP 104/64, HR 76, BMI 21.2",
+          insurance:       "Parent's insurance (dependent coverage)",
+          referral:        { recommended: false, to: null, reason: "Low risk. First episode MDD with subclinical PHQ-9 and no functional impairment. Recommend psychoeducation and lifestyle counseling. Re-screen in 6 months." },
+          phq9: { score: 6, date: "Apr 4, 2026" },
+          gad7: { score: 5, date: "Apr 4, 2026" },
+          pcl5: null,
+          cssrs: { score: 0, date: "Apr 4, 2026" },
+          sds: { work: 3, social: 3, family: 3, date: "Apr 4, 2026" },
+          mdq: null,
+          audit10: null,
+          sdoh: { housingInsecurity: false, foodInsecurity: true, socialIsolation: true, aces: false },
+          therapyHistory: "No prior BH treatment. First-time presentation. No active medications.",
+          hospitalizations: null,
+          generalMeds: []
+        }
+      }
+    ];
+
+    const RISK_LABELS = { high: 'High Risk', medium: 'Medium Risk', low: 'Low Risk' };
+
+    function computeScore(raw) {
+      const symptom = Math.min(10,
+        (raw.phq9  >= 10 ? 3 : 0) +
+        (raw.gad7  >= 10 ? 3 : 0) +
+        (raw.pcl5  >= 33 ? 2 : 0) +
+        (raw.cssrs >= 2  ? 2 : 0)
+      );
+      const functional = Math.min(5,
+        (raw.sds >= 7              ? 2 : 0) +
+        (raw.functionalImpairment  ? 2 : 0) +
+        (raw.priorTreatmentFailure ? 1 : 0)
+      );
+      const medical = Math.min(6,
+        (raw.chronicConditions >= 2            ? 2 : 0) +
+        (raw.edVisits >= 2 || raw.hospitalized ? 2 : 0) +
+        (raw.chronicPainOpioid                 ? 1 : 0) +
+        (raw.nonAdherent                       ? 1 : 0)
+      );
+      const sdoh = Math.min(4,
+        (raw.housingInsecurity ? 2 : 0) +
+        (raw.foodInsecurity    ? 1 : 0) +
+        (raw.socialIsolation   ? 1 : 0)
+      );
+      return { symptom, functional, medical, sdoh, total: symptom + functional + medical + sdoh };
+    }
+    function getTier(total) {
+      if (total >= 17) return 'high';
+      if (total >= 9)  return 'medium';
+      return 'low';
+    }
+    function domainSignals(raw) {
+      const syms = [];
+      if (raw.phq9  >= 10) syms.push('PHQ-9 ' + raw.phq9);
+      if (raw.gad7  >= 10) syms.push('GAD-7 ' + raw.gad7);
+      if (raw.pcl5  >= 33) syms.push('PCL-5 ' + raw.pcl5);
+      if (raw.cssrs >= 2)  syms.push('C-SSRS ' + raw.cssrs);
+      const funcs = [];
+      if (raw.sds >= 7)              funcs.push('SDS ' + raw.sds + '/10');
+      if (raw.functionalImpairment)  funcs.push('Unable to maintain work/school/home');
+      if (raw.priorTreatmentFailure) funcs.push('Prior treatment failure');
+      const meds = [];
+      if (raw.chronicConditions >= 2)            meds.push(raw.chronicConditions + ' chronic conditions');
+      if (raw.edVisits >= 2 || raw.hospitalized) meds.push(raw.edVisits >= 2 ? raw.edVisits + ' ED visits' : 'Prior hospitalization');
+      if (raw.chronicPainOpioid)                 meds.push('Chronic pain + opioids');
+      if (raw.nonAdherent)                       meds.push('Medication non-adherence');
+      const sdohs = [];
+      if (raw.housingInsecurity) sdohs.push('Housing insecurity');
+      if (raw.foodInsecurity)    sdohs.push('Food insecurity');
+      if (raw.socialIsolation)   sdohs.push('Social isolation');
+      return { syms, funcs, meds, sdohs };
+    }
+    function domainBar(name, score, max, signals) {
+      var pct = max > 0 ? (score / max * 100) : 0;
+      var color = pct >= 67 ? '#E11D48' : pct >= 34 ? '#D97706' : 'var(--primary)';
+      var sigText = signals.length
+        ? signals.map(function(s) { return '<span class="domain-signal-tag">' + s + '</span>'; }).join('')
+        : '<span class="domain-signal-tag" style="color:#9CA3AF;background:none;padding-left:0">No criteria met</span>';
+      return '<div class="domain-row">' +
+        '<div class="domain-header">' +
+        '<span class="domain-name">' + name + '</span>' +
+        '<span class="domain-score-label">' + score + ' / ' + max + '</span>' +
+        '</div>' +
+        '<div class="domain-track">' +
+        '<div class="domain-fill" data-pct="' + pct.toFixed(1) + '" style="background:' + color + '"></div>' +
+        '</div>' +
+        '<div class="domain-signals">' + sigText + '</div>' +
+        '</div>';
+    }
+    function buildGaugeSVG(total, tier) {
+      var color  = tier === 'high' ? '#E11D48' : tier === 'medium' ? '#D97706' : '#0EA5E9';
+      var colorL = tier === 'high' ? '#FB7185' : tier === 'medium' ? '#FDBA74' : '#7DD3FC';
+      var label  = tier === 'high' ? 'High Risk' : tier === 'medium' ? 'Moderate Risk' : 'Low Risk';
+      var gradId = 'g_' + tier;
+      var r = 76, cx = 100, cy = 100;
+      var C      = 2 * Math.PI * r;
+      var arcLen = C * 0.75;
+      var lowLen  = arcLen * (8 / 25);
+      var medLen  = arcLen * (8 / 25);
+      var highLen = arcLen * (9 / 25);
+      var fillLen = arcLen * (total / 25);
+
+      var startDeg = 135;
+      var medDeg   = startDeg + (8 / 25) * 270;
+      var highDeg  = startDeg + (16 / 25) * 270;
+
+      return '<div style="width:260px;max-width:100%;margin:16px auto 26px;">' +
+        '<svg viewBox="0 0 200 166" style="width:100%;display:block;">' +
+        '<defs>' +
+          '<linearGradient id="' + gradId + '" x1="0" y1="0" x2="1" y2="0">' +
+            '<stop offset="0%" stop-color="' + colorL + '"/>' +
+            '<stop offset="100%" stop-color="' + color + '"/>' +
+          '</linearGradient>' +
+        '</defs>' +
+        '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="#E5E7EB" stroke-width="18" stroke-dasharray="' + arcLen.toFixed(1) + ' ' + C.toFixed(1) + '" stroke-linecap="round" transform="rotate(' + startDeg + ',' + cx + ',' + cy + ')"/>' +
+        '<circle id="gauge-arc-fill" cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="url(#' + gradId + ')" stroke-width="18" stroke-dasharray="' + fillLen.toFixed(1) + ' ' + C.toFixed(1) + '" stroke-dashoffset="' + fillLen.toFixed(1) + '" stroke-linecap="round" transform="rotate(' + startDeg + ',' + cx + ',' + cy + ')" style="transition:stroke-dashoffset 1.1s cubic-bezier(0.4,0,0.2,1);"/>' +
+        '<text text-anchor="middle" x="100" y="97" font-family="Geist,Inter,sans-serif">' +
+          '<tspan font-size="44" font-weight="800" fill="#111827" letter-spacing="-2">' + total + '</tspan>' +
+          '<tspan font-size="19" font-weight="400" fill="#9CA3AF"> /25</tspan>' +
+        '</text>' +
+        '<text x="100" y="121" text-anchor="middle" fill="' + color + '" font-size="14" font-weight="600" font-family="Geist,Inter,sans-serif">' + label + '</text>' +
+        '</svg></div>';
+    }
+
+    function buildEligibilityCard(p, delay) {
+      if (!p.raw) return '';
+      var domains = computeScore(p.raw);
+      var tier    = getTier(domains.total);
+      var sigs    = domainSignals(p.raw);
+      return '<div class="card animate-in" id="sec-eligibility" style="animation-delay:' + delay + 'ms">' +
+        '<div class="card-title" style="justify-content:space-between;">' +
+          '<span style="display:flex;align-items:center;gap:6px;"><span id="elig-info-icon" class="elig-info-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>CoCM Eligibility</span>' +
+          (tier === 'low'
+            ? '<span style="font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:5px 14px;border-radius:999px;text-transform:none;letter-spacing:0;">Monitoring</span>'
+            : '<span style="font-size:12px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:5px 14px;border-radius:999px;text-transform:none;letter-spacing:0;">CoCM Eligible</span>') +
+        '</div>' +
+        buildGaugeSVG(domains.total, tier) +
+        '<div class="domain-list">' +
+        domainBar('Symptom Severity',      domains.symptom,    10, sigs.syms)  +
+        '<div class="domain-sep"></div>' +
+        domainBar('Functional Impairment', domains.functional,  5, sigs.funcs) +
+        '<div class="domain-sep"></div>' +
+        domainBar('Medical Complexity',    domains.medical,     6, sigs.meds)  +
+        '<div class="domain-sep"></div>' +
+        domainBar('SDOH Burden',           domains.sdoh,        4, sigs.sdohs) +
+        '</div>' +
+        '</div>';
+    }
+
+    function phq9Interp(s) {
+      if (s <= 4)  return 'Minimal';
+      if (s <= 9)  return 'Mild';
+      if (s <= 14) return 'Moderate';
+      if (s <= 19) return 'Moderately severe';
+      return 'Severe';
+    }
+    function gad7Interp(s) {
+      if (s <= 4)  return 'Minimal';
+      if (s <= 9)  return 'Mild';
+      if (s <= 14) return 'Moderate';
+      return 'Severe';
+    }
+    const C_LOW = '#0EA5E9', C_MED = '#D97706', C_HIGH = '#E11D48';
+    function scoreColor(s, type) {
+      if (type === 'phq9')    return s<=4?C_LOW:s<=9?C_MED:C_HIGH;
+      if (type === 'gad7')    return s<=4?C_LOW:s<=9?C_MED:C_HIGH;
+      if (type === 'pcl5')    return s>=33?C_HIGH:C_LOW;
+      if (type === 'cssrs')   return s===0?C_LOW:s<=2?C_MED:C_HIGH;
+      if (type === 'sds')     return s>=7?C_HIGH:s>=4?C_MED:C_LOW;
+      if (type === 'mdq')     return s>=7?C_HIGH:C_LOW;
+      if (type === 'audit10') return s<=7?C_LOW:s<=15?C_MED:C_HIGH;
+      return '#6b7280';
+    }
+    function scoreInterp(s, type) {
+      if (type === 'phq9')    return phq9Interp(s);
+      if (type === 'gad7')    return gad7Interp(s);
+      if (type === 'pcl5')    return s>=33?'PTSD probable':'Below threshold';
+      if (type === 'cssrs')   return s===0?'No ideation':s<=2?'Active ideation':'Ideation + plan';
+      if (type === 'sds')     return s>=7?'Marked':s>=4?'Moderate':'Mild';
+      if (type === 'mdq')     return s>=7?'Screen positive':'Screen negative';
+      if (type === 'audit10') return s<=7?'Low risk':s<=15?'Hazardous use':s<=19?'Harmful use':'Probable dependence';
+      return '';
+    }
+    function sdohRow(label, present) {
+      return '<div class="sdoh-row">' +
+        '<span class="sdoh-label">' + label + '</span>' +
+        (present
+          ? '<span class="sdoh-flag-yes">Present</span>'
+          : '<span class="sdoh-flag-no">Not documented</span>') +
+        '</div>';
+    }
+
+    function buildKeySignals(p, d) {
+      var r = p.raw;
+      if (!r) return [];
+      var signals = [];
+      if (r.cssrs >= 3) signals.push({ alert: true, text: 'Active suicidal ideation with plan or intent — C-SSRS ' + r.cssrs });
+      else if (r.cssrs >= 2) signals.push({ alert: true, text: 'Active suicidal ideation flagged — C-SSRS ' + r.cssrs });
+      if (r.pcl5 >= 33) signals.push({ text: 'PTSD criteria met — PCL-5 ' + r.pcl5 });
+      if (r.phq9 >= 15) signals.push({ text: 'Moderately severe depression — PHQ-9 ' + r.phq9 });
+      else if (r.phq9 >= 10) signals.push({ text: 'Moderate depression — PHQ-9 ' + r.phq9 });
+      if (r.gad7 >= 10) signals.push({ text: 'Moderate to severe anxiety — GAD-7 ' + r.gad7 });
+      if (r.chronicPainOpioid) signals.push({ text: 'Active opioid prescription for chronic pain' });
+      if (r.edVisits >= 2) signals.push({ text: r.edVisits + ' ED visits in the past 12 months' });
+      else if (r.hospitalized) signals.push({ text: 'Prior psychiatric hospitalization' });
+      if (r.sds >= 7 && r.functionalImpairment) signals.push({ text: 'Marked functional impairment — unable to maintain work, school, or home (SDS ' + r.sds + '/10)' });
+      else if (r.sds >= 7) signals.push({ text: 'SDS ' + r.sds + '/10 — marked functional impairment' });
+      var gap = d.therapyHistory && d.therapyHistory.match(/(\d+)[- ]month/);
+      if (gap) signals.push({ text: 'No behavioral health contact in ' + gap[1] + ' months' });
+      var sdohList = [];
+      if (d.sdoh) {
+        if (d.sdoh.housingInsecurity) sdohList.push('housing insecurity');
+        if (d.sdoh.foodInsecurity)    sdohList.push('food insecurity');
+        if (d.sdoh.socialIsolation)   sdohList.push('social isolation');
+      }
+      if (sdohList.length) signals.push({ text: 'SDOH: ' + sdohList.join(', ') });
+      return signals.slice(0, 5);
+    }
+
+    function sevColor(key, score) {
+      if (score === null || score === undefined) return '#9CA3AF';
+      if (key === 'phq9')    return score <= 4 ? '#0EA5E9' : score <= 9 ? '#D97706' : '#E11D48';
+      if (key === 'gad7')    return score <= 4 ? '#0EA5E9' : score <= 9 ? '#D97706' : '#E11D48';
+      if (key === 'cssrs')   return score === 0 ? '#0EA5E9' : score <= 1 ? '#D97706' : '#E11D48';
+      if (key === 'pcl5')    return score < 33  ? '#0EA5E9' : '#E11D48';
+      if (key === 'sds')     return score < 5   ? '#0EA5E9' : score <= 6 ? '#D97706' : '#E11D48';
+      if (key === 'mdq')     return score <= 7  ? '#0EA5E9' : '#E11D48';
+      if (key === 'audit10') return score <= 7  ? '#0EA5E9' : score <= 15 ? '#D97706' : '#E11D48';
+      return '#9CA3AF';
+    }
+
+    function sdsBox(obj) {
+      if (!obj) return '';
+      const maxItem = Math.max(obj.work, obj.social, obj.family);
+      return scoreBox('SDS', { score: maxItem, date: obj.date }, 10, 'sds');
+    }
+
+    function scoreBox(label, obj, max, type) {
+      if (!obj) return '';
+      const pct    = Math.min((obj.score / max) * 100, 100).toFixed(1);
+      const interp = scoreInterp(obj.score, type);
+      const color  = sevColor(type, obj.score);
+      return `
+        <div class="score-box">
+          <div class="score-label">${label}</div>
+          <div class="score-num">${obj.score}</div>
+          <div class="score-interp">${interp}</div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill" data-pct="${pct}" style="background:${color}"></div>
+          </div>
+          <div class="score-date">${obj.date}</div>
+        </div>`;
+    }
+
+    function clRow(label, value) {
+      return `<div class="cl-row">
+        <span class="cl-label">${label}</span>
+        <span class="cl-value ${value ? '' : 'cl-na'}">${value || 'Not documented'}</span>
+      </div>`;
+    }
+
+    const REASON_LABELS = { insurance: 'Insurance', personal: 'Personal', financial: 'Financial', other: 'Other' };
+
+    function buildPriorReferralCard(p, delay) {
+      if (p.status !== 'referred') return '';
+      var reasons = p.referralReasons || ['other'];
+      var noteHtml = p.referralReasonNote
+        ? '<div style="margin-top:20px;background:#F9FAFB;border-radius:10px;padding:14px 16px;font-size:13px;color:var(--text-mid);line-height:1.75;">' + p.referralReasonNote + '</div>'
+        : '';
+      return '<div class="card prior-referral-card animate-in" style="animation-delay:' + delay + 'ms">' +
+        '<div style="margin-bottom:4px;">' +
+          '<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px;">Prior Referral</div>' +
+          '<div style="font-size:15px;font-weight:700;color:var(--text);">' + (p.referredDate || '') + '</div>' +
+        '</div>' +
+        '<div style="margin-top:18px;">' +
+          '<div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Reasons for not enrolling</div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+            reasons.map(function(r) {
+              return '<span class="prior-ref-reason-tag active">' + (REASON_LABELS[r] || r) + '</span>';
+            }).join('') +
+          '</div>' +
+        '</div>' +
+        noteHtml +
+        '</div>';
+    }
+
+    function buildAssessmentsCard(d, delay) {
+      function aRow(name, key, score, max, interp, isLast) {
+        var has   = score !== null && score !== undefined;
+        var color = sevColor(key, score);
+        var pct   = has ? Math.min(100, Math.round(score / max * 100)) : 0;
+        var border = isLast ? '' : 'border-bottom:0.5px solid var(--border);';
+        return '<div style="display:grid;grid-template-columns:80px 44px 1fr 130px;gap:12px;align-items:center;padding:14px 0;' + border + '">' +
+          '<span style="font-size:13px;font-weight:600;color:var(--text);">' + name + '</span>' +
+          '<span style="font-size:24px;font-weight:800;letter-spacing:-1px;color:' + (has ? 'var(--text)' : '#D1D5DB') + ';">' + (has ? score : '—') + '</span>' +
+          '<div style="height:8px;background:#F3F4F6;border-radius:999px;overflow:hidden;">' +
+            (has ? '<div class="score-bar-fill" style="height:100%;border-radius:999px;background:' + color + ';width:0;" data-pct="' + pct + '"></div>' : '') +
+          '</div>' +
+          '<span style="font-size:12px;font-weight:600;color:' + color + ';text-align:right;">' + (has ? interp : 'Not assessed') + '</span>' +
+        '</div>';
+      }
+      var phq9s  = d.phq9    ? d.phq9.score    : null;
+      var gad7s  = d.gad7    ? d.gad7.score    : null;
+      var csrs   = d.cssrs   ? d.cssrs.score   : null;
+      var pcl5s  = d.pcl5    ? d.pcl5.score    : null;
+      var sdss   = d.sds     ? Math.max(d.sds.work||0, d.sds.social||0, d.sds.family||0) : null;
+      var mdqs   = d.mdq     ? d.mdq.score     : null;
+      var audits = d.audit10 ? d.audit10.score : null;
+      return '<div class="card animate-in" id="sec-scores" style="animation-delay:' + delay + 'ms">' +
+        '<div class="card-title">Assessments</div>' +
+        aRow('PHQ-9',    'phq9',    phq9s,  27, phq9s  !== null ? phq9Interp(phq9s)  : '', false) +
+        aRow('GAD-7',    'gad7',    gad7s,  21, gad7s  !== null ? gad7Interp(gad7s)  : '', false) +
+        aRow('C-SSRS',   'cssrs',   csrs,    5, csrs   !== null ? scoreInterp(csrs,   'cssrs')   : '', false) +
+        aRow('PCL-5',    'pcl5',    pcl5s,  80, pcl5s  !== null ? (pcl5s >= 33 ? 'Probable PTSD' : 'Below threshold') : '', false) +
+        aRow('SDS',      'sds',     sdss,   10, sdss   !== null ? scoreInterp(sdss,   'sds')     : '', false) +
+        aRow('MDQ',      'mdq',     mdqs,   13, mdqs   !== null ? scoreInterp(mdqs,   'mdq')     : '', false) +
+        aRow('AUDIT-10', 'audit10', audits, 40, audits !== null ? scoreInterp(audits, 'audit10') : '', true) +
+      '</div>';
+    }
+
+    function buildSdohCard(d, delay) {
+  var sd = d.sdoh || {};
+  var items = [
+    { key: 'housingInsecurity', label: 'Housing Insecurity' },
+    { key: 'foodInsecurity',    label: 'Food Insecurity' },
+    { key: 'socialIsolation',   label: 'Social Isolation' },
+    { key: 'aces',              label: 'Adverse Childhood Experiences' }
+  ];
+  var tiles = items.map(function(item) {
+    var present = !!sd[item.key];
+    return '<div style="background:' + (present ? '#FFF1F2' : '#F9FAFB') + ';border-radius:12px;padding:18px 16px;display:flex;align-items:center;justify-content:center;text-align:center;">' +
+      '<span style="font-size:13px;font-weight:600;color:' + (present ? '#E11D48' : '#9CA3AF') + ';line-height:1.4;">' + item.label + '</span>' +
+    '</div>';
+  }).join('');
+  return '<div class="card animate-in" id="sec-sdoh" style="animation-delay:' + delay + 'ms">' +
+    '<div class="card-title">Social Determinants of Health</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">' + tiles + '</div>' +
+  '</div>';
+}
+
+    function buildClinicalCard(p, d, delay) {
+      function pill(text, bg, color) {
+        return '<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:500;background:' + bg + ';color:' + color + ';margin:2px 3px 2px 0;">' + text + '</span>';
+      }
+      function pills(arr, bg, color) {
+        if (!arr || !arr.length) return naText();
+        return arr.map(function(t) { return pill(t, bg, color); }).join('');
+      }
+      function naText() {
+        return '<span style="font-size:13px;color:var(--text-muted);font-style:italic;">Not documented</span>';
+      }
+      function textVal(v) {
+        return v ? '<span style="font-size:13px;color:var(--text);font-weight:400;line-height:1.6;">' + v + '</span>' : naText();
+      }
+      function cRow(label, content) {
+        return '<div class="c-row">' +
+          '<span style="font-size:13px;color:var(--text-muted);padding-top:3px;">' + label + '</span>' +
+          '<div>' + content + '</div>' +
+        '</div>';
+      }
+      function sectionHead(title) {
+        return '<div style="font-size:11px;font-weight:700;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.08em;padding:16px 0 4px;">' + title + '</div>';
+      }
+
+      var vitalContent = naText();
+      if (d.vitals) {
+        var vParts = d.vitals.split(',').map(function(v) { return v.trim(); });
+        vitalContent = '<div style="display:flex;gap:8px;">' +
+          vParts.map(function(v) {
+            var sp = v.indexOf(' ');
+            var lbl = v.substring(0, sp);
+            var val = v.substring(sp + 1);
+            return '<div style="flex:1;background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);">' +
+              '<div style="font-size:11px;font-weight:600;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;">' + lbl + '</div>' +
+              '<div style="font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.5px;">' + val + '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>';
+      }
+
+      var hasOpioid = p.raw && p.raw.chronicPainOpioid;
+      var opioidMedName = d.opioidRx ? d.opioidRx.split(' —')[0].trim() : 'Active';
+      var opioidBadge = hasOpioid
+        ? pill(opioidMedName, '#FFF1F2', '#E11D48')
+        : pill('None', '#F0FDFA', '#0EA5E9');
+
+      return (
+        '<div class="card animate-in" id="sec-mental" style="animation-delay:' + delay + 'ms">' +
+          '<div class="card-title">Clinical</div>' +
+          cRow('Diagnosis',        d.mentalHealthDx ? pill(d.mentalHealthDx, '#F3F4F6', '#374151') : naText()) +
+          cRow('Psychiatric meds', pills(d.psychiatricMeds, '#F3F4F6', '#374151')) +
+          cRow('Therapy',          textVal(d.therapyHistory)) +
+        '</div>' +
+
+        '<div class="card animate-in" id="sec-medical" style="animation-delay:' + (delay + 60) + 'ms">' +
+          '<div class="card-title">Medical</div>' +
+          cRow('Conditions',  pills(d.chronicDx,   '#F3F4F6', '#374151')) +
+          cRow('Medications', pills(d.generalMeds, '#F3F4F6', '#374151')) +
+          cRow('Opioid Rx',   opioidBadge) +
+          cRow('Vitals',      vitalContent) +
+        '</div>' +
+
+        '<div class="card animate-in" id="sec-background" style="animation-delay:' + (delay + 120) + 'ms">' +
+          '<div class="card-title">Background</div>' +
+          cRow('ER visits',         textVal(d.erVisits)) +
+          cRow('Hospitalizations',  textVal(d.hospitalizations)) +
+          cRow('Substance use',     textVal(d.substanceUse)) +
+          cRow('Family history',    textVal(d.familyHistory)) +
+          cRow('Surgical history',  textVal(d.surgicalHistory)) +
+          cRow('Insurance',         textVal(d.insurance)) +
+        '</div>'
+      );
+    }
+
+    function buildNotEnrollingCard(p, cTier, delay) { return ''; }
+
+    function render() {
+      var id   = parseInt(new URLSearchParams(location.search).get('id'), 10);
+      var p    = PATIENTS.find(function(x) { return x.id === id; });
+      var main = document.getElementById('main-content');
+
+      if (!p) { main.innerHTML = '<p style="color:var(--text-muted)">Patient not found.</p>'; return; }
+
+      document.title = p.name + ' \u2014 Patient Detail';
+      document.getElementById('topbar-name').textContent = p.name;
+
+      var d          = p.details;
+      var domains    = p.raw ? computeScore(p.raw) : null;
+      var cTier      = domains ? getTier(domains.total) : p.tier;
+      var delay      = 0;
+      var keySignals = buildKeySignals(p, d);
+      var signalsHtml = keySignals.length
+        ? keySignals.map(function(s) { return '<li class="key-signal' + (s.alert ? ' key-signal-alert' : '') + '">' + s.text + '</li>'; }).join('')
+        : '<li class="key-signal" style="color:var(--text-muted);font-style:italic">No key signals identified.</li>';
+
+      var storedStatus = localStorage.getItem('status_' + p.id) || p.status;
+      if (storedStatus === 'enrolled') { localStorage.removeItem('status_' + p.id); storedStatus = p.status; }
+      var enrollBtn = p.status === 'referred'
+          ? '<button id="header-action-btn" class="action-btn action-btn-enroll" onclick="handleReRefer()">Enroll</button>'
+          : cTier === 'low'
+            ? '<button id="header-action-btn" class="action-btn action-btn-done" disabled>Enroll</button>'
+            : storedStatus === 'archived'
+              ? '<button id="header-action-btn" class="action-btn action-btn-done" disabled>Not Enrolled</button>'
+              : '<button id="header-action-btn" class="action-btn action-btn-enroll" onclick="handleTopbarAction()">Enroll</button>';
+      var notEnrollBtn = (storedStatus !== 'enrolled' && storedStatus !== 'archived')
+        ? '<button id="not-enroll-header-btn" class="action-btn action-btn-not-enroll" onclick="showNotEnrollingModal()">Not Enroll</button>'
+        : '';
+      var headerBtn = '<div style="display:flex;flex-direction:column;gap:8px;width:160px;">' + enrollBtn + notEnrollBtn + '</div>';
+
+      var TIER_COLORS = { high: 'var(--high-text)', medium: 'var(--med-text)', low: 'var(--low-text)' };
+      var tierColor = TIER_COLORS[cTier] || '#6B7280';
+
+      main.innerHTML =
+        '<div class="patient-header animate-in" style="animation-delay:' + (delay=0) + 'ms">' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:' + tierColor + ';margin-bottom:8px;">' + RISK_LABELS[cTier] + '</div>' +
+            '<div class="header-name">' + p.name + '</div>' +
+            '<div class="header-meta" style="margin-top:5px;">' + p.age + ' yo \xB7 ' + p.gender + '</div>' +
+            '<div class="header-meta" style="margin-top:3px;">Last screening ' + p.lastVisit + '</div>' +
+          '</div>' +
+          '<div class="header-divider" style="width:1px;align-self:stretch;background:var(--border);margin:0 28px;flex-shrink:0;"></div>' +
+          headerBtn +
+        '</div>' +
+        buildPriorReferralCard(p, delay += 60) +
+        buildEligibilityCard(p, (delay += 60)) +
+        buildAssessmentsCard(d, delay += 60) +
+        buildSdohCard(d, delay += 60) +
+        buildClinicalCard(p, d, delay += 60) +
+        buildNotEnrollingCard(p, cTier, delay += 60);
+
+
+      // Topbar action button
+      var btn = document.getElementById('topbar-action-btn');
+      if (btn) {
+        btn.style.display = '';
+        if (storedStatus === 'enrolled') {
+          btn.className = 'action-btn action-btn-done';
+          btn.innerHTML = '<i class="ti ti-check"></i> Enrolled';
+        } else {
+          btn.style.display = 'none';
+          btn.className = 'action-btn action-btn-enroll';
+          btn.innerHTML = 'Enroll in CoCM';
+        }
+        btn.dataset.patientId = p.id;
+        btn.dataset.patientName = p.name;
+        btn.dataset.patientTier = cTier;
+      }
+
+      // Animate bars after paint
+      requestAnimationFrame(function() { requestAnimationFrame(function() {
+        document.querySelectorAll('.score-bar-fill, .domain-fill').forEach(function(bar) {
+          bar.style.width = bar.dataset.pct + '%';
+        });
+        var gaugeArc = document.getElementById('gauge-arc-fill');
+        if (gaugeArc) gaugeArc.style.strokeDashoffset = '0';
+      }); });
+    }
+
+    function handleTopbarAction() {
+      var btn  = document.getElementById('topbar-action-btn');
+      var name = btn.dataset.patientName;
+      var tier = btn.dataset.patientTier;
+      document.getElementById('pt-enroll-name').textContent = name + ' will be enrolled in the Collaborative Care Model program.';
+      document.getElementById('pt-enroll-track').textContent = tier === 'high' ? 'Intensive CoCM + Psychiatric Consultation' : 'Standard CoCM Track';
+      document.getElementById('pt-enroll-modal').style.display = 'flex';
+    }
+
+    function closePtEnrollModal() { document.getElementById('pt-enroll-modal').style.display = 'none'; }
+    function closePtReferModal()  { document.getElementById('pt-refer-modal').style.display  = 'none'; }
+
+    var selectedNotEnrollingReasons = [];
+    function showNotEnrollingModal() {
+      var btn  = document.getElementById('topbar-action-btn');
+      var name = btn ? btn.dataset.patientName : '';
+      selectedNotEnrollingReasons = [];
+      document.querySelectorAll('.reason-tag').forEach(function(t) { t.classList.remove('selected'); });
+      document.getElementById('other-reason-wrap').style.display = 'none';
+      document.getElementById('other-reason-input').value = '';
+      document.getElementById('pt-not-enrolling-name').textContent = name + ' will be marked as not enrolling and removed from the active eligibility list.';
+      document.getElementById('pt-not-enrolling-modal').style.display = 'flex';
+    }
+    function closeNotEnrollingModal() { document.getElementById('pt-not-enrolling-modal').style.display = 'none'; }
+    function toggleReason(el, reason) {
+      var idx = selectedNotEnrollingReasons.indexOf(reason);
+      if (idx > -1) {
+        selectedNotEnrollingReasons.splice(idx, 1);
+        el.classList.remove('selected');
+      } else {
+        selectedNotEnrollingReasons.push(reason);
+        el.classList.add('selected');
+      }
+      document.getElementById('other-reason-wrap').style.display =
+        selectedNotEnrollingReasons.indexOf('other') > -1 ? 'block' : 'none';
+    }
+    function confirmNotEnrolling() {
+      var id = parseInt(new URLSearchParams(location.search).get('id'), 10);
+      if (id) {
+        localStorage.setItem('status_' + id, 'archived');
+        var reasons = selectedNotEnrollingReasons.slice();
+        var otherText = document.getElementById('other-reason-input').value.trim();
+        if (otherText) reasons.push('other: ' + otherText);
+        if (reasons.length) localStorage.setItem('notEnrollReasons_' + id, reasons.join(', '));
+      }
+      closeNotEnrollingModal();
+      var notEnrollBtn = document.getElementById('not-enroll-header-btn');
+      if (notEnrollBtn) notEnrollBtn.remove();
+      var headerBtn = document.getElementById('header-action-btn');
+      if (headerBtn) {
+        headerBtn.className = 'action-btn action-btn-done';
+        headerBtn.textContent = 'Not Enrolled';
+        headerBtn.disabled = true;
+        headerBtn.onclick = null;
+      }
+    }
+
+    function handleReRefer() {
+      var p = PATIENTS.find(function(x) { return x.id === parseInt(new URLSearchParams(location.search).get('id'), 10); });
+      document.getElementById('pt-reref-name').textContent = (p ? p.name : 'This patient') + ' was previously referred but did not enroll. Confirming will send a new referral to the BCM.';
+      document.getElementById('pt-rereferral-modal').style.display = 'flex';
+    }
+    function confirmReRefer() {
+      document.getElementById('pt-rereferral-modal').style.display = 'none';
+      var notice = document.querySelector('.animate-in[style*="FFFBEB"]');
+      if (notice) notice.innerHTML = '<div style="font-size:13px;font-weight:600;color:#16a34a;">✓ Re-referred to CoCM — BCM has been notified.</div>';
+    }
+
+    function confirmPtEnroll() {
+      closePtEnrollModal();
+      var p = PATIENTS.find(function(x) { return x.id === parseInt(new URLSearchParams(location.search).get('id'), 10); });
+      if (p) localStorage.setItem('status_' + p.id, 'enrolled');
+      var headerBtn = document.getElementById('header-action-btn');
+      if (headerBtn) {
+        headerBtn.className = 'action-btn action-btn-done';
+        headerBtn.innerHTML = '<i class="ti ti-check"></i> Enrolled';
+        headerBtn.onclick = null;
+      }
+      var declineBtn = document.getElementById('not-enroll-header-btn');
+      if (declineBtn) declineBtn.remove();
+    }
+
+    function confirmPtRefer() {
+      var btn = document.getElementById('topbar-action-btn');
+      var id  = parseInt(btn.dataset.patientId, 10);
+      localStorage.setItem('status_' + id, 'archived');
+      closePtReferModal();
+      var headerBtn = document.getElementById('header-action-btn');
+      if (headerBtn) {
+        headerBtn.className = 'action-btn action-btn-done';
+        headerBtn.innerHTML = '<i class="ti ti-check"></i> Referred';
+        headerBtn.onclick = null;
+      }
+    }
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { closePtEnrollModal(); closePtReferModal(); closeNotEnrollingModal(); }
+    });
+    window.addEventListener('mousedown', function(e) {
+      var em = document.getElementById('pt-enroll-modal');
+      if (em && em.style.display !== 'none' && e.target === em) closePtEnrollModal();
+      var nm = document.getElementById('pt-not-enrolling-modal');
+      if (nm && nm.style.display !== 'none' && e.target === nm) closeNotEnrollingModal();
+      var rm = document.getElementById('pt-refer-modal');
+      if (rm && rm.style.display !== 'none' && e.target === rm) closePtReferModal();
+    });
+
+    const isPanel = new URLSearchParams(location.search).get('panel') === 'true';
+    if (isPanel) document.body.classList.add('panel-mode');
+
+    render();
+  </script>
+
+  <div id="elig-tooltip" style="display:none; position:fixed; z-index:9999; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.10); pointer-events:none; overflow:hidden; font-family:'Geist','Inter',sans-serif; min-width:420px; max-width:calc(100vw - 24px);">
+    <div style="display:grid; grid-template-columns:110px 70px 120px 1fr; padding:10px 16px 9px; background:#F9FAFB; border-bottom:1px solid #E5E7EB;">
+      <span style="font-size:12px;font-weight:600;color:var(--text-subtle);letter-spacing:0.07em;text-transform:uppercase;">Tier</span>
+      <span style="font-size:12px;font-weight:600;color:var(--text-subtle);letter-spacing:0.07em;text-transform:uppercase;">Score</span>
+      <span style="font-size:12px;font-weight:600;color:var(--text-subtle);letter-spacing:0.07em;text-transform:uppercase;">Eligibility</span>
+      <span style="font-size:12px;font-weight:600;color:var(--text-subtle);letter-spacing:0.07em;text-transform:uppercase;">Action</span>
+    </div>
+    <div style="display:grid; grid-template-columns:110px 70px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
+      <span style="font-size:13px;font-weight:600;color:var(--low-text);background:var(--low-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Low</span>
+      <span style="font-size:13px;color:var(--text-muted);">0 – 8</span>
+      <span style="font-size:13px;color:var(--text-muted);">Monitoring</span>
+      <span style="font-size:13px;color:var(--text-mid);">Watchful waiting, psycho-education, re-screen in 6 months</span>
+    </div>
+    <div style="display:grid; grid-template-columns:110px 70px 120px 1fr; align-items:center; padding:11px 16px; border-bottom:1px solid #F3F4F6;">
+      <span style="font-size:13px;font-weight:600;color:var(--med-text);background:var(--med-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">Moderate</span>
+      <span style="font-size:13px;color:var(--text-muted);">9 – 16</span>
+      <span style="font-size:13px;color:var(--text-muted);">CoCM Eligible</span>
+      <span style="font-size:13px;color:var(--text-mid);">Enroll in standard CoCM Track</span>
+    </div>
+    <div style="display:grid; grid-template-columns:110px 70px 120px 1fr; align-items:center; padding:11px 16px;">
+      <span style="font-size:13px;font-weight:600;color:var(--high-text);background:var(--high-bg);padding:3px 10px;border-radius:999px;display:inline-block;width:fit-content;">High</span>
+      <span style="font-size:13px;color:var(--text-muted);">17 – 25</span>
+      <span style="font-size:13px;color:var(--text-muted);">CoCM Eligible</span>
+      <span style="font-size:13px;color:var(--text-mid);">Enroll in Intensive CoCM + Psychiatric Consultation</span>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var icon = document.getElementById('elig-info-icon');
+      var tip  = document.getElementById('elig-tooltip');
+      if (!icon || !tip) return;
+      icon.addEventListener('mouseenter', function() {
+        tip.style.display = 'block';
+        var r  = icon.getBoundingClientRect();
+        var tw = tip.offsetWidth;
+        var th = tip.offsetHeight;
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+        var left = Math.min(r.left, vw - tw - 12);
+        left = Math.max(12, left);
+        var top = r.bottom + 6;
+        if (top + th > vh - 12) top = r.top - th - 6;
+        tip.style.top  = top + 'px';
+        tip.style.left = left + 'px';
+      });
+      icon.addEventListener('mouseleave', function() { tip.style.display = 'none'; });
+    })();
+  </script>
+
+  <!-- Enroll Modal -->
+  <div id="pt-enroll-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
+    <div style="background:#fff; border-radius:16px; width:400px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
+      <div style="padding:28px 28px 24px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Enroll in CoCM</div>
+        <div id="pt-enroll-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
+      </div>
+      <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
+        <button onclick="closePtEnrollModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
+        <button onclick="confirmPtEnroll()" style="padding:9px 20px;border:none;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'">Enroll</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Re-refer Modal -->
+  <div id="pt-rereferral-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
+    <div style="background:#fff; border-radius:16px; width:400px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
+      <div style="padding:28px 28px 24px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <i class="ti ti-refresh" style="font-size:20px;color:#92400E;"></i>
+        </div>
+        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Enroll in CoCM</div>
+        <div id="pt-reref-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
+      </div>
+      <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
+        <button onclick="document.getElementById('pt-rereferral-modal').style.display='none'" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
+        <button onclick="confirmReRefer()" style="padding:9px 20px;border:none;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'">Enroll</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Not Enrolling Modal -->
+  <div id="pt-not-enrolling-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
+    <div style="background:#fff; border-radius:16px; width:420px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
+      <div style="padding:28px 28px 24px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Not enrolling in CoCM</div>
+        <div id="pt-not-enrolling-name" style="font-size:13px;color:#6B7280;line-height:1.5;margin-bottom:20px;"></div>
+        <div style="font-size:11px;font-weight:700;color:var(--text-subtle);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Reason <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-subtle);font-size:11px;">(select all that apply)</span></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="reason-tag" onclick="toggleReason(this,'declined')">Patient declined</span>
+          <span class="reason-tag" onclick="toggleReason(this,'personal')">Personal</span>
+          <span class="reason-tag" onclick="toggleReason(this,'financial')">Financial</span>
+          <span class="reason-tag" onclick="toggleReason(this,'insurance')">Insurance</span>
+          <span class="reason-tag" onclick="toggleReason(this,'other')">Other</span>
+        </div>
+        <div id="other-reason-wrap" style="display:none;margin-top:12px;">
+          <textarea id="other-reason-input" placeholder="Please explain…" style="width:100%;height:72px;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:inherit;color:var(--text-mid);resize:none;outline:none;transition:border-color 0.12s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#E5E7EB'"></textarea>
+        </div>
+      </div>
+      <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
+        <button onclick="closeNotEnrollingModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
+        <button onclick="confirmNotEnrolling()" style="padding:9px 20px;border:none;border-radius:8px;background:#374151;color:white;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.1s;" onmouseover="this.style.background='#1F2937'" onmouseout="this.style.background='#374151'">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Refer Modal -->
+  <div id="pt-refer-modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:2000; align-items:center; justify-content:center; backdrop-filter:blur(2px);">
+    <div style="background:#fff; border-radius:16px; width:400px; box-shadow:0 24px 48px rgba(0,0,0,0.18); overflow:hidden; font-family:'Geist','Inter',sans-serif;">
+      <div style="padding:28px 28px 24px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </div>
+        <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">Refer patient out</div>
+        <div id="pt-refer-name" style="font-size:13px;color:#6B7280;line-height:1.5;"></div>
+      </div>
+      <div style="border-top:1px solid #F3F4F6;padding:16px 28px;display:flex;gap:10px;justify-content:flex-end;background:#FAFAFA;">
+        <button onclick="closePtReferModal()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:500;color:#374151;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='#fff'">Cancel</button>
+        <button onclick="confirmPtRefer()" style="padding:9px 20px;border:1.5px solid var(--primary);border-radius:8px;background:white;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='white'">Refer out</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
