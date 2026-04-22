@@ -507,7 +507,7 @@
               <th style="width:18%; cursor:pointer;" onclick="sortBy('name')">Patient <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
               <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')"><div style="display:inline-flex;align-items:center;justify-content:center;gap:4px;"><span id="risk-info-icon" onclick="event.stopPropagation()" style="display:inline-flex;align-items:center;cursor:default;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></span>Score <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></div></th>
               <th style="width:12%; cursor:pointer; text-align:center;" onclick="sortBy('tier')">Risk <i class="ti ti-selector" style="font-size:16px; vertical-align:middle;"></i></th>
-              <th class="col-rescreen" style="width:13%;">Re-screen Date</th>
+              <th class="col-rescreen" style="width:13%; text-align:center;">Re-screen Date</th>
               <th style="width:40%">Description</th>
               <th style="width:12%">Actions</th>
             </tr>
@@ -1033,8 +1033,7 @@
       const days = Math.round((due - now) / 86400000);
       const dueStr = due.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const color  = days < 0 ? '#E11D48' : days <= 60 ? '#EA580C' : '#0284C7';
-      return `<div style="font-size:13px;font-weight:600;color:${color};">${dueStr}</div>
-              ${days < 0 ? `<div style="font-size:11px;font-weight:500;color:#E11D48;margin-top:2px;">Overdue</div>` : ''}`;
+      return `<div style="font-size:13px;font-weight:600;color:${color};text-align:center;">${dueStr}</div>`;
     }
 
     function renderTable() {
